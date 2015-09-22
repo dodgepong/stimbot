@@ -6,6 +6,6 @@ module.exports = (robot) ->
 			win = "I win!"
 			if bid == myBid
 				win = "you win!"
-			res.send ":psi: Your bid: " + bid + " :credit:, my bid: " + myBid + " :credit:, " + win
+			res.send ":psi: Your bid: " + bid + ":credit:, my bid: " + myBid + ":credit:, " + win
 		else
 			res.send ":psi: Hey, that's an illegal bid! Judge!"
