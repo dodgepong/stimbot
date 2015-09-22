@@ -115,5 +115,6 @@ module.exports = (robot) ->
 		if results.length > 0
 			formattedCard = formatCard results[0]
 			robot.emit 'slack.attachment',
-				text: "Found card:",
+				message: "Found card:"
 				content: formattedCard
+
