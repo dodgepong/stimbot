@@ -15,6 +15,26 @@ FACTIONS = {
 	'neutral': { "name": 'Neutral (corp)', "color": '#808080', "icon": "Neutral" }
 }
 
+ABBREVIATIONS = {
+	'proco': 'Professional Contacts',
+	'procon': 'Professional Contacts',
+	'jhow': 'Jackson Howard',
+	'smc': 'Self-Modifying Code',
+	'kit': 'Rielle "Kit" Peddler',
+	'abt': 'Accelerated Beta Test',
+	'mopus': 'Magnup Opus',
+	'mo': 'Magnum Opus',
+	'charizard': 'Scheherezade',
+	'siphon': 'Account Siphon',
+	'deja': 'Déjà Vu',
+	'deja vu': 'Déjà Vu',
+	'gov takeover': 'Government Takeover',
+	'gt': 'Government Takeover',
+	'baby': 'Symmetrical Visage',
+	'pancakes': 'Adjusted Chronotype',
+	'dlr': 'Data Leak Reversal'
+}
+
 formatCard = (card) ->
 	title = card.title
 	if card.uniqueness
@@ -101,6 +121,11 @@ module.exports = (robot) ->
 	robot.hear /\[([^\]]+)\]/, (res) ->
 		query = res.match[1]
 		cards = robot.brain.get('cards')
+
+		query = query.toLowerCase()
+
+		if query of ABBREVIATIONS
+			query = ABBREVIATIONS[query]
 
 		fuseOptions =
 			caseSensitive: false
