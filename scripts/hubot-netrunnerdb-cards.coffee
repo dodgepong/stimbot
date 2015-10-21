@@ -24,7 +24,7 @@ ABBREVIATIONS = {
 	'abt': 'Accelerated Beta Test',
 	'mopus': 'Magnum Opus',
 	'mo': 'Magnum Opus',
-	'charizard': 'Scheherezade',
+	'charizard': 'Scheherazade',
 	'siphon': 'Account Siphon',
 	'deja': 'Déjà Vu',
 	'deja vu': 'Déjà Vu',
@@ -96,7 +96,10 @@ ABBREVIATIONS = {
 	'oycr': 'An Offer You Can\'t Refuse',
 	'hok': 'House of Knives',
 	'cc': 'Clone Chip',
-	'ta': 'Traffic Accident'
+	'ta': 'Traffic Accident',
+	'jesus': 'Jackson Howard',
+	'baby bucks': 'Symmetrical Visage',
+	'babybucks': 'Symmetrical Visage'
 }
 
 formatCard = (card) ->
