@@ -56,7 +56,10 @@ formatCard = (card) ->
 				typeline += " _(#{card.cost}:credit:, #{card.memoryunits}:mu:)_"
 
 	attachment['text'] += typeline + "\n\n"
-	attachment['text'] += emojifyNRDBText card.text
+	if card.text?
+		attachment['text'] += emojifyNRDBText card.text
+	else
+		attachment['text'] += ''
 
 	faction = FACTIONS[card.faction_code]
 
