@@ -103,7 +103,8 @@ ABBREVIATIONS = {
 	'mediohxcore': 'MemStrips',
 	'calimsha': 'Kate \"Mac\" McCaffrey',
 	'spags': 'Troll',
-	'bs': 'Blue Sun'
+	'bs': 'Blue Sun',
+	'larla': 'Levy AR Lab Access'
 }
 
 formatCard = (card) ->
