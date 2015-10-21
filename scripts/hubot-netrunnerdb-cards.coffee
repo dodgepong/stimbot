@@ -101,7 +101,7 @@ ABBREVIATIONS = {
 	'baby bucks': 'Symmetrical Visage',
 	'babybucks': 'Symmetrical Visage',
 	'mediohxcore': 'MemStrips',
-	'calimsha': 'Kate \"Mac\" McCaffrey',
+	'calimsha': 'Kate "Mac" McCaffrey',
 	'spags': 'Troll',
 	'bs': 'Blue Sun',
 	'larla': 'Levy AR Lab Access'
