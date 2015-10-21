@@ -107,7 +107,11 @@ ABBREVIATIONS = {
 	'larla': 'Levy AR Lab Access',
 	'ig': 'Industrial Genomics',
 	'clone': 'Clone Chip',
-	'josh01': 'Professional Contacts'
+	'josh01': 'Professional Contacts',
+	'hiro': 'Chairman Hiro',
+	'director': 'Director Haas',
+	'haas': 'Director Haas',
+	'director haas': 'Director Haas'
 }
 
 formatCard = (card) ->
