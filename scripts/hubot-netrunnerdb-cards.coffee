@@ -2,16 +2,16 @@ Fuse = require 'fuse.js'
 
 FACTIONS = {
 	'adam': { "name": 'Adam', "color": '#b9b23a', "icon": "Adam" },
-	'anarch': { "name": 'Anarch', "color": '#ff4500', "icon": ":anarch:" },
+	'anarch': { "name": 'Anarch', "color": '#ff4500', "icon": "Anarch" },
 	'apex': { "name": 'Apex', "color": '#9e564e', "icon": "Apex" },
-	'criminal': { "name": 'Criminal', "color": '#4169e1', "icon": ":criminal:" },
-	'shaper': { "name": 'Shaper', "color": '#32cd32', "icon": ":shaper:" },
+	'criminal': { "name": 'Criminal', "color": '#4169e1', "icon": "Criminal" },
+	'shaper': { "name": 'Shaper', "color": '#32cd32', "icon": "Shaper" },
 	'sunny-lebeau': { "name": 'Sunny Lebeau', "color": '#715778', "icon": "Sunny LeBeau" },
 	'neutral': { "name": 'Neutral (runner)', "color": '#808080', "icon": "Neutral" },
-	'haas-bioroid': { "name": 'Haas-Bioroid', "color": '#8a2be2', "icon": ":hb:" },
-	'jinteki': { "name": 'Jinteki', "color": '#dc143c', "icon": ":jinteki:" },
-	'nbn': { "name": 'NBN', "color": '#ff8c00', "icon": ":nbn:" },
-	'weyland': { "name": 'Weyland Consortium', "color": '#326b5b', "icon": ":weyland:" },
+	'haas-bioroid': { "name": 'Haas-Bioroid', "color": '#8a2be2', "icon": "Haas-Bioroid" },
+	'jinteki': { "name": 'Jinteki', "color": '#dc143c', "icon": "Jinteki" },
+	'nbn': { "name": 'NBN', "color": '#ff8c00', "icon": "NBN" },
+	'weyland': { "name": 'Weyland Consortium', "color": '#326b5b', "icon": "Weyland" },
 	'neutral': { "name": 'Neutral (corp)', "color": '#808080', "icon": "Neutral" }
 }
 
@@ -43,7 +43,7 @@ formatCard = (card) ->
 		when 'event', 'operation', 'hardware', 'resource'
 			typeline += " _(#{card.cost}:credit:)_"
 		when 'ice'
-			typeline += " _(#{card.cost}:credit, #{card.strength} strength)_"
+			typeline += " _(#{card.cost}:credit:, #{card.strength} strength)_"
 		when 'identity'
 			if card.side_code == 'runner'
 				typeline += " _(#{card.baselink}:baselink:, #{card.minimumdecksize} min deck size, #{card.influencelimit} influence)_"
@@ -69,7 +69,7 @@ formatCard = (card) ->
 			i = card.factioncost
 			while i--
 				influencepips += '●'
-			attachment['author_name'] = "#{card.setname} / #{faction.icon}#{influencepips}"
+			attachment['author_name'] = "#{card.setname} / #{faction.icon} #{influencepips}"
 		else
 			attachment['author_name'] = "#{card.setname} / #{faction.icon}"
 
@@ -83,7 +83,7 @@ emojifyNRDBText = (text) ->
 	text = text.replace /\[Trash\]/g, ":trash:"
 	text = text.replace /\[Recurring Credits\]/g, ":recurring:"
 	text = text.replace /\[Subroutine\]/g, ":subroutine:"
-	text = text.replace /\[Memory Unit\]/g, ":mu:"
+	text = text.replace /\[Memory Unit\]/g, " :mu:"
 	text = text.replace /\[Link\]/g, ":baselink:"
 	text = text.replace /<sup>/g, " "
 	text = text.replace /<\/sup>/g, ""
@@ -120,6 +120,6 @@ module.exports = (robot) ->
 			robot.emit 'slack.attachment',
 				message: "Found card:"
 				content: formattedCard
-				channel: "#testing"
+				channel: res.message.room
 		else
 			res.send "No card result found for \"" + res.match[1] + "\"."
