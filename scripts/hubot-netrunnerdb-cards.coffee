@@ -104,7 +104,8 @@ ABBREVIATIONS = {
 	'calimsha': 'Kate "Mac" McCaffrey',
 	'spags': 'Troll',
 	'bs': 'Blue Sun',
-	'larla': 'Levy AR Lab Access'
+	'larla': 'Levy AR Lab Access',
+	'ig': 'Industrial Genomics'
 }
 
 formatCard = (card) ->
