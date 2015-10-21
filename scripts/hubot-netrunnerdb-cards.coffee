@@ -100,7 +100,9 @@ ABBREVIATIONS = {
 	'jesus': 'Jackson Howard',
 	'baby bucks': 'Symmetrical Visage',
 	'babybucks': 'Symmetrical Visage',
-	'mediohxcore': 'Memstrips'
+	'mediohxcore': 'MemStrips',
+	'calimsha': 'Kate \"Mac\" McCaffrey',
+	'spags': 'Troll'
 }
 
 formatCard = (card) ->
