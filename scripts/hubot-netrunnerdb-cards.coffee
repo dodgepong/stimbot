@@ -99,7 +99,8 @@ ABBREVIATIONS = {
 	'ta': 'Traffic Accident',
 	'jesus': 'Jackson Howard',
 	'baby bucks': 'Symmetrical Visage',
-	'babybucks': 'Symmetrical Visage'
+	'babybucks': 'Symmetrical Visage',
+	'mediohxcore': 'Memstrips'
 }
 
 formatCard = (card) ->
