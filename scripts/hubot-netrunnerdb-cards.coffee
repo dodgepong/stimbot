@@ -94,7 +94,9 @@ ABBREVIATIONS = {
 	'mn': 'Making News',
 	'ct': 'Chaos Theory',
 	'oycr': 'An Offer You Can\'t Refuse',
-	'hok': 'House of Knives'
+	'hok': 'House of Knives',
+	'cc': 'Clone Chip',
+	'ta': 'Traffic Accident'
 }
 
 formatCard = (card) ->
