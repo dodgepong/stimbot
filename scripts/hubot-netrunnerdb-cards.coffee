@@ -69,7 +69,9 @@ ABBREVIATIONS = {
 	'nas': 'New Angeles Sol',
 	'bbg': 'Breaker Bay Grid',
 	'drt': 'Dedicated Response Team',
-	'sot': 'Same Old Thing'
+	'sot': 'Same Old Thing',
+	'stamherk': 'Stimhack',
+	'stam herk': 'Stimhack'
 }
 
 formatCard = (card) ->
