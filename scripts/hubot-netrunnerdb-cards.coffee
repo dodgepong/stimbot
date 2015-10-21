@@ -57,7 +57,8 @@ formatCard = (card) ->
 
 	attachment['text'] += typeline + "\n\n"
 	if card.text?
-		attachment['text'] += emojifyNRDBText card.text
+		#attachment['text'] += emojifyNRDBText card.text
+		attachment['text'] += card.text
 	else
 		attachment['text'] += ''
 
