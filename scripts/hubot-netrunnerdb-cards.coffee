@@ -24,7 +24,7 @@ formatCard = (card) ->
 		'fallback': title,
 		'title': title,
 		'title_link': card.url,
-		'mrkdwn_in': [ 'text' ]
+		'mrkdwn_in': [ 'text', 'author_name' ]
 	}
 
 	attachment['text'] = ''
@@ -57,7 +57,7 @@ formatCard = (card) ->
 
 	attachment['text'] += typeline + "\n\n"
 	if card.text?
-		attachment['text'] += card.text
+		attachment['text'] += emojifyNRDBText card.text
 	else
 		attachment['text'] += ''
 
@@ -76,6 +76,22 @@ formatCard = (card) ->
 		attachment['color'] = faction.color
 
 	return attachment
+
+emojifyNRDBText = (text) ->
+	text = text.replace /\[Credits\]/g, ":credit:"
+	text = text.replace /\[Click\]/g, ":click:"
+	text = text.replace /\[Trash\]/g, ":trash:"
+	text = text.replace /\[Recurring Credits\]/g, ":recurring:"
+	text = text.replace /\[Subroutine\]/g, ":subroutine:"
+	text = text.replace /\[Memory Unit\]/g, ":mu:"
+	text = text.replace /\[Link\]/g, ":baselink:"
+	text = text.replace /<sup>/g, " "
+	text = text.replace /<\/sup>/g, ""
+	text = text.replace /&ndash/g, "–"
+	text = text.replace /<strong>/g, "*"
+	text = text.replace /<\/strong>/g, "*"
+
+	return text
 
 module.exports = (robot) ->
 	robot.http("http://netrunnerdb.com/api/cards/")
