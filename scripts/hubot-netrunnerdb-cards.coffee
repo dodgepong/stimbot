@@ -104,5 +104,6 @@ module.exports = (robot) ->
 			robot.emit 'slack.attachment',
 				message: "Found card:"
 				content: formattedCard
+				channel: "#testing"
 		else
 			res.send "No card result found for \"" + res.match[1] + "\"."
