@@ -11,7 +11,7 @@ FACTIONS = {
 	'haas-bioroid': { "name": 'Haas-Bioroid', "color": '#8a2be2', "icon": "Haas-Bioroid" },
 	'jinteki': { "name": 'Jinteki', "color": '#dc143c', "icon": "Jinteki" },
 	'nbn': { "name": 'NBN', "color": '#ff8c00', "icon": "NBN" },
-	'weyland': { "name": 'Weyland Consortium', "color": '#006400', "icon": "Weyland" },
+	'weyland-consortium': { "name": 'Weyland Consortium', "color": '#326b5b', "icon": "Weyland" },
 	'neutral': { "name": 'Neutral (corp)', "color": '#808080', "icon": "Neutral" }
 }
 
