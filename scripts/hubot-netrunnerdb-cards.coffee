@@ -115,9 +115,10 @@ module.exports = (robot) ->
 		fuse = new Fuse cards, fuseOptions
 		results = fuse.search(query)
 
-		if results.length > 0
+		if results? and results.length > 0
 			formattedCard = formatCard results[0]
 			robot.emit 'slack.attachment',
 				message: "Found card:"
 				content: formattedCard
-
+		else
+			res.send "No card result found for \"" + res.match[1] + "\"."
