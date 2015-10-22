@@ -196,7 +196,12 @@ emojifyNRDBText = (text) ->
 module.exports = (robot) ->
 	robot.http("http://netrunnerdb.com/api/cards/")
 		.get() (err, res, body) ->
-			robot.brain.set 'cards', JSON.parse body
+			unsortedCards = JSON.parse body
+			sortedCards = {}
+			sortedKeys = Object.keys(unsortedCards).sort()
+			for key in sortedKeys
+				sortedCards[key] = unsortedCards[key]
+			robot.brain.set 'cards', sortedCards
 
 	robot.hear /\[([^\]]+)\]/, (res) ->
 		query = res.match[1]
