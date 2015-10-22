@@ -111,7 +111,6 @@ ABBREVIATIONS = {
 	'hiro': 'Chairman Hiro',
 	'director': 'Director Haas',
 	'haas': 'Director Haas',
-	'director haas': 'Director Haas',
 	'zeromus': 'Mushin no Shin'
 }
 
