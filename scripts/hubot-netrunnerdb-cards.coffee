@@ -193,15 +193,19 @@ emojifyNRDBText = (text) ->
 
 	return text
 
+compareCards = (card1, card2) ->
+	if card1.title < card2.title
+		return -1
+	else if card1.title > card2.title
+		return 1
+	else
+		return 0
+
 module.exports = (robot) ->
 	robot.http("http://netrunnerdb.com/api/cards/")
 		.get() (err, res, body) ->
 			unsortedCards = JSON.parse body
-			sortedCards = {}
-			sortedKeys = Object.keys(unsortedCards).sort()
-			for key in sortedKeys
-				sortedCards[key] = unsortedCards[key]
-			robot.brain.set 'cards', sortedCards
+			robot.brain.set 'cards', unsortedCards.sort(compareCards)
 
 	robot.hear /\[([^\]]+)\]/, (res) ->
 		query = res.match[1]
