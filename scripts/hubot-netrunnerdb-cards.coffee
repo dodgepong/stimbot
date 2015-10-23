@@ -111,7 +111,8 @@ ABBREVIATIONS = {
 	'hiro': 'Chairman Hiro',
 	'director': 'Director Haas',
 	'haas': 'Director Haas',
-	'zeromus': 'Mushin no Shin'
+	'zeromus': 'Mushin no Shin',
+	'tldr': 'TL;DR'
 }
 
 formatCard = (card) ->
