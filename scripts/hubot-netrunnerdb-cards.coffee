@@ -112,7 +112,10 @@ ABBREVIATIONS = {
 	'director': 'Director Haas',
 	'haas': 'Director Haas',
 	'zeromus': 'Mushin no Shin',
-	'tldr': 'TL;DR'
+	'tldr': 'TL;DR',
+	'sportsball': 'Team Sponsorship',
+	'sports ball': 'Team Sponsorship',
+	'sports': 'Team Sponsorship'
 }
 
 formatCard = (card) ->
