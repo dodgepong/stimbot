@@ -125,7 +125,10 @@ ABBREVIATIONS = {
 	'sports': 'Team Sponsorship',
 	'crfluency': 'Blue Sun',
 	'dodgepong': 'Broadcast Square',
-	'cheese potato': 'Data Leak Reversal'
+	'cheese potato': 'Data Leak Reversal',
+	'cycy': 'Cyber-Cipher',
+	'cy cy': 'Cyber-Cipher',
+	'cy-cy': 'Cyber-Cipher'
 }
 
 formatCard = (card) ->
