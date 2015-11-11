@@ -254,8 +254,8 @@ module.exports = (robot) ->
 		else
 			res.send "No card result found for \"" + res.match[1] + "\"."
 
-	robot.hear /^!jank\s?(runner|corp)?$/, (res) ->
-		side = res.match[1]
+	robot.hear /^!jank\s?(runner|corp)?$/i, (res) ->
+		side = res.match[1].toLowerCase()
 		cards = robot.brain.get('cards')
 
 		if !side?
