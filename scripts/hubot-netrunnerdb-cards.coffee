@@ -130,7 +130,8 @@ ABBREVIATIONS = {
 	'cheese potatoes': 'Data Leak Reversal',
 	'cycy': 'Cyber-Cipher',
 	'cy cy': 'Cyber-Cipher',
-	'cy-cy': 'Cyber-Cipher'
+	'cy-cy': 'Cyber-Cipher',
+	'expose': 'Exposé'
 }
 
 formatCard = (card) ->
