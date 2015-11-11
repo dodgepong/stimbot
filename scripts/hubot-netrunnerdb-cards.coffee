@@ -243,3 +243,32 @@ module.exports = (robot) ->
 				channel: res.message.room
 		else
 			res.send "No card result found for \"" + res.match[1] + "\"."
+
+	robot.hear /^!jank\s?(runner|corp)?$/, (res) ->
+		side = res.match[1]
+		cards = robot.brain.get('cards')
+
+		if !side?
+			randomside = Math.floor(Math.random() * 2)
+			if randomside == 0
+				side = "runner"
+			else
+				side = "corp"
+
+		sidecards = cards.filter((card) ->
+			return card.side_code == side
+		)
+		identities = sidecards.filter((card) ->
+			return card.type_code == "identity" && card.cyclenumber != 0
+		)
+		randomIdentity = Math.floor(Math.random() * identities.length)
+
+		sideNonIDCards = sidecards.filter((card) ->
+			return card.type_code != "identity" && card.cyclenumber != 0
+		)
+
+		randomCard1 = Math.floor(Math.random() * sideNonIDCards.length)
+		randomCard2 = Math.floor(Math.random() * sideNonIDCards.length)
+		randomCard3 = Math.floor(Math.random() * sideNonIDCards.length)
+
+		res.send identities[randomIdentity].title + " + " + sideNonIDCards[randomCard1].title + " + " + sideNonIDCards[randomCard2].title + " + " + sideNonIDCards[randomCard3].title
