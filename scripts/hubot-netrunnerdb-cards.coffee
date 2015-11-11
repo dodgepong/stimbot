@@ -126,6 +126,8 @@ ABBREVIATIONS = {
 	'crfluency': 'Blue Sun',
 	'dodgepong': 'Broadcast Square',
 	'cheese potato': 'Data Leak Reversal',
+	'cheese potatos': 'Data Leak Reversal',
+	'cheese potatoes': 'Data Leak Reversal',
 	'cycy': 'Cyber-Cipher',
 	'cy cy': 'Cyber-Cipher',
 	'cy-cy': 'Cyber-Cipher'
