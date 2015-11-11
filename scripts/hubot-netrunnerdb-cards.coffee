@@ -250,25 +250,33 @@ module.exports = (robot) ->
 
 		if !side?
 			randomside = Math.floor(Math.random() * 2)
-			if randomside == 0
+			if randomside is 0
 				side = "runner"
 			else
 				side = "corp"
 
-		sidecards = cards.filter((card) ->
+		sidecards = cards.filter((card) -> 
 			return card.side_code == side
 		)
 		identities = sidecards.filter((card) ->
 			return card.type_code == "identity" && card.cyclenumber != 0
 		)
-		randomIdentity = Math.floor(Math.random() * identities.length)
-
 		sideNonIDCards = sidecards.filter((card) ->
 			return card.type_code != "identity" && card.cyclenumber != 0
 		)
 
-		randomCard1 = Math.floor(Math.random() * sideNonIDCards.length)
-		randomCard2 = Math.floor(Math.random() * sideNonIDCards.length)
-		randomCard3 = Math.floor(Math.random() * sideNonIDCards.length)
+		randomIdentity = Math.floor(Math.random() * identities.length)
+		identityCard = identities[randomIdentity]
 
-		res.send identities[randomIdentity].title + " + " + sideNonIDCards[randomCard1].title + " + " + sideNonIDCards[randomCard2].title + " + " + sideNonIDCards[randomCard3].title
+		numberOfCards = 3
+		cardString = identityCard.title
+
+		for num in [1..numberOfCards]
+			do (num) ->
+				randomCard = {}
+				while true
+					randomCard = sideNonIDCards[Math.floor(Math.random() * sideNonIDCards.length)]
+					break if randomCard.type_code != "agenda" || (randomCard.type_code == "agenda" && (randomCard.faction_code == identityCard.faction_code || randomCard.faction_code == "neutral"))
+				cardString += " + " + randomCard.title
+
+		res.send cardString
