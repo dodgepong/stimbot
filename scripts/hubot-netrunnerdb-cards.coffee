@@ -115,7 +115,10 @@ ABBREVIATIONS = {
 	'tldr': 'TL;DR',
 	'sportsball': 'Team Sponsorship',
 	'sports ball': 'Team Sponsorship',
-	'sports': 'Team Sponsorship'
+	'sports': 'Team Sponsorship',
+	'crfluency': 'Blue Sun',
+	'dodgepong': 'Broadcast Square',
+	'cheese potato': 'Data Leak Reversal'
 }
 
 formatCard = (card) ->
