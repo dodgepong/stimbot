@@ -131,7 +131,8 @@ ABBREVIATIONS = {
 	'cycy': 'Cyber-Cipher',
 	'cy cy': 'Cyber-Cipher',
 	'cy-cy': 'Cyber-Cipher',
-	'expose': 'Exposé'
+	'expose': 'Exposé',
+	'sneakysly': 'Stimhack'
 }
 
 formatCard = (card) ->
