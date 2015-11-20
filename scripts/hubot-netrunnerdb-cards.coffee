@@ -2,8 +2,8 @@
 #   Tools for interacting with the NetrunnerDB API.
 #
 # Commands:
-#   [card name] - search for a card with that name in the NetrunnerDB API
-#   !jank [corp|runner] - Choose an identity and three random cards. Break the meta!
+#   [card name] - search for a card with that name in the NetrunnerDB API (braces necessary)
+#   !jank (corp|runner) - Choose an identity and three random cards. Break the meta!
 
 Fuse = require 'fuse.js'
 
