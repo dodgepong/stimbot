@@ -8,7 +8,6 @@
     "fuse.js": "^1.2.2",
     "hubot": "^2.16.0",
     "hubot-diagnostics": "0.0.1",
-    "hubot-google-images": "^0.2.1",
     "hubot-google-translate": "^0.2.0",
     "hubot-help": "^0.1.1",
     "hubot-heroku-keepalive": "^1.0.0",
