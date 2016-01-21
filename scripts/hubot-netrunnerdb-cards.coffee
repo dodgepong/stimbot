@@ -133,7 +133,10 @@ ABBREVIATIONS = {
 	'cy-cy': 'Cyber-Cipher',
 	'expose': 'Exposé',
 	'sneakysly': 'Stimhack',
-	'eap': 'Explode-a-palooza'
+	'eap': 'Explode-a-palooza',
+	'wnp': 'Wireless Net Pavilion',
+	'mcg': 'Mumbad City Grid',
+	'sscg': 'SanSan City Grid'
 }
 
 formatCard = (card) ->
