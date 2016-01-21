@@ -136,7 +136,10 @@ ABBREVIATIONS = {
 	'eap': 'Explode-a-palooza',
 	'wnp': 'Wireless Net Pavilion',
 	'mcg': 'Mumbad City Grid',
-	'sscg': 'SanSan City Grid'
+	'sscg': 'SanSan City Grid',
+	'jes': 'Jesminder Sareen',
+	'jess': 'Jesminder Sareen',
+	'jessie': 'Jesminder Sareen'
 }
 
 formatCard = (card) ->
