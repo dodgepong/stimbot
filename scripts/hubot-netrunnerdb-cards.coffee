@@ -214,6 +214,16 @@ emojifyNRDBText = (text) ->
 	text = text.replace /&ndash/g, "–"
 	text = text.replace /<strong>/g, "*"
 	text = text.replace /<\/strong>/g, "*"
+	text = text.replace /\[jinteki\]/g, ":jinteki:"
+	text = text.replace /\[weyland-consortium\]/g, ":weyland:"
+	text = text.replace /\[nbn\]/g, ":nbn:"
+	text = text.replace /\[haas-bioroid\]/g, ":hb:"
+	text = text.replace /\[shaper\]/g, ":shaper:"
+	text = text.replace /\[criminal\]/g, ":criminal:"
+	text = text.replace /\[anarch\]/g, ":anarch:"
+	text = text.replace /\[adam\]/g, ":adam:"
+	text = text.replace /\[sunny\]/g, ":sunny:"
+	text = text.replace /\[apex\]/g, ":apex:"
 
 	return text
 
