@@ -139,7 +139,8 @@ ABBREVIATIONS = {
 	'sscg': 'SanSan City Grid',
 	'jes': 'Jesminder Sareen',
 	'jess': 'Jesminder Sareen',
-	'jessie': 'Jesminder Sareen'
+	'jessie': 'Jesminder Sareen',
+	'plop': 'Political Operative'
 }
 
 formatCard = (card) ->
