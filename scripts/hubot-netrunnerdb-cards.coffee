@@ -264,10 +264,8 @@ cardMatches = (card, cond) ->
 				when "n" then return card.factioncost < parseInt(cond.value)
 				when "c" then return card.cyclenumber < parseInt(cond.value)
 				when "y" then return card.quantity < parseInt(cond.value)
-		when ">"
-			return !cardMatches(card, { key: cond.key, op: "<", value: parseInt(cond.value) + 1 })
-		when "!"
-			return !cardMatches(card, { key: cond.key, op: ":", value: cond.value })
+		when ">" then return !cardMatches(card, { key: cond.key, op: "<", value: parseInt(cond.value) + 1 })
+		when "!" then	return !cardMatches(card, { key: cond.key, op: ":", value: cond.value })
 	true
 
 module.exports = (robot) ->
@@ -349,18 +347,14 @@ module.exports = (robot) ->
 	robot.hear /^!find (.*)/, (res) ->
 		conditions = []
 		for part in res.match[1].toLowerCase().split(" ")
-			if out = part.match(/([a-z]+)(:|=|<|>|!)([\w]+)/)
-				conditions.push({ key: out[1], op: out[2], value: out[3] })
-				if out[2] in ":=!".split("") && out[1] in "etsfxpondcaiuy".split("")
-					conditions.push({ key: out[1], op: out[2], value: out[3] })
-				if out[2] in "<>".split("") && out[1] in "poncy".split("")
+			if out = part.match(/([etsfxpondcaiuy])([:=<>!])([\w]+)/)
+				if out[2] in ":=!".split("") || out[1] in "poncy".split("")
 					conditions.push({ key: out[1], op: out[2], value: out[3] })
 
 		return res.send("Sorry, I didn't understand :(") if !conditions || conditions.length < 1
 
 		results = []
-		cards = robot.brain.get('cards')
-		for card in cards
+		for card in robot.brain.get('cards')
 			valid = true
 			for cond in conditions
 				valid = valid && cardMatches(card, cond)
