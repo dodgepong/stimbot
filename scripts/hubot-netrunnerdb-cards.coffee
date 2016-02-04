@@ -268,6 +268,7 @@ cardMatches = (card, cond) ->
 			return !cardMatches(card, { key: cond.key, op: "<", value: parseInt(cond.value) + 1 })
 		when "!"
 			return !cardMatches(card, { key: cond.key, op: ":", value: cond.value })
+	true
 
 module.exports = (robot) ->
 	robot.http("http://netrunnerdb.com/api/cards/")
