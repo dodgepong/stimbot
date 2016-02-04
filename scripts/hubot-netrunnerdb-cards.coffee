@@ -358,7 +358,7 @@ module.exports = (robot) ->
 			valid = true
 			for cond in conditions
 				valid = valid && cardMatches(card, cond)
-			results.push(card.title) if valid
+			results.push("<#{card.url}|#{card.title}>") if valid
 
 		total = results.length
 		if total > 10
