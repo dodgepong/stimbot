@@ -346,10 +346,10 @@ module.exports = (robot) ->
 
 	robot.hear /^!find (.*)/, (res) ->
 		conditions = []
-		for part in res.match[1].toLowerCase().split(" ")
-			if out = part.match(/([etsfxpondcaiuy])([:=<>!])([\w]+)/)
+		for part in res.match[1].toLowerCase().match(/(([etsfxpondcaiuy])([:=<>!])([\w]+|\".+?\"))+/g)
+			if out = part.match(/([etsfxpondcaiuy])([:=<>!])(.+)/)
 				if out[2] in ":=!".split("") || out[1] in "poncy".split("")
-					conditions.push({ key: out[1], op: out[2], value: out[3] })
+					conditions.push({ key: out[1], op: out[2], value: out[3].replace(/\"/g, "") })
 
 		return res.send("Sorry, I didn't understand :(") if !conditions || conditions.length < 1
 
