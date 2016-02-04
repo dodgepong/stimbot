@@ -239,6 +239,35 @@ compareCards = (card1, card2) ->
 	else
 		return 0
 
+cardMatches = (card, cond) ->
+	switch cond.op
+		when ":", "="
+			switch cond.key
+				when "e" then return cond.value in [card.setname.toLowerCase(), card.set_code]
+				when "t" then return cond.value in [card.type_code]
+				when "s" then return cond.value in card.subtype_code.split(" - ")
+				when "f" then return cond.value in [card.faction_code, card.faction_letter]
+				when "x" then return card.text && ~(card.text.toLowerCase().indexOf(cond.value))
+				when "p" then return card.strength == parseInt(cond.value)
+				when "o" then return card.cost == parseInt(cond.value)
+				when "n" then return card.factioncost == parseInt(cond.value)
+				when "d" then return cond.value in [card.side_code, card.side_code.charAt(0)]
+				when "c" then return card.cyclenumber == parseInt(cond.value) || card.cycle_code == cond.value
+				when "a" then return card.flavor && ~(card.flavor.toLowerCase().indexOf(cond.value))
+				when "i" then return card.illustrator && ~(card.illustrator.toLowerCase().indexOf(cond.value))
+				when "u" then return !card.uniqueness == !parseInt(cond.value)
+				when "y" then return card.quantity == parseInt(cond.value)
+		when "<"
+			switch cond.key
+				when "p" then return card.strength < parseInt(cond.value)
+				when "o" then return card.cost < parseInt(cond.value)
+				when "n" then return card.factioncost < parseInt(cond.value)
+				when "c" then return card.cyclenumber < parseInt(cond.value)
+				when "y" then return card.quantity < parseInt(cond.value)
+		when ">" then return !cardMatches(card, { key: cond.key, op: "<", value: parseInt(cond.value) + 1 })
+		when "!" then	return !cardMatches(card, { key: cond.key, op: ":", value: cond.value })
+	true
+
 module.exports = (robot) ->
 	robot.http("http://netrunnerdb.com/api/cards/")
 		.get() (err, res, body) ->
@@ -289,7 +318,7 @@ module.exports = (robot) ->
 		else
 			side = side.toLowerCase()
 
-		sidecards = cards.filter((card) -> 
+		sidecards = cards.filter((card) ->
 			return card.side_code == side
 		)
 		identities = sidecards.filter((card) ->
@@ -314,3 +343,27 @@ module.exports = (robot) ->
 				cardString += " + " + randomCard.title
 
 		res.send cardString
+
+	robot.hear /^!find (.*)/, (res) ->
+		conditions = []
+		for part in res.match[1].toLowerCase().match(/(([etsfxpondcaiuy])([:=<>!])([\w]+|\".+?\"))+/g)
+			if out = part.match(/([etsfxpondcaiuy])([:=<>!])(.+)/)
+				if out[2] in ":=!".split("") || out[1] in "poncy".split("")
+					conditions.push({ key: out[1], op: out[2], value: out[3].replace(/\"/g, "") })
+
+		return res.send("Sorry, I didn't understand :(") if !conditions || conditions.length < 1
+
+		results = []
+		for card in robot.brain.get('cards')
+			valid = true
+			for cond in conditions
+				valid = valid && cardMatches(card, cond)
+			results.push("<#{card.url}|#{card.title}>") if valid
+
+		total = results.length
+		if total > 10
+			res.send("Found #{results[0..9].join(", ")} and #{total - 10} more")
+		else if total < 1
+			res.send("Couldn't find anything :|")
+		else
+			res.send("Found #{results.join(", ")}")
