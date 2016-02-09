@@ -143,6 +143,14 @@ ABBREVIATIONS = {
 	'plop': 'Political Operative'
 }
 
+CYCLES = {
+	2: 'Genesis Cycle',
+	4: 'Spin Cycle',
+	6: 'Lunar Cycle',
+	8: 'SanSan Cycle',
+	10: 'Mumbad Cycle'
+}
+
 formatCard = (card) ->
 	title = card.title
 	if card.uniqueness
@@ -192,15 +200,18 @@ formatCard = (card) ->
 	faction = FACTIONS[card.faction_code]
 
 	if faction?
+		authorname = "#{card.setname}"
+		if card.cyclenumber of CYCLES
+			authorname = authorname + " / #{CYCLES[card.cyclenumber]}"
+		authorname = authorname + " ##{card.number} / #{faction.icon}"
 		if card.factioncost?
 			influencepips = ""
 			i = card.factioncost
 			while i--
 				influencepips += '●'
-			attachment['author_name'] = "#{card.setname} / #{faction.icon} #{influencepips}"
-		else
-			attachment['author_name'] = "#{card.setname} / #{faction.icon}"
-
+			authorname = authorname + " #{influencepips}"
+			 
+		attachment['author_name'] = authorname
 		attachment['color'] = faction.color
 
 	return attachment
