@@ -140,7 +140,9 @@ ABBREVIATIONS = {
 	'jes': 'Jesminder Sareen',
 	'jess': 'Jesminder Sareen',
 	'jessie': 'Jesminder Sareen',
-	'plop': 'Political Operative'
+	'plop': 'Political Operative',
+	'palana': 'Pālanā Foods',
+	'palana foods': 'Pālanā Foods'
 }
 
 CYCLES = {
