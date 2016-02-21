@@ -6,6 +6,7 @@ REFRESH_FREQUENCY = 300000 # 5 minutes
 
 module.exports = (robot) ->
 	setInterval () ->
+		robot.logger.info 'Fetching new Twitch stream info'
 		url = 'https://api.twitch.tv/kraken/streams?game=Android:%20Netrunner'
 		known_streams = robot.brain.get('streams')
 		if !known_streams?
@@ -27,7 +28,7 @@ module.exports = (robot) ->
 						new_streams[stream.channel.name] = stream.channel.status
 					robot.brain.set 'streams', new_streams
 					return
-				robot.logger.info "Finished checking for Twitch streams"
+				robot.logger.info 'Finished checking for new Twitch streams'
 	, REFRESH_FREQUENCY
 
 	robot.hear /!streams/, (msg) ->
