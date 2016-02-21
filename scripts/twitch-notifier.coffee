@@ -2,7 +2,7 @@
 #   Tool for notifying a chat room of live Netrunner streams when they go live.
 
 REFRESH_FREQUENCY = 300000 # 5 minutes
-ROOM = 'testing'
+ROOM = 'C0CSRP3RC'
 
 module.exports = (robot) ->
 	setInterval () ->
@@ -10,7 +10,6 @@ module.exports = (robot) ->
 		known_streams = robot.brain.get('streams')
 		if !known_streams?
 			known_streams = {}
-		robot.logger.info known_streams
 		new_streams = {}
 		robot.http(url)
 			.header('Accept', 'application/json')
