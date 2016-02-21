@@ -1,12 +1,12 @@
 # Description:
 #   Tool for notifying a chat room of live Netrunner streams when they go live.
 
-REFRESH_FREQUENCY = 300000 # 5 minutes
+REFRESH_FREQUENCY = 5000 # 5 minutes
 
 module.exports = (robot) ->
 	if process.env.TWITCH_NOTIFIER_ROOM?
 		robot.logger.info "Enabling Twitch Notifier"
-		checkTwitch = () ->
+		setInterval () ->
 			robot.logger.info 'Fetching new Twitch stream listings'
 			url = 'https://api.twitch.tv/kraken/streams?game=Android:%20Netrunner'
 			known_streams = robot.brain.get('streams')
@@ -37,8 +37,7 @@ module.exports = (robot) ->
 						# overwrite previous data with new data of all currently-live streams
 						robot.brain.set 'streams', new_streams
 					robot.logger.info 'Finished checking for new Twitch streams'
-		checkTwitch
-		setInterval checkTwitch, REFRESH_FREQUENCY
+		, REFRESH_FREQUENCY
 
 	robot.hear /!streams/, (msg) ->
 		streams = robot.brain.get('streams')
