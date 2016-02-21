@@ -5,6 +5,7 @@ REFRESH_FREQUENCY = 300000 # 5 minutes
 
 module.exports = (robot) ->
 	if process.env.ENABLE_TWITCH_NOTIFIER?
+		robot.logger.info "Enabling Twitch Notifier"
 		setInterval () ->
 			robot.logger.info 'Fetching new Twitch stream listings'
 			url = 'https://api.twitch.tv/kraken/streams?game=Android:%20Netrunner'
@@ -41,9 +42,14 @@ module.exports = (robot) ->
 		streams = robot.brain.get('streams')
 		if !streams?
 			streams = {}
-		if Object.keys(streams).length is 0
+
+		num_live_streams = Object.keys(streams).length
+		if num_live_streams is 0
 			msg.send "No streams are live right now. :("
 		else
-			msg.send "#{Object.keys(streams).length} streams live right now:"
+			plural = "streams"
+			if num_live_streams is 1
+				plural = "stream"
+			msg.send "#{Object.keys(streams).length} #{plural} live right now:"
 			for stream, title of streams
 				msg.send "#{title} - http://twitch.tv/#{stream}"
