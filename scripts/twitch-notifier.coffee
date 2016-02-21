@@ -2,7 +2,7 @@
 #   Tool for notifying a chat room of live Netrunner streams when they go live.
 
 REFRESH_FREQUENCY = 300000 # 5 minutes
-ROOM = '#testing'
+ROOM = 'testing'
 
 module.exports = (robot) ->
 	setInterval () ->
