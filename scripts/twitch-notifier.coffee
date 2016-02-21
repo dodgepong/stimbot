@@ -38,7 +38,7 @@ module.exports = (robot) ->
 						robot.brain.set 'streams', new_streams
 					robot.logger.info 'Finished checking for new Twitch streams'
 		checkTwitch
-		setinterval checkTwitch, REFRESH_FREQUENCY
+		setInterval checkTwitch, REFRESH_FREQUENCY
 
 	robot.hear /!streams/, (msg) ->
 		streams = robot.brain.get('streams')
