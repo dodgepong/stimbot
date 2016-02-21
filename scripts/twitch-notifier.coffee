@@ -1,5 +1,8 @@
 # Description:
 #   Tool for notifying a chat room of live Netrunner streams when they go live.
+#
+# Commands:
+#	!streams - Displays a list of all currently-live Netrunner streams.
 
 REFRESH_FREQUENCY = 60000 # 1 min
 
