@@ -6,7 +6,7 @@ REFRESH_FREQUENCY = 300000 # 5 minutes
 module.exports = (robot) ->
 	if process.env.TWITCH_NOTIFIER_ROOM?
 		robot.logger.info "Enabling Twitch Notifier"
-		setInterval () ->
+		checkTwitch = () ->
 			robot.logger.info 'Fetching new Twitch stream listings'
 			url = 'https://api.twitch.tv/kraken/streams?game=Android:%20Netrunner'
 			known_streams = robot.brain.get('streams')
@@ -37,7 +37,8 @@ module.exports = (robot) ->
 						# overwrite previous data with new data of all currently-live streams
 						robot.brain.set 'streams', new_streams
 					robot.logger.info 'Finished checking for new Twitch streams'
-		, REFRESH_FREQUENCY
+		checkTwitch
+		setinterval checkTwitch, REFRESH_FREQUENCY
 
 	robot.hear /!streams/, (msg) ->
 		streams = robot.brain.get('streams')
