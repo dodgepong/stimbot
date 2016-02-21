@@ -1,7 +1,7 @@
 # Description:
 #   Tool for notifying a chat room of live Netrunner streams when they go live.
 
-REFRESH_FREQUENCY = 600000 # 5 minutes
+REFRESH_FREQUENCY = 60000 # 5 minutes
 #ROOM = 'C0CSRP3RC'
 
 module.exports = (robot) ->
