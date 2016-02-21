@@ -2,7 +2,7 @@
 #   Tool for notifying a chat room of live Netrunner streams when they go live.
 
 REFRESH_FREQUENCY = 300000 # 5 minutes
-ROOM = 'C0CSRP3RC'
+#ROOM = 'C0CSRP3RC'
 
 module.exports = (robot) ->
 	setInterval () ->
@@ -23,7 +23,7 @@ module.exports = (robot) ->
 				if response?.streams
 					for stream in response.streams
 						if stream.channel.name not of known_streams
-							robot.messageRoom ROOM, "#{stream.channel.name} just went live playing Android: Netrunner on Twitch with the title #{stream.channel.status} - http://twitch.tv/#{stream.channel.name}" 
+							robot.messageRoom process.env.TWITCH_NOTIFIER_ROOM, "#{stream.channel.name} just went live playing Android: Netrunner on Twitch with the title #{stream.channel.status} - http://twitch.tv/#{stream.channel.name}" 
 						new_streams[stream.channel.name] = stream.channel.status
 					robot.brain.set 'streams', new_streams
 					return
