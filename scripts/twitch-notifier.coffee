@@ -27,7 +27,7 @@ module.exports = (robot) ->
 							robot.messageRoom ROOM, "#{stream.channel.name} just went live playing Android: Netrunner on Twitch with the title #{stream.channel.status} - http://twitch.tv/#{stream.channel.name}" 
 						new_streams[stream.channel.name] = stream.channel.status
 					robot.brain.set 'streams', new_streams
-					robot.brain.save
+					#robot.brain.save
 					return
 				robot.logger.info "Finished checking for Twitch streams"
 	, REFRESH_FREQUENCY
