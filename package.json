@@ -5,6 +5,7 @@
   "author": "Ben Torell <dodgepong@gmail.com>",
   "description": "A helpful android for the Stimhack Slack channel",
   "dependencies": {
+    "cron": "^1.1.0",
     "fuse.js": "^1.2.2",
     "hubot": "^2.16.0",
     "hubot-diagnostics": "0.0.1",
@@ -18,7 +19,8 @@
     "hubot-scripts": "^2.16.2",
     "hubot-shipit": "^0.2.0",
     "hubot-slack": "^3.3.0",
-    "hubot-slack-attachment": "^1.0.1"
+    "hubot-slack-attachment": "^1.0.1",
+    "time": "^0.11.4"
   },
   "engines": {
     "node": "0.10.x"
