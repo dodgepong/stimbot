@@ -212,7 +212,7 @@ formatCard = (card) ->
 			while i--
 				influencepips += '●'
 			authorname = authorname + " #{influencepips}"
-			 
+
 		attachment['author_name'] = authorname
 		attachment['color'] = faction.color
 
@@ -253,6 +253,9 @@ compareCards = (card1, card2) ->
 		return 0
 
 cardMatches = (card, cond) ->
+	return false if cond.key == 'g' && typeof(card.advancementcost) == 'undefined'
+	return false if cond.key == 'v' && typeof(card.agendapoints) == 'undefined'
+
 	switch cond.op
 		when ":", "="
 			switch cond.key
@@ -270,6 +273,8 @@ cardMatches = (card, cond) ->
 				when "i" then return card.illustrator && ~(card.illustrator.toLowerCase().indexOf(cond.value))
 				when "u" then return !card.uniqueness == !parseInt(cond.value)
 				when "y" then return card.quantity == parseInt(cond.value)
+				when "g" then return card.advancementcost == parseInt(cond.value)
+				when "v" then return card.agendapoints == parseInt(cond.value)
 		when "<"
 			switch cond.key
 				when "p" then return card.strength < parseInt(cond.value)
@@ -277,6 +282,8 @@ cardMatches = (card, cond) ->
 				when "n" then return card.factioncost < parseInt(cond.value)
 				when "c" then return card.cyclenumber < parseInt(cond.value)
 				when "y" then return card.quantity < parseInt(cond.value)
+				when "g" then return card.advancementcost < parseInt(cond.value)
+				when "v" then return card.agendapoints < parseInt(cond.value)
 		when ">" then return !cardMatches(card, { key: cond.key, op: "<", value: parseInt(cond.value) + 1 })
 		when "!" then	return !cardMatches(card, { key: cond.key, op: ":", value: cond.value })
 	true
@@ -359,9 +366,9 @@ module.exports = (robot) ->
 
 	robot.hear /^!find (.*)/, (res) ->
 		conditions = []
-		for part in res.match[1].toLowerCase().match(/(([etsfxpondcaiuy])([:=<>!])([\w]+|\".+?\"))+/g)
-			if out = part.match(/([etsfxpondcaiuy])([:=<>!])(.+)/)
-				if out[2] in ":=!".split("") || out[1] in "poncy".split("")
+		for part in res.match[1].toLowerCase().match(/(([etsfxpondcaiuygv])([:=<>!])([-\w]+|\".+?\"))+/g)
+			if out = part.match(/([etsfxpondcaiuygv])([:=<>!])(.+)/)
+				if out[2] in ":=!".split("") || out[1] in "poncygv".split("")
 					conditions.push({ key: out[1], op: out[2], value: out[3].replace(/\"/g, "") })
 
 		return res.send("Sorry, I didn't understand :(") if !conditions || conditions.length < 1
