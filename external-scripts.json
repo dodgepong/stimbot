@@ -5,6 +5,5 @@
   "hubot-google-translate",
   "hubot-maps",
   "hubot-redis-brain",
-  "hubot-rules",
-  "hubot-slack-attachment"
+  "hubot-rules"
 ]
