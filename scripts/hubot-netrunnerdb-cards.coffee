@@ -296,7 +296,7 @@ cardMatches = (card, cond) ->
 	true
 
 module.exports = (robot) ->
-	robot.http("http://netrunnerdb.com/api/cards/")
+	robot.http("https://netrunnerdb.com/api/cards/")
 		.get() (err, res, body) ->
 			unsortedCards = JSON.parse body
 			robot.brain.set 'cards', unsortedCards.sort(compareCards)
