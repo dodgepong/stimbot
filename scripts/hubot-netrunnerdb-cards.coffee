@@ -161,6 +161,8 @@ CYCLES = {
 }
 
 formatCard = (card) ->
+	card = fixNRDBOutput card
+
 	title = card.title
 	if card.uniqueness
 		title = "◆ " + title
@@ -224,6 +226,14 @@ formatCard = (card) ->
 		attachment['color'] = faction.color
 
 	return attachment
+
+fixNRDBOutput = (card) ->
+	if card.title in ['Ad Blitz', 'Angel Arena', 'Bribery', 'Psychographics']
+		card.cost = 'X'
+	if card.title in ['Darwin']
+		card.strength = 'X'
+
+	return card
 
 emojifyNRDBText = (text) ->
 	text = text.replace /\[Credits\]/g, ":credit:"
@@ -301,7 +311,7 @@ module.exports = (robot) ->
 			unsortedCards = JSON.parse body
 			robot.brain.set 'cards', unsortedCards.sort(compareCards)
 
-	robot.hear /\[([^\]]+)\]/, (res) ->
+	robot.hear /\[\[([^\]]+)\]\]/, (res) ->
 		query = res.match[1]
 		cards = robot.brain.get('cards')
 
@@ -312,7 +322,7 @@ module.exports = (robot) ->
 
 		fuseOptions =
 			caseSensitive: false
-			includeScore: false
+			include: ['score']
 			shouldSort: true
 			threshold: 0.6
 			location: 0
@@ -324,7 +334,8 @@ module.exports = (robot) ->
 		results = fuse.search(query)
 
 		if results? and results.length > 0
-			formattedCard = formatCard results[0]
+			filteredResults = results.filter((c) -> c.score == results[0].score).sort((c1, c2) -> c1.item.title.length - c2.item.title.length)
+			formattedCard = formatCard filteredResults[0].item
 			robot.emit 'slack.attachment',
 				message: "Found card:"
 				content: formattedCard
