@@ -157,7 +157,8 @@ CYCLES = {
 	4: 'Spin Cycle',
 	6: 'Lunar Cycle',
 	8: 'SanSan Cycle',
-	10: 'Mumbad Cycle'
+	10: 'Mumbad Cycle',
+	11: 'Flashpoint Cycle'
 }
 
 formatCard = (card) ->
