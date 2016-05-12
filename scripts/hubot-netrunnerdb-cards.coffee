@@ -192,9 +192,15 @@ formatCard = (card) ->
 		when 'asset', 'upgrade'
 			typeline += " _(#{card.cost}:credit:, #{card.trash}:trash:)_"
 		when 'event', 'operation', 'hardware', 'resource'
-			typeline += " _(#{card.cost}:credit:)_"
+			typeline += " _(#{card.cost}:credit:"
+			if card.trash?
+				typeline += ", #{card.trash}:trash:"
+			typeline += ")_"
 		when 'ice'
-			typeline += " _(#{card.cost}:credit:, #{card.strength} strength)_"
+			typeline += " _(#{card.cost}:credit:, #{card.strength} strength"
+			if card.trash?
+				typeline += ", #{card.trash}:trash:"
+			typeline += ")_"
 		when 'identity'
 			if card.side_code == 'runner'
 				typeline += " _(#{card.baselink}:baselink:, #{card.minimumdecksize} min deck size, #{card.influencelimit} influence)_"
