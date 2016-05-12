@@ -149,7 +149,10 @@ ABBREVIATIONS = {
 	'mcc': 'Mumbad Construction Co.',
 	'moh': 'Museum of History',
 	'cst': 'Corporate Sales Team',
-	'panera': 'Panchatantra'
+	'panera': 'Panchatantra',
+	'hhn': 'Hard-Hitting News',
+	'adap': 'Another Day, Another Paycheck',
+	'maus': 'Mausolus'
 }
 
 CYCLES = {
