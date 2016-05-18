@@ -101,6 +101,7 @@ ABBREVIATIONS = {
 	'mn': 'Making News',
 	'ct': 'Chaos Theory',
 	'oycr': 'An Offer You Can\'t Refuse',
+	'aoycr': 'An Offer You Can\'t Refuse',
 	'hok': 'House of Knives',
 	'cc': 'Clone Chip',
 	'ta': 'Traffic Accident',
@@ -152,7 +153,8 @@ ABBREVIATIONS = {
 	'panera': 'Panchatantra',
 	'hhn': 'Hard-Hitting News',
 	'adap': 'Another Day, Another Paycheck',
-	'maus': 'Mausolus'
+	'maus': 'Mausolus',
+	'eoi': 'Exchange of Information'
 }
 
 CYCLES = {
