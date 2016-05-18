@@ -154,7 +154,10 @@ ABBREVIATIONS = {
 	'hhn': 'Hard-Hitting News',
 	'adap': 'Another Day, Another Paycheck',
 	'maus': 'Mausolus',
-	'eoi': 'Exchange of Information'
+	'eoi': 'Exchange of Information',
+	'oota': 'Out of the Ashes',
+	'tw': 'The Turning Wheel',
+	'dnn': 'Dedicated Neural Net'
 }
 
 CYCLES = {
