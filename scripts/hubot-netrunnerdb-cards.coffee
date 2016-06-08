@@ -32,6 +32,7 @@ ABBREVIATIONS = {
 	'mopus': 'Magnum Opus',
 	'mo': 'Magnum Opus',
 	'charizard': 'Scheherazade',
+	':charizard:': 'Scheherazade',
 	'siphon': 'Account Siphon',
 	'deja': 'Déjà Vu',
 	'deja vu': 'Déjà Vu',
@@ -148,9 +149,11 @@ ABBREVIATIONS = {
 	'pol op': 'Political Operative',
 	'poop': 'Political Operative',
 	'mcc': 'Mumbad Construction Co.',
+	'coco': 'Mumbad Construction Co.',
 	'moh': 'Museum of History',
 	'cst': 'Corporate Sales Team',
 	'panera': 'Panchatantra',
+	'pancetta': 'Panchatantra',
 	'hhn': 'Hard-Hitting News',
 	'adap': 'Another Day, Another Paycheck',
 	'maus': 'Mausolus',
@@ -168,7 +171,8 @@ ABBREVIATIONS = {
 	'tpof': 'The Price of Freedom',
 	'pgo': 'Power Grid Overload',
 	'am': 'Archived Memories',
-	'ro': 'Reclamation Order'
+	'ro': 'Reclamation Order',
+	'mch': 'Mumbad City Hall'
 }
 
 CYCLES = {
