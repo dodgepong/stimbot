@@ -157,7 +157,15 @@ ABBREVIATIONS = {
 	'eoi': 'Exchange of Information',
 	'oota': 'Out of the Ashes',
 	'tw': 'The Turning Wheel',
-	'dnn': 'Dedicated Neural Net'
+	'dnn': 'Dedicated Neural Net',
+	'ftm': 'Fear The Masses',
+	'ttw': 'The Turning Wheel',
+	'tw': 'The Turning Wheel',
+	'tbf': 'The Black File',
+	'bf': 'The Black File',
+	'ips': 'Improved Protien Source',
+	'nmcg': 'Navi Mumbai City Grid',
+	'tpof': 'The Price of Freedom'
 }
 
 CYCLES = {
