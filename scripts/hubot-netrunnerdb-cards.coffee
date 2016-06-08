@@ -165,7 +165,10 @@ ABBREVIATIONS = {
 	'bf': 'The Black File',
 	'ips': 'Improved Protien Source',
 	'nmcg': 'Navi Mumbai City Grid',
-	'tpof': 'The Price of Freedom'
+	'tpof': 'The Price of Freedom',
+	'pgo': 'Power Grid Overload',
+	'am': 'Archived Memories',
+	'ro': 'Reclamation Order'
 }
 
 CYCLES = {
