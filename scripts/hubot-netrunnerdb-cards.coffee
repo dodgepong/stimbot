@@ -2,8 +2,10 @@
 #   Tools for interacting with the NetrunnerDB API.
 #
 # Commands:
-#   [card name] - search for a card with that name in the NetrunnerDB API (braces necessary)
+#   [[card name]] - search for a card with that name in the NetrunnerDB API
+#   {{card name}} - fetch the card image for a card
 #   !jank (corp|runner) - Choose an identity and three random cards. Break the meta!
+#   !find (e|t|s|f|x|p|o|n|d|c|a|i|u|y|g|v)(:|=|>|<|!)<query> - find cards searching by attributes
 
 Fuse = require 'fuse.js'
 
