@@ -382,7 +382,7 @@ module.exports = (robot) ->
 		card = lookupCard(res.match[1], robot.brain.get('cards'))
 
 		if card
-			res.send "https://netrunnerdb.com/" + card.imagesrc
+			res.send "https://netrunnerdb.com" + card.imagesrc
 		else
 			res.send "No card result found for \"" + res.match[1] + "\"."
 
