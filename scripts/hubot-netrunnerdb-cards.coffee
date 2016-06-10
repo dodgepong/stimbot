@@ -335,6 +335,31 @@ cardMatches = (card, cond) ->
 		when "!" then	return !cardMatches(card, { key: cond.key, op: ":", value: cond.value })
 	true
 
+lookupCard = (query, cards) ->
+	query = query.toLowerCase()
+
+	if query of ABBREVIATIONS
+		query = ABBREVIATIONS[query]
+
+	fuseOptions =
+		caseSensitive: false
+		include: ['score']
+		shouldSort: true
+		threshold: 0.6
+		location: 0
+		distance: 100
+		maxPatternLength: 32
+		keys: ['title']
+
+	fuse = new Fuse cards, fuseOptions
+	results = fuse.search(query)
+
+	if results? and results.length > 0
+		filteredResults = results.filter((c) -> c.score == results[0].score).sort((c1, c2) -> c1.item.title.length - c2.item.title.length)
+		return filteredResults[0].item
+	else
+		return false
+
 module.exports = (robot) ->
 	robot.http("https://netrunnerdb.com/api/cards/")
 		.get() (err, res, body) ->
@@ -342,34 +367,22 @@ module.exports = (robot) ->
 			robot.brain.set 'cards', unsortedCards.sort(compareCards)
 
 	robot.hear /\[\[([^\]]+)\]\]/, (res) ->
-		query = res.match[1]
-		cards = robot.brain.get('cards')
+		card = lookupCard(res.match[1], robot.brain.get('cards'))
 
-		query = query.toLowerCase()
-
-		if query of ABBREVIATIONS
-			query = ABBREVIATIONS[query]
-
-		fuseOptions =
-			caseSensitive: false
-			include: ['score']
-			shouldSort: true
-			threshold: 0.6
-			location: 0
-			distance: 100
-			maxPatternLength: 32
-			keys: ['title']
-
-		fuse = new Fuse cards, fuseOptions
-		results = fuse.search(query)
-
-		if results? and results.length > 0
-			filteredResults = results.filter((c) -> c.score == results[0].score).sort((c1, c2) -> c1.item.title.length - c2.item.title.length)
-			formattedCard = formatCard filteredResults[0].item
+		if card
+			formattedCard = formatCard card
 			robot.emit 'slack.attachment',
 				message: "Found card:"
 				content: formattedCard
 				channel: res.message.room
+		else
+			res.send "No card result found for \"" + res.match[1] + "\"."
+
+	robot.hear /{{([^}]+)}}/, (res) ->
+		card = lookupCard(res.match[1], robot.brain.get('cards'))
+
+		if card
+			res.send "https://netrunnerdb.com/" + card.imagesrc
 		else
 			res.send "No card result found for \"" + res.match[1] + "\"."
 
