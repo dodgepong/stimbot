@@ -79,11 +79,11 @@ imageMe = (msg, query, animated, faces, cb) ->
       .query(q)
       .get() (err, res, body) ->
         if err
-          if res.statusCode is 403
-            msg.send "Daily image quota exceeded, using Bing search."
-            bingImageSearch(msg, query, animated, faces, cb)
-          else
-            msg.send "Encountered an error :( #{err}"
+          msg.send "Encountered an error :( #{err}"
+          return
+        if res.statusCode is 403
+          msg.send "Daily image quota exceeded, using Bing search."
+          bingImageSearch(msg, query, animated, faces, cb)
           return
         if res.statusCode isnt 200
           msg.send "Bad HTTP response :( #{res.statusCode}"
