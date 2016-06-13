@@ -174,7 +174,10 @@ ABBREVIATIONS = {
 	'pgo': 'Power Grid Overload',
 	'am': 'Archived Memories',
 	'ro': 'Reclamation Order',
-	'mch': 'Mumbad City Hall'
+	'mch': 'Mumbad City Hall',
+	'nach': 'New Angeles City Hall',
+	'dl': 'Dirty Laundry',
+	'tr': 'Test Run'
 }
 
 CYCLES = {
