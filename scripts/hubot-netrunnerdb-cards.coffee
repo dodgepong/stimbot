@@ -177,7 +177,9 @@ ABBREVIATIONS = {
 	'mch': 'Mumbad City Hall',
 	'nach': 'New Angeles City Hall',
 	'dl': 'Dirty Laundry',
-	'tr': 'Test Run'
+	'tr': 'Test Run',
+	'itd': 'IT Department',
+	'it': 'IT Department'
 }
 
 CYCLES = {
