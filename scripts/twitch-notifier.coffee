@@ -42,7 +42,7 @@ module.exports = (robot) ->
 					robot.logger.info 'Finished checking for new Twitch streams'
 		, REFRESH_FREQUENCY
 
-	robot.hear /!streams/, (msg) ->
+	robot.hear /!stream(s)?/i, (msg) ->
 		streams = robot.brain.get('streams')
 		if !streams?
 			streams = {}
