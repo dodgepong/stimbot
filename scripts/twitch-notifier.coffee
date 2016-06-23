@@ -4,21 +4,20 @@
 # Commands:
 #	!streams - Displays a list of all currently-live Netrunner streams.
 
-REFRESH_FREQUENCY = 120000 # 2 min
+REFRESH_FREQUENCY = 300000 # 5 min
 
 module.exports = (robot) ->
 	if process.env.TWITCH_NOTIFIER_ROOM?
 		robot.logger.info "Enabling Twitch Notifier"
 		setInterval () ->
 			robot.logger.info 'Fetching new Twitch stream listings'
-			url = 'https://api.twitch.tv/kraken/streams?game=Android:%20Netrunner'
+			url = 'https://api.twitch.tv/kraken/streams?game=Android:%20Netrunner&client_id=' + process.env.TWITCH_CLIENT_ID
 			known_streams = robot.brain.get('streams')
 			if !known_streams?
 				known_streams = {}
 			new_streams = {}
 			robot.http(url)
 				.header('Accept', 'application/json')
-				.header('Client-ID', process.env.TWITCH_CLIENT_ID)
 				.get() (err, res, body) ->
 					if err
 						robot.logger.error 'Error retrieving stream list from Twitch'
