@@ -7,7 +7,7 @@
 REFRESH_FREQUENCY = 300000 # 5 min
 
 module.exports = (robot) ->
-	if process.env.TWITCH_NOTIFIER_ROOM?
+	if process.env.TWITCH_NOTIFIER_ROOM == 'true'
 		robot.logger.info "Enabling Twitch Notifier"
 		setInterval () ->
 			robot.logger.info 'Fetching new Twitch stream listings'
@@ -40,6 +40,8 @@ module.exports = (robot) ->
 						robot.brain.set 'streams', new_streams
 					robot.logger.info 'Finished checking for new Twitch streams'
 		, REFRESH_FREQUENCY
+	else
+		robot.logger.info "Disabling Twitch Notifier"
 
 	robot.hear /!stream(s)?/i, (msg) ->
 		streams = robot.brain.get('streams')
