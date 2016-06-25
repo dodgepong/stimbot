@@ -30,7 +30,8 @@ module.exports = (robot) ->
 						for stream in response.streams
 
 							# if the channel isn't in our known list of live streams, notify the channel of it
-							if stream.channel.name not of known_streams
+							# include game sanity check, sometimes the Twitch API is dumb and returns all streams regardless of game
+							if stream.channel.name not of known_streams and stream.channel.game is "Android: Netrunner"
 								robot.logger.info "Notifying of new live channel #{stream.channel.name}"
 								robot.messageRoom process.env.TWITCH_NOTIFIER_ROOM, "#{stream.channel.name} just went live playing Android: Netrunner on Twitch with the title \"#{stream.channel.status}\" - http://twitch.tv/#{stream.channel.name}" 
 
