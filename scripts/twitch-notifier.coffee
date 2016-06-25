@@ -7,7 +7,7 @@
 REFRESH_FREQUENCY = 60000 # 1 min
 
 module.exports = (robot) ->
-	if process.env.TWITCH_NOTIFIER_ROOM == 'true'
+	if process.env.ENABLE_TWITCH_NOTIFIER == 'true'
 		robot.logger.info "Enabling Twitch Notifier"
 		setInterval () ->
 			robot.logger.info 'Fetching new Twitch stream listings'
