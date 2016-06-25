@@ -4,7 +4,7 @@
 # Commands:
 #	!streams - Displays a list of all currently-live Netrunner streams.
 
-REFRESH_FREQUENCY = 300000 # 5 min
+REFRESH_FREQUENCY = 60000 # 1 min
 
 module.exports = (robot) ->
 	if process.env.TWITCH_NOTIFIER_ROOM == 'true'
