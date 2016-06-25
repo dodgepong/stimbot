@@ -11,7 +11,7 @@ module.exports = (robot) ->
 		robot.logger.info "Enabling Twitch Notifier"
 		setInterval () ->
 			robot.logger.info 'Fetching new Twitch stream listings'
-			url = 'https://api.twitch.tv/kraken/streams?game=Android:%20Netrunner'
+			url = 'https://api.twitch.tv/kraken/streams?game=Android%3A%20Netrunner'
 			known_streams = robot.brain.get('streams')
 			if !known_streams?
 				known_streams = {}
@@ -33,7 +33,7 @@ module.exports = (robot) ->
 							# include game sanity check, sometimes the Twitch API is dumb and returns all streams regardless of game
 							if stream.channel.name not of known_streams and stream.channel.game is 'Android: Netrunner'
 								robot.logger.info "Notifying of new live channel #{stream.channel.name}"
-								robot.messageRoom process.env.TWITCH_NOTIFIER_ROOM, "#{stream.channel.name} just went live playing Android: Netrunner on Twitch with the title \"#{stream.channel.status}\" - http://twitch.tv/#{stream.channel.name}" 
+								robot.messageRoom process.env.TWITCH_NOTIFIER_ROOM, "#{stream.channel.name} just went live playing Android: Netrunner on Twitch with the title \"#{stream.channel.status}\" - http://twitch.tv/#{stream.channel.name}"
 
 							# add stream to new brain data
 							new_streams[stream.channel.name] = stream.channel.status
@@ -46,17 +46,20 @@ module.exports = (robot) ->
 		robot.logger.info "Disabling Twitch Notifier"
 
 	robot.hear /!stream(s)?/i, (msg) ->
-		streams = robot.brain.get('streams')
-		if !streams?
-			streams = {}
-
-		num_live_streams = Object.keys(streams).length
-		if num_live_streams is 0
-			msg.send "No streams are live right now. :("
+		if process.env.ENABLE_TWITCH_NOTIFIER isnt 'true'
+			msg.send "The Twitch Notifier bot is offline right now. You can see all live Android: Netrunner streams here: https://www.twitch.tv/directory/game/Android%3A%20Netrunner"
 		else
-			plural = "streams"
-			if num_live_streams is 1
-				plural = "stream"
-			msg.send "#{Object.keys(streams).length} #{plural} live right now:"
-			for stream, title of streams
-				msg.send "#{title} - http://twitch.tv/#{stream}"
+			streams = robot.brain.get('streams')
+			if !streams?
+				streams = {}
+
+			num_live_streams = Object.keys(streams).length
+			if num_live_streams is 0
+				msg.send "No streams are live right now. :("
+			else
+				plural = "streams"
+				if num_live_streams is 1
+					plural = "stream"
+				msg.send "#{Object.keys(streams).length} #{plural} live right now:"
+				for stream, title of streams
+					msg.send "#{title} - http://twitch.tv/#{stream}"
