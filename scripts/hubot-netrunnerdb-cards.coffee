@@ -179,7 +179,9 @@ ABBREVIATIONS = {
 	'dl': 'Dirty Laundry',
 	'tr': 'Test Run',
 	'itd': 'IT Department',
-	'it': 'IT Department'
+	'it': 'IT Department',
+	'vi': 'Voter Intimidation',
+	'fte': 'Freedom Through Equality'
 }
 
 CYCLES = {
