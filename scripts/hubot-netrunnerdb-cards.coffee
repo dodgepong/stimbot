@@ -111,7 +111,7 @@ ABBREVIATIONS = {
 	'jesus': 'Jackson Howard',
 	'baby bucks': 'Symmetrical Visage',
 	'babybucks': 'Symmetrical Visage',
-	'mediohxcore': 'MemStrips',
+	'mediohxcore': 'Deuces Wild',
 	'calimsha': 'Kate "Mac" McCaffrey',
 	'spags': 'Troll',
 	'bs': 'Blue Sun',
@@ -187,7 +187,9 @@ ABBREVIATIONS = {
 	'ctm': 'NBN: Controlling the Message',
 	'hrf': 'Hyouba Research Facility',
 	'abr': 'Always Be Running',
-	'dan': 'Deuces Wild'
+	'dan': 'Deuces Wild',
+	':dan:': 'Deuces Wild',
+	':themtg:': 'Deuces Wild'
 }
 
 CYCLES = {
