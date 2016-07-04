@@ -186,7 +186,8 @@ ABBREVIATIONS = {
 	'exploda': 'Explode-a-palooza',
 	'ctm': 'NBN: Controlling the Message',
 	'hrf': 'Hyouba Research Facility',
-	'abr': 'Always Be Running'
+	'abr': 'Always Be Running',
+	'dan': 'Deuces Wild'
 }
 
 CYCLES = {
