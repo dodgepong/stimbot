@@ -182,7 +182,8 @@ ABBREVIATIONS = {
 	'it': 'IT Department',
 	'vi': 'Voter Intimidation',
 	'fte': 'Freedom Through Equality',
-	'vbg': 'Virus Breeding Ground'
+	'vbg': 'Virus Breeding Ground',
+	'exploda': 'Explode-a-palooza'
 }
 
 CYCLES = {
