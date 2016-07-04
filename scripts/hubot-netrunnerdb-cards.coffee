@@ -183,7 +183,10 @@ ABBREVIATIONS = {
 	'vi': 'Voter Intimidation',
 	'fte': 'Freedom Through Equality',
 	'vbg': 'Virus Breeding Ground',
-	'exploda': 'Explode-a-palooza'
+	'exploda': 'Explode-a-palooza',
+	'ctm': 'NBN: Controlling the Message',
+	'hrf': 'Hyouba Research Facility',
+	'abr': 'Always Be Running'
 }
 
 CYCLES = {
