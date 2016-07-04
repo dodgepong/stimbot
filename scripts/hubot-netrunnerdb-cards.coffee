@@ -303,6 +303,10 @@ emojifyNRDBText = (text) ->
 	text = text.replace /\[adam\]/g, ":adam:"
 	text = text.replace /\[sunny\]/g, ":sunnylebeau:"
 	text = text.replace /\[apex\]/g, ":apex:"
+	text = text.replace /\<ul>/g, "\n"
+	text = text.replace /\<\/ul>/g, ""
+	text = text.replace /\<li>/g, "• "
+	text = text.replace /\<\/li>/g, "\n"
 
 	return text
 
