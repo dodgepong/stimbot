@@ -189,7 +189,10 @@ ABBREVIATIONS = {
 	'abr': 'Always Be Running',
 	'dan': 'Deuces Wild',
 	':dan:': 'Deuces Wild',
-	':themtg:': 'Deuces Wild'
+	':themtg:': 'Deuces Wild',
+	'pornstache': 'Hernando Cortez',
+	'porn stache': 'Hernando Cortez',
+	'porn-stache': 'Hernando Cortez'
 }
 
 CYCLES = {
