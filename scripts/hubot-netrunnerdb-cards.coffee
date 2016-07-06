@@ -392,7 +392,8 @@ module.exports = (robot) ->
 			robot.brain.set 'cards', unsortedCards.sort(compareCards)
 
 	robot.hear /\[\[([^\]]+)\]\]/, (res) ->
-		card = lookupCard(res.match[1], robot.brain.get('cards'))
+		query = res.match[1].replace /^\s+|\s+$/g, ""
+		card = lookupCard(query, robot.brain.get('cards'))
 
 		if card
 			formattedCard = formatCard card
@@ -404,7 +405,8 @@ module.exports = (robot) ->
 			res.send "No card result found for \"" + res.match[1] + "\"."
 
 	robot.hear /{{([^}]+)}}/, (res) ->
-		card = lookupCard(res.match[1], robot.brain.get('cards'))
+		query = res.match[1].replace /^\s+|\s+$/g, ""
+		card = lookupCard(query, robot.brain.get('cards'))
 
 		if card
 			res.send card.imagesrc
