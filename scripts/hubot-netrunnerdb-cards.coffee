@@ -192,7 +192,8 @@ ABBREVIATIONS = {
 	':themtg:': 'Deuces Wild',
 	'pornstache': 'Hernando Cortez',
 	'porn stache': 'Hernando Cortez',
-	'porn-stache': 'Hernando Cortez'
+	'porn-stache': 'Hernando Cortez',
+	'vape': 'Deuces Wild'
 }
 
 CYCLES = {
