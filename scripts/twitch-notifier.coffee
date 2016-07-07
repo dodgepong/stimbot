@@ -24,7 +24,7 @@ module.exports = (robot) ->
 						robot.logger.error 'Error retrieving stream list from Twitch'
 						return
 					if res.statusCode isnt 200 and res.statusCode isnt 304
-						robot.logger.error 'Received bad status code #{res.statusCode} while trying to retrieve stream list from Twitch'
+						robot.logger.error "Received bad status code #{res.statusCode} while trying to retrieve stream list from Twitch"
 					response = JSON.parse(body)
 					if response?.streams
 						for stream in response.streams
