@@ -193,7 +193,10 @@ ABBREVIATIONS = {
 	'pornstache': 'Hernando Cortez',
 	'porn stache': 'Hernando Cortez',
 	'porn-stache': 'Hernando Cortez',
-	'vape': 'Deuces Wild'
+	'vape': 'Deuces Wild',
+	'fair1': 'Fairchild 1.0',
+	'fair2': 'Fairchild 2.0',
+	'psk': 'Rumor Mill'
 }
 
 CYCLES = {
