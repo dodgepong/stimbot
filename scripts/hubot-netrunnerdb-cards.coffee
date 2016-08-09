@@ -196,7 +196,8 @@ ABBREVIATIONS = {
 	'vape': 'Deuces Wild',
 	'fair1': 'Fairchild 1.0',
 	'fair2': 'Fairchild 2.0',
-	'psk': 'Rumor Mill'
+	'psk': 'Rumor Mill',
+	'khantract': 'Temüjin Contract'
 }
 
 CYCLES = {
