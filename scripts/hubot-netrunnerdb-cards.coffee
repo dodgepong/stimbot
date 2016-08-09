@@ -197,7 +197,9 @@ ABBREVIATIONS = {
 	'fair1': 'Fairchild 1.0',
 	'fair2': 'Fairchild 2.0',
 	'psk': 'Rumor Mill',
-	'khantract': 'Temüjin Contract'
+	'khantract': 'Temüjin Contract',
+	'clippy': 'Paperclip',
+	'clippit': 'Paperclip'
 }
 
 CYCLES = {
