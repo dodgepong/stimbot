@@ -198,8 +198,10 @@ ABBREVIATIONS = {
 	'fair2': 'Fairchild 2.0',
 	'psk': 'Rumor Mill',
 	'khantract': 'Temüjin Contract',
+	'tc': 'Temüjin Contract',
 	'clippy': 'Paperclip',
-	'clippit': 'Paperclip'
+	'clippit': 'Paperclip',
+	'crouton': 'Curtain Wall'
 }
 
 CYCLES = {
