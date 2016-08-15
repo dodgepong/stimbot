@@ -201,7 +201,10 @@ ABBREVIATIONS = {
 	'tc': 'Temüjin Contract',
 	'clippy': 'Paperclip',
 	'clippit': 'Paperclip',
-	'crouton': 'Curtain Wall'
+	'crouton': 'Curtain Wall',
+	'bon': 'Weyland: Builder of Nations',
+	'aot': 'Haas-Bioroid: Archtects of Tomorrow',
+	'pu': 'Jinteki: Potential Unleashed'
 }
 
 CYCLES = {
