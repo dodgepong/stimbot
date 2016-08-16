@@ -204,7 +204,8 @@ ABBREVIATIONS = {
 	'crouton': 'Curtain Wall',
 	'bon': 'Weyland: Builder of Nations',
 	'aot': 'Haas-Bioroid: Archtects of Tomorrow',
-	'pu': 'Jinteki: Potential Unleashed'
+	'pu': 'Jinteki: Potential Unleashed',
+	'smoke': 'Ele "Smoke" Scovak: Cynosure of the Net'
 }
 
 CYCLES = {
