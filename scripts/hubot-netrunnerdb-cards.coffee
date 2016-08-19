@@ -205,7 +205,9 @@ ABBREVIATIONS = {
 	'bon': 'Weyland: Builder of Nations',
 	'aot': 'Haas-Bioroid: Archtects of Tomorrow',
 	'pu': 'Jinteki: Potential Unleashed',
-	'smoke': 'Ele "Smoke" Scovak'
+	'smoke': 'Ele "Smoke" Scovak',
+	'bl': 'Biotic Labor',
+	'ad': 'Accelerated Diagnostics'
 }
 
 CYCLES = {
