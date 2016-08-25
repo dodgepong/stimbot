@@ -431,7 +431,6 @@ module.exports = (robot) ->
 
 		if card
 			formattedCard = formatCard(card, robot.brain.get('packs'), robot.brain.get('cycles'), robot.brain.get('types'), robot.brain.get('factions'))
-			robot.logger.info formattedCard
 			robot.emit 'slack.attachment',
 				message: "Found card:"
 				content: formattedCard
