@@ -304,7 +304,9 @@ superscriptify = (num) ->
 		'6': '⁶',
 		'7': '⁷',
 		'8': '⁸',
-		'9': '⁹'
+		'9': '⁹',
+		'X': 'ˣ',
+		'x': 'ˣ'
 	}
 
 	sup = ''
@@ -339,7 +341,7 @@ emojifyNRDBText = (text) ->
 	text = text.replace /\<\/ul>/ig, ""
 	text = text.replace /\<li>/ig, "• "
 	text = text.replace /\<\/li>/ig, "\n"
-	text = text.replace /<trace>(trace) (\d+)<\/trace>/ig, (match, traceText, strength, offset, string) ->
+	text = text.replace /<trace>(trace) (\d+|X)<\/trace>/ig, (match, traceText, strength, offset, string) ->
 		traceStrength = superscriptify strength
 		return "*" + traceText + traceStrength + "*—"
 
