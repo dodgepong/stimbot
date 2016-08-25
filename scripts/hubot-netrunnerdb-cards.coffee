@@ -333,9 +333,9 @@ emojifyNRDBText = (text) ->
 	text = text.replace /\<\/ul>/ig, ""
 	text = text.replace /\<li>/ig, "• "
 	text = text.replace /\<\/li>/ig, "\n"
-	text = text.replace /<trace>trace (\d+)<\/trace>/ig, (match, trace, offset, string) ->
-		traceStrength = superscriptify trace
-		return "*trace" + traceStrength + "*—"
+	text = text.replace /<trace>(trace) (\d+)<\/trace>/ig, (match, traceText, strength, offset, string) ->
+		traceStrength = superscriptify strength
+		return "*" + traceText + traceStrength + "*—"
 
 	return text
 
@@ -453,7 +453,7 @@ module.exports = (robot) ->
 
 		if card
 			formattedCard = formatCard(card, robot.brain.get('packs'), robot.brain.get('cycles'), robot.brain.get('types'), robot.brain.get('factions'))
-			# robot.logger.info formattedCard
+			robot.logger.info formattedCard
 			robot.emit 'slack.attachment',
 				message: "Found card:"
 				content: formattedCard
