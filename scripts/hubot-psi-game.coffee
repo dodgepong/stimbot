@@ -1,3 +1,9 @@
+# Description:
+#   Play a psi game.
+#
+# Commands:
+#   !psi [0, 1, or 2] - play a psi game against stimbot
+
 module.exports = (robot) ->
 	robot.hear /^!psi (\d+)\s*$/i, (res) ->
 		bid = parseInt(res.match[1])
