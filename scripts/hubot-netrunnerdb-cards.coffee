@@ -288,32 +288,32 @@ formatCard = (card, packs, cycles, types, factions) ->
 	return attachment
 
 emojifyNRDBText = (text) ->
-	text = text.replace /\[Credits\]/g, ":credit:"
-	text = text.replace /\[Click\]/g, ":click:"
-	text = text.replace /\[Trash\]/g, ":trash:"
-	text = text.replace /\[Recurring Credits\]/g, ":recurring:"
-	text = text.replace /\[Subroutine\]/g, ":subroutine:"
-	text = text.replace /\[Memory Unit\]/g, " :mu:"
-	text = text.replace /\[Link\]/g, ":baselink:"
-	text = text.replace /<sup>/g, " "
-	text = text.replace /<\/sup>/g, ""
-	text = text.replace /&ndash/g, "–"
-	text = text.replace /<strong>/g, "*"
-	text = text.replace /<\/strong>/g, "*"
-	text = text.replace /\[jinteki\]/g, ":jinteki:"
-	text = text.replace /\[weyland-consortium\]/g, ":weyland:"
-	text = text.replace /\[nbn\]/g, ":nbn:"
-	text = text.replace /\[haas-bioroid\]/g, ":hb:"
-	text = text.replace /\[shaper\]/g, ":shaper:"
-	text = text.replace /\[criminal\]/g, ":criminal:"
-	text = text.replace /\[anarch\]/g, ":anarch:"
-	text = text.replace /\[adam\]/g, ":adam:"
-	text = text.replace /\[sunny\]/g, ":sunnylebeau:"
-	text = text.replace /\[apex\]/g, ":apex:"
-	text = text.replace /\<ul>/g, "\n"
-	text = text.replace /\<\/ul>/g, ""
-	text = text.replace /\<li>/g, "• "
-	text = text.replace /\<\/li>/g, "\n"
+	text = text.replace /\[Credits?\]/ig, ":credit:"
+	text = text.replace /\[Click\]/ig, ":click:"
+	text = text.replace /\[Trash\]/ig, ":trash:"
+	text = text.replace /\[Recurring( |-)Credits?\]/ig, ":recurring:"
+	text = text.replace /\[Subroutine\]/gi, ":subroutine:"
+	text = text.replace /\[(Memory Unit|mu)\]/ig, " :mu:"
+	text = text.replace /\[Link\]/ig, ":baselink:"
+	text = text.replace /<sup>/ig, " "
+	text = text.replace /<\/sup>/ig, ""
+	text = text.replace /&ndash/ig, "–"
+	text = text.replace /<strong>/ig, "*"
+	text = text.replace /<\/strong>/ig, "*"
+	text = text.replace /\[jinteki\]/ig, ":jinteki:"
+	text = text.replace /\[weyland-consortium\]/ig, ":weyland:"
+	text = text.replace /\[nbn\]/ig, ":nbn:"
+	text = text.replace /\[haas-bioroid\]/ig, ":hb:"
+	text = text.replace /\[shaper\]/ig, ":shaper:"
+	text = text.replace /\[criminal\]/ig, ":criminal:"
+	text = text.replace /\[anarch\]/ig, ":anarch:"
+	text = text.replace /\[adam\]/ig, ":adam:"
+	text = text.replace /\[sunny\]/ig, ":sunnylebeau:"
+	text = text.replace /\[apex\]/ig, ":apex:"
+	text = text.replace /\<ul>/ig, "\n"
+	text = text.replace /\<\/ul>/ig, ""
+	text = text.replace /\<li>/ig, "• "
+	text = text.replace /\<\/li>/ig, "\n"
 
 	return text
 
@@ -431,6 +431,7 @@ module.exports = (robot) ->
 
 		if card
 			formattedCard = formatCard(card, robot.brain.get('packs'), robot.brain.get('cycles'), robot.brain.get('types'), robot.brain.get('factions'))
+			# robot.logger.info formattedCard
 			robot.emit 'slack.attachment',
 				message: "Found card:"
 				content: formattedCard
