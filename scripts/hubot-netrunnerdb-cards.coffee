@@ -9,20 +9,20 @@
 
 Fuse = require 'fuse.js'
 
-FACTIONS = {
-	'adam': { "name": 'Adam', "color": '#b9b23a', "icon": "Adam" },
-	'anarch': { "name": 'Anarch', "color": '#ff4500', "icon": "Anarch" },
-	'apex': { "name": 'Apex', "color": '#9e564e', "icon": "Apex" },
-	'criminal': { "name": 'Criminal', "color": '#4169e1', "icon": "Criminal" },
-	'shaper': { "name": 'Shaper', "color": '#32cd32', "icon": "Shaper" },
-	'sunny-lebeau': { "name": 'Sunny Lebeau', "color": '#715778', "icon": "Sunny LeBeau" },
-	'neutral': { "name": 'Neutral (runner)', "color": '#808080', "icon": "Neutral" },
-	'haas-bioroid': { "name": 'Haas-Bioroid', "color": '#8a2be2', "icon": "Haas-Bioroid" },
-	'jinteki': { "name": 'Jinteki', "color": '#dc143c', "icon": "Jinteki" },
-	'nbn': { "name": 'NBN', "color": '#ff8c00', "icon": "NBN" },
-	'weyland-consortium': { "name": 'Weyland Consortium', "color": '#326b5b', "icon": "Weyland" },
-	'neutral': { "name": 'Neutral (corp)', "color": '#808080', "icon": "Neutral" }
-}
+# FACTIONS = {
+# 	'adam': { "name": 'Adam', "color": '#b9b23a', "icon": "Adam" },
+# 	'anarch': { "name": 'Anarch', "color": '#ff4500', "icon": "Anarch" },
+# 	'apex': { "name": 'Apex', "color": '#9e564e', "icon": "Apex" },
+# 	'criminal': { "name": 'Criminal', "color": '#4169e1', "icon": "Criminal" },
+# 	'shaper': { "name": 'Shaper', "color": '#32cd32', "icon": "Shaper" },
+# 	'sunny-lebeau': { "name": 'Sunny Lebeau', "color": '#715778', "icon": "Sunny LeBeau" },
+# 	'neutral': { "name": 'Neutral (runner)', "color": '#808080', "icon": "Neutral" },
+# 	'haas-bioroid': { "name": 'Haas-Bioroid', "color": '#8a2be2', "icon": "Haas-Bioroid" },
+# 	'jinteki': { "name": 'Jinteki', "color": '#dc143c', "icon": "Jinteki" },
+# 	'nbn': { "name": 'NBN', "color": '#ff8c00', "icon": "NBN" },
+# 	'weyland-consortium': { "name": 'Weyland Consortium', "color": '#326b5b', "icon": "Weyland" },
+# 	'neutral': { "name": 'Neutral (corp)', "color": '#808080', "icon": "Neutral" }
+# }
 
 ABBREVIATIONS = {
 	'proco': 'Professional Contacts',
@@ -210,18 +210,9 @@ ABBREVIATIONS = {
 	'ad': 'Accelerated Diagnostics'
 }
 
-CYCLES = {
-	2: 'Genesis Cycle',
-	4: 'Spin Cycle',
-	6: 'Lunar Cycle',
-	8: 'SanSan Cycle',
-	10: 'Mumbad Cycle',
-	11: 'Flashpoint Cycle'
-}
+DISPLAY_CYCLES = [ 2, 4, 6, 8, 10, 11 ]
 
-formatCard = (card) ->
-	card = fixNRDBOutput card
-
+formatCard = (card, packs, cycles, types, factions) ->
 	title = card.title
 	if card.uniqueness
 		title = "◆ " + title
@@ -229,43 +220,43 @@ formatCard = (card) ->
 	attachment = {
 		'fallback': title,
 		'title': title,
-		'title_link': card.url,
+		'title_link': 'https://netrunnerdb.com/en/card/' + card.code,
 		'mrkdwn_in': [ 'text', 'author_name' ]
 	}
 
 	attachment['text'] = ''
 
 	typeline = ''
-	if card.subtype? and card.subtype != ''
-		typeline += "*#{card.type}*: #{card.subtype}"
+	if card.keywords? and card.keywords != ''
+		typeline += "*#{types[card.type_code].name}*: #{card.keywords}"
 	else
-		typeline += "*#{card.type}*"
+		typeline += "*#{types[card.type_code].name}*"
 
 	switch card.type_code
 		when 'agenda'
-			typeline += " _(#{card.advancementcost}:rez:, #{card.agendapoints}:agenda:)_"
+			typeline += " _(#{card.advancement_cost}:rez:, #{card.agenda_points}:agenda:)_"
 		when 'asset', 'upgrade'
-			typeline += " _(#{card.cost}:credit:, #{card.trash}:trash:)_"
+			typeline += " _(#{card.cost || 'X'}:credit:, #{card.trash_cost}:trash:)_"
 		when 'event', 'operation', 'hardware', 'resource'
-			typeline += " _(#{card.cost}:credit:"
-			if card.trash?
-				typeline += ", #{card.trash}:trash:"
+			typeline += " _(#{card.cost || 'X'}:credit:"
+			if card.trash_cost?
+				typeline += ", #{card.trash_cost}:trash:"
 			typeline += ")_"
 		when 'ice'
-			typeline += " _(#{card.cost}:credit:, #{card.strength} strength"
-			if card.trash?
-				typeline += ", #{card.trash}:trash:"
+			typeline += " _(#{card.cost || 'X'}:credit:, #{card.strength} strength"
+			if card.trash_cost?
+				typeline += ", #{card.trash_cost}:trash:"
 			typeline += ")_"
 		when 'identity'
 			if card.side_code == 'runner'
-				typeline += " _(#{card.baselink}:baselink:, #{card.minimumdecksize} min deck size, #{card.influencelimit} influence)_"
+				typeline += " _(#{card.base_link}:baselink:, #{card.minimum_deck_size} min deck size, #{card.influence_limit || 'Infinite'} influence)_"
 			else if card.side_code == 'corp'
-				typeline += " _(#{card.minimumdecksize} min deck size, #{card.influencelimit} influence)_"
+				typeline += " _(#{card.minimum_deck_size} min deck size, #{card.influence_limit || 'Infinite'} influence)_"
 		when 'program'
 			if card.strength?
-				typeline += " _(#{card.cost}:credit:, #{card.memoryunits}:mu:, #{card.strength} strength)_"
+				typeline += " _(#{card.cost || 'X'}:credit:, #{card.memory_cost}:mu:, #{card.strength} strength)_"
 			else
-				typeline += " _(#{card.cost}:credit:, #{card.memoryunits}:mu:)_"
+				typeline += " _(#{card.cost || 'X'}:credit:, #{card.memory_cost}:mu:)_"
 
 	attachment['text'] += typeline + "\n\n"
 	if card.text?
@@ -273,32 +264,24 @@ formatCard = (card) ->
 	else
 		attachment['text'] += ''
 
-	faction = FACTIONS[card.faction_code]
+	faction = factions[card.faction_code]
 
 	if faction?
-		authorname = "#{card.setname}"
-		if card.cyclenumber of CYCLES
-			authorname = authorname + " / #{CYCLES[card.cyclenumber]}"
-		authorname = authorname + " ##{card.number} / #{faction.icon}"
-		if card.factioncost?
+		authorname = "#{packs[card.pack_code].name}"
+		if cycles[packs[card.pack_code].cycle_code].position in DISPLAY_CYCLES
+			authorname = authorname + " / #{cycles[packs[card.pack_code].cycle_code].name} Cycle"
+		authorname = authorname + " ##{card.position} / #{faction.name}"
+		if card.faction_cost?
 			influencepips = ""
-			i = card.factioncost
+			i = card.faction_cost
 			while i--
 				influencepips += '●'
 			authorname = authorname + " #{influencepips}"
 
 		attachment['author_name'] = authorname
-		attachment['color'] = faction.color
+		attachment['color'] = '#' + faction.color
 
 	return attachment
-
-fixNRDBOutput = (card) ->
-	if card.title in ['Ad Blitz', 'Angel Arena', 'Bribery', 'Psychographics']
-		card.cost = 'X'
-	if card.title in ['Darwin']
-		card.strength = 'X'
-
-	return card
 
 emojifyNRDBText = (text) ->
 	text = text.replace /\[Credits\]/g, ":credit:"
@@ -406,12 +389,45 @@ module.exports = (robot) ->
 			robot.brain.set 'cards', cardData.data.sort(compareCards)
 			robot.brain.set 'imageUrlTemplate', cardData.imageUrlTemplate
 
+	robot.http("https://netrunnerdb.com/api/2.0/public/packs")
+		.get() (err, res, body) ->
+			packData = JSON.parse body
+			mappedPackData = {}
+			for pack in packData.data
+				mappedPackData[pack.code] = pack
+			robot.brain.set 'packs', mappedPackData
+
+	robot.http("https://netrunnerdb.com/api/2.0/public/cycles")
+		.get() (err, res, body) ->
+			cycleData = JSON.parse body
+			mappedCycleData = {}
+			for cycle in cycleData.data
+				mappedCycleData[cycle.code] = cycle
+			robot.brain.set 'cycles', mappedCycleData
+
+	robot.http("https://netrunnerdb.com/api/2.0/public/types")
+		.get() (err, res, body) ->
+			typeData = JSON.parse body
+			mappedTypeData = {}
+			for type in typeData.data
+				mappedTypeData[type.code] = type
+			robot.brain.set 'types', mappedTypeData
+
+	robot.http("https://netrunnerdb.com/api/2.0/public/factions")
+		.get() (err, res, body) ->
+			factionData = JSON.parse body
+			mappedFactionData = {}
+			for faction in factionData.data
+				mappedFactionData[faction.code] = faction
+			robot.brain.set 'factions', mappedFactionData
+
 	robot.hear /\[\[([^\]]+)\]\]/, (res) ->
 		query = res.match[1].replace /^\s+|\s+$/g, ""
 		card = lookupCard(query, robot.brain.get('cards'))
 
 		if card
-			formattedCard = formatCard card
+			formattedCard = formatCard(card, robot.brain.get('packs'), robot.brain.get('cycles'), robot.brain.get('types'), robot.brain.get('factions'))
+			robot.logger.info formattedCard
 			robot.emit 'slack.attachment',
 				message: "Found card:"
 				content: formattedCard
