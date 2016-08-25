@@ -207,7 +207,10 @@ ABBREVIATIONS = {
 	'pu': 'Jinteki: Potential Unleashed',
 	'smoke': 'Ele "Smoke" Scovak',
 	'bl': 'Biotic Labor',
-	'ad': 'Accelerated Diagnostics'
+	'ad': 'Accelerated Diagnostics',
+	'sfm': 'Shipment from Mirrormorph',
+	'sfmm': 'Shipment from Mirrormorph',
+	'sfk': 'Shipment from Kaguya'
 }
 
 DISPLAY_CYCLES = [ 2, 4, 6, 8, 10, 11 ]
