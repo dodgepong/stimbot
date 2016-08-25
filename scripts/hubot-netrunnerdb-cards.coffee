@@ -400,10 +400,11 @@ lookupCard = (query, cards) ->
 		return false
 
 module.exports = (robot) ->
-	robot.http("https://netrunnerdb.com/api/cards/")
+	robot.http("https://netrunnerdb.com/api/2.0/public/cards")
 		.get() (err, res, body) ->
-			unsortedCards = JSON.parse body
-			robot.brain.set 'cards', unsortedCards.sort(compareCards)
+			cardData = JSON.parse body
+			robot.brain.set 'cards', cardData.data.sort(compareCards)
+			robot.brain.set 'imageUrlTemplate', cardData.imageUrlTemplate
 
 	robot.hear /\[\[([^\]]+)\]\]/, (res) ->
 		query = res.match[1].replace /^\s+|\s+$/g, ""
@@ -423,7 +424,7 @@ module.exports = (robot) ->
 		card = lookupCard(query, robot.brain.get('cards'))
 
 		if card
-			res.send card.imagesrc
+			res.send robot.brain.get('imageUrlTemplate').replace /\{code\}/, card.code
 		else
 			res.send "No card result found for \"" + res.match[1] + "\"."
 
