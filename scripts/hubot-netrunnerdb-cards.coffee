@@ -247,7 +247,10 @@ formatCard = (card, packs, cycles, types, factions) ->
 				typeline += ", #{card.trash_cost}:trash:"
 			typeline += ")_"
 		when 'ice'
-			typeline += " _(#{cardCost}:credit:, #{card.strength} strength"
+			cardStrength = card.strength
+			if card.strength == null
+				cardStrength = 'X'
+			typeline += " _(#{cardCost}:credit:, #{cardStrength} strength"
 			if card.trash_cost?
 				typeline += ", #{card.trash_cost}:trash:"
 			typeline += ")_"
@@ -258,7 +261,10 @@ formatCard = (card, packs, cycles, types, factions) ->
 				typeline += " _(#{card.minimum_deck_size} min deck size, #{card.influence_limit || 'Infinite'} influence)_"
 		when 'program'
 			if /Icebreaker/.test(card.keywords)
-				typeline += " _(#{cardCost}:credit:, #{card.memory_cost}:mu:, #{card.strength || 'X'} strength)_"
+				cardStrength = card.strength
+				if card.strength == null
+					cardStrength = 'X'
+				typeline += " _(#{cardCost}:credit:, #{card.memory_cost}:mu:, #{cardStrength} strength)_"
 			else
 				typeline += " _(#{cardCost}:credit:, #{card.memory_cost}:mu:)_"
 
