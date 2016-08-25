@@ -232,18 +232,22 @@ formatCard = (card, packs, cycles, types, factions) ->
 	else
 		typeline += "*#{types[card.type_code].name}*"
 
+	cardCost = card.cost
+	if card.cost == null
+		cardCost = 'X'
+
 	switch card.type_code
 		when 'agenda'
 			typeline += " _(#{card.advancement_cost}:rez:, #{card.agenda_points}:agenda:)_"
 		when 'asset', 'upgrade'
-			typeline += " _(#{card.cost || 'X'}:credit:, #{card.trash_cost}:trash:)_"
+			typeline += " _(#{cardCost}:credit:, #{card.trash_cost}:trash:)_"
 		when 'event', 'operation', 'hardware', 'resource'
-			typeline += " _(#{card.cost || 'X'}:credit:"
+			typeline += " _(#{cardCost}:credit:"
 			if card.trash_cost?
 				typeline += ", #{card.trash_cost}:trash:"
 			typeline += ")_"
 		when 'ice'
-			typeline += " _(#{card.cost || 'X'}:credit:, #{card.strength} strength"
+			typeline += " _(#{cardCost}:credit:, #{card.strength} strength"
 			if card.trash_cost?
 				typeline += ", #{card.trash_cost}:trash:"
 			typeline += ")_"
@@ -253,10 +257,10 @@ formatCard = (card, packs, cycles, types, factions) ->
 			else if card.side_code == 'corp'
 				typeline += " _(#{card.minimum_deck_size} min deck size, #{card.influence_limit || 'Infinite'} influence)_"
 		when 'program'
-			if card.strength?
-				typeline += " _(#{card.cost || 'X'}:credit:, #{card.memory_cost}:mu:, #{card.strength} strength)_"
+			if /Icebreaker/.test(card.keywords)
+				typeline += " _(#{cardCost}:credit:, #{card.memory_cost}:mu:, #{card.strength || 'X'} strength)_"
 			else
-				typeline += " _(#{card.cost || 'X'}:credit:, #{card.memory_cost}:mu:)_"
+				typeline += " _(#{cardCost}:credit:, #{card.memory_cost}:mu:)_"
 
 	attachment['text'] += typeline + "\n\n"
 	if card.text?
