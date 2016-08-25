@@ -287,6 +287,25 @@ formatCard = (card, packs, cycles, types, factions) ->
 
 	return attachment
 
+superscriptify = (num) ->
+	superscripts = {
+		'0': '⁰',
+		'1': '¹',
+		'2': '²',
+		'3': '³',
+		'4': '⁴',
+		'5': '⁵',
+		'6': '⁶',
+		'7': '⁷',
+		'8': '⁸',
+		'9': '⁹'
+	}
+
+	sup = ''
+	for digit in [0..(num.length-1)]
+		sup = sup + superscripts[num[digit]]
+	return sup
+
 emojifyNRDBText = (text) ->
 	text = text.replace /\[Credits?\]/ig, ":credit:"
 	text = text.replace /\[Click\]/ig, ":click:"
@@ -314,6 +333,9 @@ emojifyNRDBText = (text) ->
 	text = text.replace /\<\/ul>/ig, ""
 	text = text.replace /\<li>/ig, "• "
 	text = text.replace /\<\/li>/ig, "\n"
+	text = text.replace /<trace>trace (\d+)<\/trace>/ig, (match, trace, offset, string) ->
+		traceStrength = superscriptify trace
+		return "*trace" + traceStrength + "*—"
 
 	return text
 
