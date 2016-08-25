@@ -17,4 +17,3 @@ module.exports = (robot) ->
                         title = response.items[0].title
                         url = response.items[0].url
                         msg.send title + ": " + url
-                        msg.send "See all " + response.total + " results: http://ancur.wikia.com/wiki/Special:Search?search=" + encodeURIComponent(query) + "&fulltext=Search"
