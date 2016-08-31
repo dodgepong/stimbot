@@ -344,6 +344,8 @@ emojifyNRDBText = (text) ->
 	text = text.replace /\<\/ul>/ig, ""
 	text = text.replace /\<li>/ig, "• "
 	text = text.replace /\<\/li>/ig, "\n"
+	text = text.replace /\<errata>/ig, "_"
+	text = text.replace /\<\/errata>/ig, "_"
 	text = text.replace /<trace>(trace) (\d+|X)<\/trace>/ig, (match, traceText, strength, offset, string) ->
 		traceStrength = superscriptify strength
 		return "*" + traceText + traceStrength + "*—"
