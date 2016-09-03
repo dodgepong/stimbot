@@ -228,7 +228,7 @@ ABBREVIATIONS = {
 
 DISPLAY_CYCLES = [ 2, 4, 6, 8, 10, 11 ]
 
-formatCard = (card, packs, cycles, types, factions) ->
+formatCard = (card, packs, cycles, types, factions, mwl) ->
 	title = card.title
 	if card.uniqueness
 		title = "◆ " + title
@@ -297,17 +297,25 @@ formatCard = (card, packs, cycles, types, factions) ->
 		if cycles[packs[card.pack_code].cycle_code].position in DISPLAY_CYCLES
 			authorname = authorname + " / #{cycles[packs[card.pack_code].cycle_code].name} Cycle"
 		authorname = authorname + " ##{card.position} / #{faction.name}"
+		influencepips = ""
 		if card.faction_cost?
-			influencepips = ""
 			i = card.faction_cost
 			while i--
 				influencepips += '●'
+		if card.code of mwl.cards
+			i = mwl.cards[card.code]
+			while i--
+				influencepips += '★'
+		if influencepips != ""
 			authorname = authorname + " #{influencepips}"
 
 		attachment['author_name'] = authorname
 		attachment['color'] = '#' + faction.color
 		if faction.code of FACTION_ICONS
 			attachment['author_icon'] = FACTION_ICONS[faction.code]
+
+	if card.code of mwl.cards
+		attachment['footer'] = mwl.name
 
 	return attachment
 
@@ -475,13 +483,23 @@ module.exports = (robot) ->
 				mappedFactionData[faction.code] = faction
 			robot.brain.set 'factions', mappedFactionData
 
+	robot.http("https://netrunnerdb.com/api/2.0/public/mwl")
+		.get() (err, res, body) ->
+			mwlData = JSON.parse body
+			currentMwl = {}
+			for mwl in mwlData.data
+				if mwl.active
+					currentMwl = mwl
+					break
+			robot.brain.set 'mwl', currentMwl
+
 	robot.hear /\[\[([^\]]+)\]\]/, (res) ->
 		query = res.match[1].replace /^\s+|\s+$/g, ""
 		card = lookupCard(query, robot.brain.get('cards'))
 
 		if card
-			formattedCard = formatCard(card, robot.brain.get('packs'), robot.brain.get('cycles'), robot.brain.get('types'), robot.brain.get('factions'))
-			# robot.logger.info formattedCard
+			formattedCard = formatCard(card, robot.brain.get('packs'), robot.brain.get('cycles'), robot.brain.get('types'), robot.brain.get('factions'), robot.brain.get('mwl'))
+			robot.logger.info formattedCard
 			res.send
 				attachments: [formattedCard]
 				username: res.robot.name
