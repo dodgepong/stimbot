@@ -471,7 +471,8 @@ module.exports = (robot) ->
 			# 	message: "Found card:"
 			# 	content: formattedCard
 			# 	channel: res.message.room
-			robot.emit formattedCard
+			res.send
+				attachments: [formattedCard]
 		else
 			res.send "No card result found for \"" + res.match[1] + "\"."
 
