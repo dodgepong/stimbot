@@ -9,6 +9,10 @@
 
 Fuse = require 'fuse.js'
 
+FACTION_ICONS = {
+	'adam': 'https://emoji.slack-edge.com/T0AV68M8C/adam/c9fc2127ea57ab41.png'
+}
+
 # FACTIONS = {
 # 	'adam': { "name": 'Adam', "color": '#b9b23a', "icon": "Adam" },
 # 	'anarch': { "name": 'Anarch', "color": '#ff4500', "icon": "Anarch" },
@@ -293,6 +297,8 @@ formatCard = (card, packs, cycles, types, factions) ->
 
 		attachment['author_name'] = authorname
 		attachment['color'] = '#' + faction.color
+		if faction.code of FACTION_ICONS
+			attachment['author_icon'] = FACTION_ICONS[faction.code]
 
 	return attachment
 
@@ -467,10 +473,6 @@ module.exports = (robot) ->
 		if card
 			formattedCard = formatCard(card, robot.brain.get('packs'), robot.brain.get('cycles'), robot.brain.get('types'), robot.brain.get('factions'))
 			# robot.logger.info formattedCard
-			# robot.emit 'slack.attachment',
-			# 	message: "Found card:"
-			# 	content: formattedCard
-			# 	channel: res.message.room
 			res.send
 				attachments: [formattedCard]
 				username: res.robot.name
