@@ -10,7 +10,15 @@
 Fuse = require 'fuse.js'
 
 FACTION_ICONS = {
-	'adam': 'https://emoji.slack-edge.com/T0AV68M8C/adam/c9fc2127ea57ab41.png'
+	'adam': 'https://emoji.slack-edge.com/T0AV68M8C/adam/c9fc2127ea57ab41.png',
+	'anarch': 'https://emoji.slack-edge.com/T0AV68M8C/anarch/76e0d2bd50175857.png',
+	'apex': 'https://emoji.slack-edge.com/T0AV68M8C/apex/17fdf10b8326daf3.png',
+	'criminal': 'https://emoji.slack-edge.com/T0AV68M8C/criminal/9ebb239ab7c5de1c.png',
+	'haas-bioroid': 'https://emoji.slack-edge.com/T0AV68M8C/hb/a9e02dcce0cba34a.png',
+	'nbn': 'https://emoji.slack-edge.com/T0AV68M8C/nbn/941383205f0a93b1.png',
+	'shaper': 'https://emoji.slack-edge.com/T0AV68M8C/shaper/41994ae80b49af30.png',
+	'sunny-lebeau': 'https://emoji.slack-edge.com/T0AV68M8C/sunnylebeau/831b222f07a01e6a.png',
+	'weyland-consortium': 'https://emoji.slack-edge.com/T0AV68M8C/weyland/4b6d1be376b3cd52.png'
 }
 
 # FACTIONS = {
