@@ -10,7 +10,6 @@ module.exports = (robot) ->
 	if process.env.ENABLE_TWITCH_NOTIFIER is 'true'
 		robot.logger.info "Enabling Twitch Notifier"
 		setInterval () ->
-			robot.logger.info 'Fetching new Twitch stream listings'
 			url = 'https://api.twitch.tv/kraken/streams?game=Android%3A%20Netrunner'
 			known_streams = robot.brain.get('streams')
 			if !known_streams?
@@ -25,6 +24,7 @@ module.exports = (robot) ->
 						return
 					if res.statusCode isnt 200 and res.statusCode isnt 304
 						robot.logger.error "Received bad status code #{res.statusCode} while trying to retrieve stream list from Twitch"
+						return
 					response = JSON.parse(body)
 					if response?.streams
 						for stream in response.streams
@@ -40,7 +40,6 @@ module.exports = (robot) ->
 
 						# overwrite previous data with new data of all currently-live streams
 						robot.brain.set 'streams', new_streams
-					robot.logger.info 'Finished checking for new Twitch streams'
 		, REFRESH_FREQUENCY
 	else
 		robot.logger.info "Disabling Twitch Notifier"
