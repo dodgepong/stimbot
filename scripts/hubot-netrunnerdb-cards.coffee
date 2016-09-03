@@ -473,6 +473,7 @@ module.exports = (robot) ->
 			# 	channel: res.message.room
 			res.send
 				attachments: [formattedCard]
+				username: res.robot.name
 		else
 			res.send "No card result found for \"" + res.match[1] + "\"."
 
