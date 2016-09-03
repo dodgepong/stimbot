@@ -467,10 +467,11 @@ module.exports = (robot) ->
 		if card
 			formattedCard = formatCard(card, robot.brain.get('packs'), robot.brain.get('cycles'), robot.brain.get('types'), robot.brain.get('factions'))
 			# robot.logger.info formattedCard
-			robot.emit 'slack.attachment',
-				message: "Found card:"
-				content: formattedCard
-				channel: res.message.room
+			# robot.emit 'slack.attachment',
+			# 	message: "Found card:"
+			# 	content: formattedCard
+			# 	channel: res.message.room
+			res.send formattedCard
 		else
 			res.send "No card result found for \"" + res.match[1] + "\"."
 
