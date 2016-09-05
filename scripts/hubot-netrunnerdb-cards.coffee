@@ -223,7 +223,11 @@ ABBREVIATIONS = {
 	'ad': 'Accelerated Diagnostics',
 	'sfm': 'Shipment from Mirrormorph',
 	'sfmm': 'Shipment from Mirrormorph',
-	'sfk': 'Shipment from Kaguya'
+	'sfk': 'Shipment from Kaguya',
+	'psyfield': 'Psychic Field',
+	'psy field': 'Psychic Field',
+	'psifield': 'Psychic Field',
+	'psi field': 'Psychic Field'
 }
 
 DISPLAY_CYCLES = [ 2, 4, 6, 8, 10, 11 ]
