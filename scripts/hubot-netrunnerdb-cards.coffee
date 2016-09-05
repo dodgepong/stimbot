@@ -388,37 +388,39 @@ compareCards = (card1, card2) ->
 		return 0
 
 cardMatches = (card, cond) ->
-	return false if cond.key == 'g' && typeof(card.advancementcost) == 'undefined'
-	return false if cond.key == 'v' && typeof(card.agendapoints) == 'undefined'
+	return false if cond.key == 'p' && typeof(card.strength) == 'undefined'
+	return false if cond.key == 'o' && typeof(card.cost) == 'undefined'
+	return false if cond.key == 'n' && typeof(card.faction_cost) == 'undefined'
+	return false if cond.key == 'y' && typeof(card.quantity) == 'undefined'
+	return false if cond.key == 'g' && typeof(card.advancement_cost) == 'undefined'
+	return false if cond.key == 'v' && typeof(card.agenda_points) == 'undefined'
 
 	switch cond.op
 		when ":", "="
 			switch cond.key
-				when "e" then return cond.value in [card.setname.toLowerCase(), card.set_code]
-				when "t" then return cond.value in [card.type_code]
-				when "s" then return cond.value in card.subtype_code.split(" - ")
-				when "f" then return cond.value in [card.faction_code, card.faction_letter]
+				when "e" then return card.pack_code == cond.value
+				when "t" then return card.type_code == cond.value
+				when "s" then return card.keywords && cond.value in card.keywords.toLowerCase().split(" - ")
+				when "f" then return card.faction_code.substr(0, cond.value.length) == cond.value
 				when "x" then return card.text && ~(card.text.toLowerCase().indexOf(cond.value))
-				when "p" then return card.strength == parseInt(cond.value)
-				when "o" then return card.cost == parseInt(cond.value)
-				when "n" then return card.factioncost == parseInt(cond.value)
-				when "d" then return cond.value in [card.side_code, card.side_code.charAt(0)]
-				when "c" then return card.cyclenumber == parseInt(cond.value) || card.cycle_code == cond.value
+				when "d" then return cond.value == card.side_code.substr(0, cond.value.length)
 				when "a" then return card.flavor && ~(card.flavor.toLowerCase().indexOf(cond.value))
 				when "i" then return card.illustrator && ~(card.illustrator.toLowerCase().indexOf(cond.value))
 				when "u" then return !card.uniqueness == !parseInt(cond.value)
+				when "p" then return card.strength == parseInt(cond.value)
+				when "o" then return card.cost == parseInt(cond.value)
+				when "n" then return card.faction_cost == parseInt(cond.value)
 				when "y" then return card.quantity == parseInt(cond.value)
-				when "g" then return card.advancementcost == parseInt(cond.value)
-				when "v" then return card.agendapoints == parseInt(cond.value)
+				when "g" then return card.advancement_cost == parseInt(cond.value)
+				when "v" then return card.agenda_points == parseInt(cond.value)
 		when "<"
 			switch cond.key
 				when "p" then return card.strength < parseInt(cond.value)
 				when "o" then return card.cost < parseInt(cond.value)
-				when "n" then return card.factioncost < parseInt(cond.value)
-				when "c" then return card.cyclenumber < parseInt(cond.value)
+				when "n" then return card.faction_cost < parseInt(cond.value)
 				when "y" then return card.quantity < parseInt(cond.value)
-				when "g" then return card.advancementcost < parseInt(cond.value)
-				when "v" then return card.agendapoints < parseInt(cond.value)
+				when "g" then return card.advancement_cost < parseInt(cond.value)
+				when "v" then return card.agenda_points < parseInt(cond.value)
 		when ">" then return !cardMatches(card, { key: cond.key, op: "<", value: parseInt(cond.value) + 1 })
 		when "!" then	return !cardMatches(card, { key: cond.key, op: ":", value: cond.value })
 	true
@@ -560,9 +562,9 @@ module.exports = (robot) ->
 
 	robot.hear /^!find (.*)/, (res) ->
 		conditions = []
-		for part in res.match[1].toLowerCase().match(/(([etsfxpondcaiuygv])([:=<>!])([-\w]+|\".+?\"))+/g)
-			if out = part.match(/([etsfxpondcaiuygv])([:=<>!])(.+)/)
-				if out[2] in ":=!".split("") || out[1] in "poncygv".split("")
+		for part in res.match[1].toLowerCase().match(/(([etsfxpondaiuygv])([:=<>!])([-\w]+|\".+?\"))+/g)
+			if out = part.match(/([etsfxpondaiuygv])([:=<>!])(.+)/)
+				if out[2] in ":=!".split("") || out[1] in "ponygv".split("")
 					conditions.push({ key: out[1], op: out[2], value: out[3].replace(/\"/g, "") })
 
 		return res.send("Sorry, I didn't understand :(") if !conditions || conditions.length < 1
