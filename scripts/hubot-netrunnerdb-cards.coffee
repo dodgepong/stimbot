@@ -507,6 +507,7 @@ module.exports = (robot) ->
 			formattedCard = formatCard(card, robot.brain.get('packs'), robot.brain.get('cycles'), robot.brain.get('types'), robot.brain.get('factions'), robot.brain.get('mwl'))
 			robot.logger.info formattedCard
 			res.send
+				as_user: true
 				attachments: [formattedCard]
 				username: res.robot.name
 		else
