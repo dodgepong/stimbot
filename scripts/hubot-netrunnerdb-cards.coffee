@@ -228,7 +228,11 @@ ABBREVIATIONS = {
 	'psy field': 'Psychic Field',
 	'psifield': 'Psychic Field',
 	'psi field': 'Psychic Field',
-	'mvt': 'Mumbad Virtual Tour'
+	'mvt': 'Mumbad Virtual Tour',
+	'eff comm': 'Efficiency Committee',
+	'eff com': 'Efficiency Committee',
+	'effcomm': 'Efficiency Committee',
+	'effcom': 'Efficiency Committee'
 }
 
 DISPLAY_CYCLES = [ 2, 4, 6, 8, 10, 11 ]
