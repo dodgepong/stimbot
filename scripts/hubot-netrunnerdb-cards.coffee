@@ -236,7 +236,9 @@ ABBREVIATIONS = {
 	'eff comm': 'Efficiency Committee',
 	'eff com': 'Efficiency Committee',
 	'effcomm': 'Efficiency Committee',
-	'effcom': 'Efficiency Committee'
+	'effcom': 'Efficiency Committee',
+	'd1en': 'Memstrips',
+	'dien': 'Memstrips'
 }
 
 DISPLAY_CYCLES = [ 2, 4, 6, 8, 10, 11 ]
