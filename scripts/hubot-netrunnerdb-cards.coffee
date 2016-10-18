@@ -209,10 +209,13 @@ ABBREVIATIONS = {
 	'vape': 'Deuces Wild',
 	'fair1': 'Fairchild 1.0',
 	'fc1': 'Fairchild 1.0',
+	'fc 1': 'Fairchild 1.0',
 	'fair2': 'Fairchild 2.0',
 	'fc2': 'Fairchild 2.0',
+	'fc 2': 'Fairchild 2.0',
 	'fair3': 'Fairchild 3.0',
 	'fc3': 'Fairchild 3.0',
+	'fc 3': 'Fairchild 3.0',
 	'psk': 'Rumor Mill',
 	'khantract': 'Temüjin Contract',
 	'tc': 'Temüjin Contract',
@@ -238,7 +241,8 @@ ABBREVIATIONS = {
 	'effcomm': 'Efficiency Committee',
 	'effcom': 'Efficiency Committee',
 	'd1en': 'Memstrips',
-	'dien': 'Memstrips'
+	'dien': 'Memstrips',
+	'ber': 'Bioroid Efficiency Research'
 }
 
 DISPLAY_CYCLES = [ 2, 4, 6, 8, 10, 11 ]
