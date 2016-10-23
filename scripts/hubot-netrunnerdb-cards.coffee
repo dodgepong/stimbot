@@ -223,7 +223,7 @@ ABBREVIATIONS = {
 	'clippit': 'Paperclip',
 	'crouton': 'Curtain Wall',
 	'bon': 'Weyland: Builder of Nations',
-	'aot': 'Haas-Bioroid: Archtects of Tomorrow',
+	'aot': 'Archtects of Tomorrow',
 	'pu': 'Jinteki: Potential Unleashed',
 	'smoke': 'Ele "Smoke" Scovak',
 	'bl': 'Biotic Labor',
