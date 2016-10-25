@@ -242,7 +242,8 @@ ABBREVIATIONS = {
 	'effcom': 'Efficiency Committee',
 	'd1en': 'Memstrips',
 	'dien': 'Memstrips',
-	'ber': 'Bioroid Efficiency Research'
+	'ber': 'Bioroid Efficiency Research',
+	'ci fund': 'C.I. Fund'
 }
 
 DISPLAY_CYCLES = [ 2, 4, 6, 8, 10, 11 ]
