@@ -468,6 +468,15 @@ lookupCard = (query, cards) ->
 	else
 		return false
 
+createNRDBSearchLink = (conditions) ->
+	start = "https://netrunnerdb.com/find/?q="
+	cond_array = []
+	for cond in conditions
+		cond.op = ":" if cond.op == "="
+		cond_array.push (cond.key + cond.op + cond.value)
+	return start + cond_array.join "+"
+
+
 module.exports = (robot) ->
 	robot.http("https://netrunnerdb.com/api/2.0/public/cards")
 		.get() (err, res, body) ->
@@ -599,7 +608,7 @@ module.exports = (robot) ->
 
 		total = results.length
 		if total > 10
-			res.send("Found #{results[0..9].join(", ")} and #{total - 10} more")
+			res.send("Found #{results[0..9].join(", ")} and <" + createNRDBSearchLink(conditions) + "|#{total - 10} more>")
 		else if total < 1
 			res.send("Couldn't find anything :|")
 		else
