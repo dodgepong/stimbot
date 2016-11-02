@@ -579,8 +579,8 @@ module.exports = (robot) ->
 
 	robot.hear /^!find (.*)/, (res) ->
 		conditions = []
-		for part in res.match[1].toLowerCase().match(/(([etsfxpondaiuygv])([:=<>!])([-\w]+|\".+?\"))+/g)
-			if out = part.match(/([etsfxpondaiuygv])([:=<>!])(.+)/)
+		for part in res.match[1].toLowerCase().match(/(([etsfxpondaiuygvc])([:=<>!])([-\w]+|\".+?\"))+/g)
+			if out = part.match(/([etsfxpondaiuygvc])([:=<>!])(.+)/)
 				if out[2] in ":=!".split("") || out[1] in "ponygv".split("")
 					conditions.push({ key: out[1], op: out[2], value: out[3].replace(/\"/g, "") })
 
