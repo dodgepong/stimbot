@@ -16,7 +16,7 @@ module.exports = (robot) ->
 				known_streams = {}
 			new_streams = {}
 			robot.http(url)
-				.header('Accept', 'application/json')
+				.header('Accept', 'application/vnd.twitchtv.v5+json')
 				.header('Client-ID', process.env.TWITCH_CLIENT_ID)
 				.get() (err, res, body) ->
 					if err
