@@ -403,7 +403,7 @@ compareCards = (card1, card2) ->
 	else
 		return 0
 
-cardMatches = (card, cond) ->
+cardMatches = (card, cond, packs, cycles) ->
 	return false if cond.key == 'p' && typeof(card.strength) == 'undefined'
 	return false if cond.key == 'o' && typeof(card.cost) == 'undefined'
 	return false if cond.key == 'n' && typeof(card.faction_cost) == 'undefined'
@@ -429,6 +429,7 @@ cardMatches = (card, cond) ->
 				when "y" then return card.quantity == parseInt(cond.value)
 				when "g" then return card.advancement_cost == parseInt(cond.value)
 				when "v" then return card.agenda_points == parseInt(cond.value)
+				when "c" then return cycles[packs[card.pack_code].cycle_code].position == parseInt(cond.value)
 		when "<"
 			switch cond.key
 				when "p" then return card.strength < parseInt(cond.value)
@@ -437,8 +438,9 @@ cardMatches = (card, cond) ->
 				when "y" then return card.quantity < parseInt(cond.value)
 				when "g" then return card.advancement_cost < parseInt(cond.value)
 				when "v" then return card.agenda_points < parseInt(cond.value)
-		when ">" then return !cardMatches(card, { key: cond.key, op: "<", value: parseInt(cond.value) + 1 })
-		when "!" then	return !cardMatches(card, { key: cond.key, op: ":", value: cond.value })
+				when "c" then return cycles[packs[card.pack_code].cycle_code].position < parseInt(cond.value)
+		when ">" then return !cardMatches(card, { key: cond.key, op: "<", value: parseInt(cond.value) + 1 }, packs, cycles)
+		when "!" then	return !cardMatches(card, { key: cond.key, op: ":", value: cond.value }, packs, cycles)
 	true
 
 lookupCard = (query, cards) ->
@@ -465,6 +467,15 @@ lookupCard = (query, cards) ->
 		return filteredResults[0].item
 	else
 		return false
+
+createNRDBSearchLink = (conditions) ->
+	start = "https://netrunnerdb.com/find/?q="
+	cond_array = []
+	for cond in conditions
+		cond.op = ":" if cond.op == "="
+		cond_array.push (cond.key + cond.op + cond.value)
+	return start + cond_array.join "+"
+
 
 module.exports = (robot) ->
 	robot.http("https://netrunnerdb.com/api/2.0/public/cards")
@@ -579,23 +590,25 @@ module.exports = (robot) ->
 
 	robot.hear /^!find (.*)/, (res) ->
 		conditions = []
-		for part in res.match[1].toLowerCase().match(/(([etsfxpondaiuygv])([:=<>!])([-\w]+|\".+?\"))+/g)
-			if out = part.match(/([etsfxpondaiuygv])([:=<>!])(.+)/)
-				if out[2] in ":=!".split("") || out[1] in "ponygv".split("")
+		for part in res.match[1].toLowerCase().match(/(([etsfxpondaiuygvc])([:=<>!])([-\w]+|\".+?\"))+/g)
+			if out = part.match(/([etsfxpondaiuygvc])([:=<>!])(.+)/)
+				if out[2] in ":=!".split("") || out[1] in "ponygvc".split("")
 					conditions.push({ key: out[1], op: out[2], value: out[3].replace(/\"/g, "") })
 
 		return res.send("Sorry, I didn't understand :(") if !conditions || conditions.length < 1
 
 		results = []
+		packs = robot.brain.get('packs')
+		cycles = robot.brain.get('cycles')
 		for card in robot.brain.get('cards')
 			valid = true
 			for cond in conditions
-				valid = valid && cardMatches(card, cond)
+				valid = valid && cardMatches(card, cond, packs, cycles)
 			results.push(card.title) if valid
 
 		total = results.length
 		if total > 10
-			res.send("Found #{results[0..9].join(", ")} and #{total - 10} more")
+			res.send("Found #{results[0..9].join(", ")} and <" + createNRDBSearchLink(conditions) + "|#{total - 10} more>")
 		else if total < 1
 			res.send("Couldn't find anything :|")
 		else
