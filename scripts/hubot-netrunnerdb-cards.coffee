@@ -243,7 +243,8 @@ ABBREVIATIONS = {
 	'd1en': 'Memstrips',
 	'dien': 'Memstrips',
 	'ber': 'Bioroid Efficiency Research',
-	'ci fund': 'C.I. Fund'
+	'ci fund': 'C.I. Fund',
+	'vlc': 'Violet Level Clearance'
 }
 
 DISPLAY_CYCLES = [ 2, 4, 6, 8, 10, 11 ]
