@@ -60,6 +60,7 @@ module.exports = (robot) ->
 				plural = command + "s"
 				if num_live_streams is 1
 					plural = command
-				msg.send "#{Object.keys(streams).length} #{plural} live right now:"
+				message = "#{Object.keys(streams).length} #{plural} live right now:"
 				for stream, title of streams
-					msg.send "#{title} - http://twitch.tv/#{stream}"
+					message += "\n#{title} - http://twitch.tv/#{stream}"
+				msg.send message
