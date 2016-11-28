@@ -57,7 +57,7 @@ ABBREVIATIONS = {
 	'pancakes': 'Adjusted Chronotype',
 	'dlr': 'Data Leak Reversal',
 	'bn': 'Breaking News',
-	'rp': 'Replicating Perfection',
+	'rp': 'Replicating Perftion',
 	'neh': 'Near-Earth Hub',
 	'pe': 'Perfecting Evolution',
 	'white tree': 'Replicating Perfection',
@@ -240,11 +240,13 @@ ABBREVIATIONS = {
 	'eff com': 'Efficiency Committee',
 	'effcomm': 'Efficiency Committee',
 	'effcom': 'Efficiency Committee',
+	'ec': 'Efficiency Committee',
 	'd1en': 'Memstrips',
 	'dien': 'Memstrips',
 	'ber': 'Bioroid Efficiency Research',
 	'ci fund': 'C.I. Fund',
-	'vlc': 'Violet Level Clearance'
+	'vlc': 'Violet Level Clearance',
+	'pv': 'Project Vitruvius'
 }
 
 DISPLAY_CYCLES = [ 2, 4, 6, 8, 10, 11 ]
