@@ -249,7 +249,8 @@ ABBREVIATIONS = {
 	'pv': 'Project Vitruvius',
 	'sac con': 'Sacrificial Construct',
 	'saccon': 'Sacrificial Construct',
-	'sc': 'Sacrificial Construct'
+	'sc': 'Sacrificial Construct',
+	'willow': "Will-o'-the-Wisp"
 }
 
 DISPLAY_CYCLES = [ 2, 4, 6, 8, 10, 11 ]
