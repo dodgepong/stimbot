@@ -246,7 +246,10 @@ ABBREVIATIONS = {
 	'ber': 'Bioroid Efficiency Research',
 	'ci fund': 'C.I. Fund',
 	'vlc': 'Violet Level Clearance',
-	'pv': 'Project Vitruvius'
+	'pv': 'Project Vitruvius',
+	'sac con': 'Sacrificial Construct',
+	'saccon': 'Sacrificial Construct',
+	'sc': 'Sacrificial Construct'
 }
 
 DISPLAY_CYCLES = [ 2, 4, 6, 8, 10, 11 ]
