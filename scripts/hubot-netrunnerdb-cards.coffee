@@ -255,7 +255,9 @@ ABBREVIATIONS = {
 	'sac con': 'Sacrificial Construct',
 	'saccon': 'Sacrificial Construct',
 	'sc': 'Sacrificial Construct',
-	'willow': "Will-o'-the-Wisp"
+	'willow': "Will-o'-the-Wisp",
+	'fihp': 'Friends in High Places',
+	'otl': 'On the Lam'
 }
 
 DISPLAY_CYCLES = [ 2, 4, 6, 8, 10, 11 ]
