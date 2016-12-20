@@ -44,7 +44,7 @@ module.exports = (robot) ->
 	else
 		robot.logger.info "Disabling Twitch Notifier"
 
-	robot.hear /!(stream|dream)(s)?/i, (msg) ->
+	robot.hear /!(stream|dream|meme)(s)?/i, (msg) ->
 		command = msg.match[1]
 		if process.env.ENABLE_TWITCH_NOTIFIER isnt 'true'
 			msg.send "The Twitch Notifier bot is offline right now. You can see all live Android: Netrunner streams here: https://www.twitch.tv/directory/game/Android%3A%20Netrunner"
@@ -52,15 +52,19 @@ module.exports = (robot) ->
 			streams = robot.brain.get('streams')
 			if !streams?
 				streams = {}
-
+			live = "live"
+			if command == "meme"
+				live = "dank"
 			num_live_streams = Object.keys(streams).length
 			if num_live_streams is 0
-				msg.send "No #{command}s are live right now. :("
+				msg.send "No #{command}s are #{live} right now. :("
 			else
 				plural = command + "s"
+				are = "are"
 				if num_live_streams is 1
 					plural = command
-				message = "#{Object.keys(streams).length} #{plural} live right now:"
+					are = "is"
+				message = "#{Object.keys(streams).length} #{plural} #{are} #{live} right now:"
 				for stream, title of streams
 					message += "\n#{title} - http://twitch.tv/#{stream}"
 				msg.send message
