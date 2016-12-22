@@ -543,6 +543,7 @@ module.exports = (robot) ->
 	robot.hear /\[\[([^\]]+)\]\]/, (res) ->
 		query = res.match[1].replace /^\s+|\s+$/g, ""
 		card = lookupCard(query, robot.brain.get('cards'))
+		robot.logger.info "Searching NRDB for card #{query} (from #{res.message.user.name} in #{res.message.room})"
 
 		if card
 			formattedCard = formatCard(card, robot.brain.get('packs'), robot.brain.get('cycles'), robot.brain.get('types'), robot.brain.get('factions'), robot.brain.get('mwl'))
@@ -557,6 +558,7 @@ module.exports = (robot) ->
 	robot.hear /{{([^}]+)}}/, (res) ->
 		query = res.match[1].replace /^\s+|\s+$/g, ""
 		card = lookupCard(query, robot.brain.get('cards'))
+		robot.logger.info "Searching NRDB for card image #{query} (from #{res.message.user.name} in #{res.message.room})"
 
 		if card
 			res.send robot.brain.get('imageUrlTemplate').replace /\{code\}/, card.code
