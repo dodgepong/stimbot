@@ -256,8 +256,13 @@ ABBREVIATIONS = {
 	'saccon': 'Sacrificial Construct',
 	'sc': 'Sacrificial Construct',
 	'willow': "Will-o'-the-Wisp",
+	'will o': "Will-o'-the-Wisp",
 	'fihp': 'Friends in High Places',
-	'otl': 'On the Lam'
+	'otl': 'On the Lam',
+	'sifr': 'Ṣifr',
+	'piot': 'Peace in Our Time',
+	'sna': 'Sensor Net Activation',
+	'sunya', 'Sūnya'
 }
 
 DISPLAY_CYCLES = [ 2, 4, 6, 8, 10, 11 ]
