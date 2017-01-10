@@ -265,7 +265,7 @@ ABBREVIATIONS = {
 	'sunya', 'Sūnya'
 }
 
-DISPLAY_CYCLES = [ 2, 4, 6, 8, 10, 11 ]
+DISPLAY_CYCLES = [ 2, 4, 6, 8, 10, 11, 12 ]
 
 formatCard = (card, packs, cycles, types, factions, mwl) ->
 	title = card.title
