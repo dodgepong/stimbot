@@ -262,7 +262,8 @@ ABBREVIATIONS = {
 	'sifr': 'Ṣifr',
 	'piot': 'Peace in Our Time',
 	'sna': 'Sensor Net Activation',
-	'sunya', 'Sūnya'
+	'sunya', 'Sūnya',
+	'barney': 'Bryan Stinson'
 }
 
 DISPLAY_CYCLES = [ 2, 4, 6, 8, 10, 11, 12 ]
