@@ -263,7 +263,9 @@ ABBREVIATIONS = {
 	'piot': 'Peace in Our Time',
 	'sna': 'Sensor Net Activation',
 	'sunya', 'Sūnya',
-	'barney': 'Bryan Stinson'
+	'barney': 'Bryan Stinson',
+	'hat': 'Hellion Alpha Test',
+	'hbt': 'Hellion Beta Test'
 }
 
 DISPLAY_CYCLES = [ 2, 4, 6, 8, 10, 11, 12 ]
