@@ -257,6 +257,9 @@ ABBREVIATIONS = {
 	'sc': 'Sacrificial Construct',
 	'willow': "Will-o'-the-Wisp",
 	'will o': "Will-o'-the-Wisp",
+	'willo': "Will-o'-the-Wisp",
+	'will-o': "Will-o'-the-Wisp",
+	'wotw': "Will-o'-the-Wisp",
 	'fihp': 'Friends in High Places',
 	'otl': 'On the Lam',
 	'sifr': 'Ṣifr',
@@ -265,7 +268,8 @@ ABBREVIATIONS = {
 	'sunya', 'Sūnya',
 	'barney': 'Bryan Stinson',
 	'hat': 'Hellion Alpha Test',
-	'hbt': 'Hellion Beta Test'
+	'hbt': 'Hellion Beta Test',
+	'csm': 'Clone Suffrage Movement'
 }
 
 DISPLAY_CYCLES = [ 2, 4, 6, 8, 10, 11, 12 ]
