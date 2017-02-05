@@ -77,7 +77,8 @@ module.exports = (robot) ->
 				msg.send "There are no known upcoming products for Android: Netrunner (or the notifier is not working). :("
 			else
 				message = "Upcoming Android: Netrunner products:"
-				for title, product of products
+				ordered_products = products.sort((a, b) -> return b.order_index - a.order_index)
+				for title, product of ordered_products
 					message += "\n• #{title} (#{product.collection}) - #{product.name}"
 					if product.expected_by? and product.expected_by is not ""
 						message += "- Expected by #{Date.parse(product.expected_by).toLocaleDateString('en-US', date_options)}"
