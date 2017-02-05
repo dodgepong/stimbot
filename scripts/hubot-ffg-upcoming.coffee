@@ -17,6 +17,7 @@ module.exports = (robot) ->
 			upcoming_products = robot.brain.get('upcoming_products')
 			if !upcoming_products?
 				upcoming_products = {}
+			updated_products = {}
 			robot.http(url)
 				.header('Accept', 'application/json')
 				.get() (err, res, body) ->
@@ -31,6 +32,7 @@ module.exports = (robot) ->
 						update_channel = false
 						update_message = "Detected new changes to FFG Upcoming page for Android: Netrunner:"
 						for new_product in response.results
+							updated_products[new_product.product] = new_product
 							if new_product.product not of upcoming_products
 								update_message += "\n* New product added! \"#{new_product.product}\" (#{new_product.name}) - <http://www.fantasyflightgames.com#{new_product.product_url}|More Info>"
 								update_channel = true
@@ -55,7 +57,7 @@ module.exports = (robot) ->
 							robot.messageRoom process.env.FFG_UPCOMING_CHECKER_ROOM, update_message
 
 						# overwrite previous data with new data of all currently-live streams
-						robot.brain.set 'upcoming_products', response.results
+						robot.brain.set 'upcoming_products', updated_products
 		, REFRESH_FREQUENCY
 	else
 		robot.logger.info "Disabling FG Upcoming Checker"
