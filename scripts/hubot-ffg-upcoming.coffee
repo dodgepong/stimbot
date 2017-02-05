@@ -7,7 +7,7 @@
 REFRESH_FREQUENCY = 60000 # 1 min
 
 products_match = (product1, product2) ->
-	return product1.expected_by == product2.expected_by and product1.last_updated == product2.last_updated and product1.name == product2.name and product1.price == product2.price
+	return product1.expected_by == product2.expected_by and product1.name == product2.name and product1.price == product2.price
 
 date_options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
 
