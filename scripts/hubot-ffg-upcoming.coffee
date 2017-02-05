@@ -9,6 +9,8 @@ REFRESH_FREQUENCY = 60000 # 1 min
 products_match = (product1, product2) ->
 	return product1.expected_by == product2.expected_by and product1.last_updated == product2.last_updated and product1.name == product2.name and product1.price == product2.price
 
+date_options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
+
 module.exports = (robot) ->
 	if process.env.ENABLE_UPCOMING_CHECKER is 'true'
 		robot.logger.info "Enabling FFG Upcoming Checker"
@@ -44,7 +46,7 @@ module.exports = (robot) ->
 								if old_product.name is not new_product.name
 									changes.push "Status changed to #{new_product.name}"
 								if old_product.expected_by is not new_product.expected_by
-									changes.push "Publish date changed to #{Date.parse(new_product.expected_by).toLocaleDateString()}"
+									changes.push "Publish date changed to #{Date.parse(new_product.expected_by).toLocaleDateString('en-US', date_options)}"
 								if old_product.price is not new_product.price
 									changes.push "Price changed to $#{new_product.price}"
 								update_message += "\n* #{new_product.product} updated: #{changes.join(', ')}"
@@ -77,6 +79,6 @@ module.exports = (robot) ->
 				message = "Upcoming Android: Netrunner products:"
 				for title, product of products
 					message += "\n* #{title} (#{product.collection}) - #{product.name}"
-					if product.expected_by?
-						message += "- Expected by #{Date.parse(product.expected_by).toLocaleDateString()}"
+					if product.expected_by? and product.expected_by is not ""
+						message += "- Expected by #{Date.parse(product.expected_by).toLocaleDateString('en-US', date_options)}"
 				msg.send message
