@@ -32,11 +32,11 @@ module.exports = (robot) ->
 					response = JSON.parse(body)
 					if response?.results
 						update_channel = false
-						update_message = "Detected new changes to FFG Upcoming page for Android: Netrunner:"
+						update_message = ":alarm: Detected new changes to FFG Upcoming page for Android: Netrunner:"
 						for new_product in response.results
 							updated_products[new_product.product] = new_product
 							if new_product.product not of upcoming_products
-								update_message += "\n* New product added! \"#{new_product.product}\" (#{new_product.name}) - <http://www.fantasyflightgames.com#{new_product.product_url}|More Info>"
+								update_message += "\n• New product added! \"#{new_product.product}\" (#{new_product.name}) - <http://www.fantasyflightgames.com#{new_product.product_url}|More Info>"
 								update_channel = true
 								continue
 
@@ -49,7 +49,7 @@ module.exports = (robot) ->
 									changes.push "Publish date changed to #{Date.parse(new_product.expected_by).toLocaleDateString('en-US', date_options)}"
 								if old_product.price is not new_product.price
 									changes.push "Price changed to $#{new_product.price}"
-								update_message += "\n* #{new_product.product} updated: #{changes.join(', ')}"
+								update_message += "\n• #{new_product.product} updated: #{changes.join(', ')}"
 								update_channel = true
 								continue
 
@@ -62,7 +62,7 @@ module.exports = (robot) ->
 						robot.brain.set 'upcoming_products', updated_products
 		, REFRESH_FREQUENCY
 	else
-		robot.logger.info "Disabling FG Upcoming Checker"
+		robot.logger.info "Disabling FFG Upcoming Checker"
 
 	robot.hear /!upcoming?/i, (msg) ->
 		command = msg.match[1]
@@ -73,12 +73,12 @@ module.exports = (robot) ->
 			if !products?
 				products = {}
 			num_products = Object.keys(products).length
-			if products is 0
-				msg.send "There are no known upcoming products for Android: Netrunner. :("
+			if num_products is 0
+				msg.send "There are no known upcoming products for Android: Netrunner (or the notifier is not working). :("
 			else
 				message = "Upcoming Android: Netrunner products:"
 				for title, product of products
-					message += "\n* #{title} (#{product.collection}) - #{product.name}"
+					message += "\n• #{title} (#{product.collection}) - #{product.name}"
 					if product.expected_by? and product.expected_by is not ""
 						message += "- Expected by #{Date.parse(product.expected_by).toLocaleDateString('en-US', date_options)}"
 				msg.send message
