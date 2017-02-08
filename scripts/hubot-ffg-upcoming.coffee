@@ -4,7 +4,7 @@
 # Commands:
 #	!upcoming - Displays a list of all upcoming Netrunner products.
 
-REFRESH_FREQUENCY = 60000 # 1 min
+REFRESH_FREQUENCY = 300000 # 5 min
 
 products_match = (product1, product2) ->
 	return product1.expected_by == product2.expected_by and product1.name == product2.name and product1.price == product2.price
@@ -19,7 +19,6 @@ module.exports = (robot) ->
 			upcoming_products = robot.brain.get('upcoming_products')
 			if !upcoming_products?
 				upcoming_products = {}
-			updated_products = {}
 			robot.http(url)
 				.header('Accept', 'application/json')
 				.get() (err, res, body) ->
@@ -31,7 +30,10 @@ module.exports = (robot) ->
 						return
 					response = JSON.parse(body)
 					if response?.results
+						if response.results.length == 0
+							robot.logger.info "ZERO products found in API!"
 						update_channel = false
+						updated_products = {}
 						update_message = ":alarm: Detected new changes to FFG Upcoming page for Android: Netrunner:"
 						for new_product in response.results
 							updated_products[new_product.product] = new_product
