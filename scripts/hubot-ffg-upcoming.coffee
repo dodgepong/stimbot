@@ -9,6 +9,13 @@ REFRESH_FREQUENCY = 300000 # 5 min
 products_match = (product1, product2) ->
 	return product1.expected_by == product2.expected_by and product1.name == product2.name and product1.price == product2.price
 
+sort_products = (product1, product2) ->
+	if product1.order_index > product2.order_index
+		return -1
+	if product1.order_index < product2.order_index
+		return 1
+	return 0
+
 date_options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
 
 module.exports = (robot) ->
@@ -45,11 +52,11 @@ module.exports = (robot) ->
 							old_product = upcoming_products[new_product.product]
 							if not products_match(old_product, new_product)
 								changes = []
-								if old_product.name is not new_product.name
+								if old_product.name != new_product.name
 									changes.push "Status changed to #{new_product.name}"
-								if old_product.expected_by is not new_product.expected_by
+								if old_product.expected_by != new_product.expected_by
 									changes.push "Publish date changed to #{Date.parse(new_product.expected_by).toLocaleDateString('en-US', date_options)}"
-								if old_product.price is not new_product.price
+								if old_product.price != new_product.price
 									changes.push "Price changed to $#{new_product.price}"
 								update_message += "\n• #{new_product.product} updated: #{changes.join(', ')}"
 								update_channel = true
@@ -81,6 +88,6 @@ module.exports = (robot) ->
 				message = "Upcoming Android: Netrunner products:"
 				for title, product of products
 					message += "\n• #{title} (#{product.collection}) - #{product.name}"
-					if product.expected_by? and product.expected_by is not ""
+					if product.expected_by is not "" and product.expected_by != null
 						message += "- Expected by #{Date.parse(product.expected_by).toLocaleDateString('en-US', date_options)}"
 				msg.send message
