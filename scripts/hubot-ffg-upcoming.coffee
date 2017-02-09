@@ -16,7 +16,7 @@ sort_products = (product1, product2) ->
 		return 1
 	return 0
 
-date_options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
+date_options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' }
 
 module.exports = (robot) ->
 	if process.env.ENABLE_UPCOMING_CHECKER is 'true'
@@ -55,7 +55,7 @@ module.exports = (robot) ->
 								if old_product.name != new_product.name
 									changes.push "Status changed to #{new_product.name}"
 								if old_product.expected_by != new_product.expected_by
-									changes.push "Publish date changed to #{Date.parse(new_product.expected_by).toLocaleDateString('en-US', date_options)}"
+									changes.push "Publish date changed to #{(new Date(new_product.expected_by)).toLocaleDateString('en-US', date_options)}"
 								if old_product.price != new_product.price
 									changes.push "Price changed to $#{new_product.price}"
 								update_message += "\n• #{new_product.product} updated: #{changes.join(', ')}"
@@ -86,8 +86,11 @@ module.exports = (robot) ->
 				msg.send "There are no known upcoming products for Android: Netrunner (or the notifier is not working). :("
 			else
 				message = "Upcoming Android: Netrunner products:"
-				for title, product of products
-					message += "\n• #{title} (#{product.collection}) - #{product.name}"
-					if product.expected_by is not "" and product.expected_by != null
-						message += "- Expected by #{Date.parse(product.expected_by).toLocaleDateString('en-US', date_options)}"
+				items = Object.keys(products).map((key) ->
+					return products[key]
+				)
+				for product in items
+					message += "\n• #{product.product} (#{product.collection}) - #{product.name}"
+					if product.expected_by != "" and product.expected_by != null
+						message += " - Expected by #{(new Date(product.expected_by)).toLocaleDateString('en-US', date_options)}"
 				msg.send message
