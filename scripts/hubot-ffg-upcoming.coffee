@@ -89,6 +89,7 @@ module.exports = (robot) ->
 				items = Object.keys(products).map((key) ->
 					return products[key]
 				)
+				items.sort(sort_products)
 				for product in items
 					message += "\n• #{product.product} (#{product.collection}) - #{product.name}"
 					if product.expected_by != "" and product.expected_by != null
