@@ -1,6 +1,6 @@
 {
   "name": "stimbot",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "author": "Ben Torell <dodgepong@gmail.com>",
   "description": "A helpful android for the Stimhack Slack channel",
@@ -18,7 +18,7 @@
     "hubot-rules": "^0.1.1",
     "hubot-scripts": "^2.16.2",
     "hubot-shipit": "^0.2.0",
-    "hubot-slack": "^4.0.1",
+    "hubot-slack": "^4.3.3",
     "time": "^0.11.4"
   },
   "engines": {
