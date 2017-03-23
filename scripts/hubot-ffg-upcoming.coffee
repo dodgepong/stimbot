@@ -54,7 +54,7 @@ module.exports = (robot) ->
 								changes = []
 								if old_product.name != new_product.name
 									changes.push "Status changed to #{new_product.name}"
-								if old_product.expected_by != new_product.expected_by
+								if old_product.expected_by != new_product.expected_by and new_product.expected_by != ''
 									changes.push "Publish date changed to #{(new Date(new_product.expected_by)).toLocaleDateString('en-US', date_options)}"
 								if old_product.price != new_product.price
 									changes.push "Price changed to $#{new_product.price}"
