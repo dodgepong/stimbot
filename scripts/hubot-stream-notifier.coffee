@@ -59,41 +59,39 @@ module.exports = (robot) ->
 		robot.logger.info "Enabling YouTube Notifier"
 		setInterval () ->
 			for youtube_channel in YOUTUBE_LIVE_CHANNELS
-				# Coffee Script uses a global variable for the for loop, which is bad with async calls
-				# Injecting some raw JS here to use a local variable instead
-				`let local_yt_channel = youtube_channel`
-				url = "https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=" + local_yt_channel + "&eventType=live&type=video&key=" + process.env.YOUTUBE_API_KEY
-				robot.http(url)
-					.get() (err, res, body) ->
-						if err
-							robot.logger.error 'Error retrieving stream list from YouTube'
-							return
-						if res.statusCode isnt 200 and res.statusCode isnt 304
-							robot.logger.error "Received bad status code #{res.statusCode} while trying to retrieve stream list from YouTube"
-							return
-						response = JSON.parse(body)
-						known_streams = robot.brain.get('youtube-streams')
-						if !known_streams?
-							known_streams = {}
-						if response?.items and response.items.length > 0
-							# since we're getting one channel at a time, assume there is only one live stream at a time
-							stream = response.items[0]
-							if response.items.length > 1
-								robot.logger.info 'Stream listing for YouTube channel ' + local_yt_channel + ' had more than 1 search result. Using first...'
+				do (youtube_channel) ->
+					url = "https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=" + youtube_channel + "&eventType=live&type=video&key=" + process.env.YOUTUBE_API_KEY
+					robot.http(url)
+						.get() (err, res, body) ->
+							if err
+								robot.logger.error 'Error retrieving stream list from YouTube'
+								return
+							if res.statusCode isnt 200 and res.statusCode isnt 304
+								robot.logger.error "Received bad status code #{res.statusCode} while trying to retrieve stream list from YouTube"
+								return
+							response = JSON.parse(body)
+							known_streams = robot.brain.get('youtube-streams')
+							if !known_streams?
+								known_streams = {}
+							if response?.items and response.items.length > 0
+								# since we're getting one channel at a time, assume there is only one live stream at a time
+								stream = response.items[0]
+								if response.items.length > 1
+									robot.logger.info 'Stream listing for YouTube channel ' + youtube_channel + ' had more than 1 search result. Using first...'
 
-							# if the channel isn't in our known list of live streams, notify the channel of it
-							if local_yt_channel not of known_streams
-								robot.logger.info "Notifying of new live channel #{stream.snippet.channelTitle}"
-								robot.messageRoom process.env.STREAM_NOTIFIER_ROOM, "#{stream.snippet.channelTitle} just went live on YouTube with the title \"#{stream.snippet.title}\" - https://gaming.youtube.com/watch?v=#{stream.id.videoId}"
+								# if the channel isn't in our known list of live streams, notify the channel of it
+								if youtube_channel not of known_streams
+									robot.logger.info "Notifying of new live channel #{stream.snippet.channelTitle}"
+									robot.messageRoom process.env.STREAM_NOTIFIER_ROOM, "#{stream.snippet.channelTitle} just went live on YouTube with the title \"#{stream.snippet.title}\" - https://gaming.youtube.com/watch?v=#{stream.id.videoId}"
 
-							# add stream to new brain data
-							known_streams[local_yt_channel] = { channelTitle: stream.snippet.channelTitle, streamTitle: stream.snippet.title, videoId: stream.id.videoId }
-						else if known_streams[local_yt_channel]?
-							robot.logger.info 'YouTube channel ' + local_yt_channel + ' no longer live, deleting...'
-							delete known_streams[local_yt_channel]
+								# add stream to new brain data
+								known_streams[youtube_channel] = { channelTitle: stream.snippet.channelTitle, streamTitle: stream.snippet.title, videoId: stream.id.videoId }
+							else if known_streams[youtube_channel]?
+								robot.logger.info 'YouTube channel ' + youtube_channel + ' no longer live, deleting...'
+								delete known_streams[youtube_channel]
 
-						# overwrite previous data with new data of all currently-live streams
-						robot.brain.set 'youtube-streams', known_streams
+							# overwrite previous data with new data of all currently-live streams
+							robot.brain.set 'youtube-streams', known_streams
 		, YOUTUBE_REFRESH_FREQUENCY
 	else
 		robot.logger.info "Disabling YouTube Notifier"
