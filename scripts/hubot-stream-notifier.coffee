@@ -96,7 +96,7 @@ module.exports = (robot) ->
 	else
 		robot.logger.info "Disabling YouTube Notifier"
 
-	robot.hear /!(stream|dream|meme|scream|cream|creme|crème|beam|steam|scheme|team)(s)?/i, (msg) ->
+	robot.hear /!(stream|dream|meme|scream|cream|creme|crème|beam|steam|scheme|team|theme|bream|seam|gleam)(s)?/i, (msg) ->
 		command = msg.match[1]
 		if process.env.ENABLE_TWITCH_NOTIFIER isnt 'true' and process.env.ENABLE_YOUTUBE_NOTIFIER isnt 'true'
 			msg.send "The Stream Notifier bot is offline right now. You can see all live Android: Netrunner Twitch streams here: https://www.twitch.tv/directory/game/Android%3A%20Netrunner"
@@ -112,6 +112,10 @@ module.exports = (robot) ->
 				live = "dank"
 			if command == "beam"
 				live = "charging"
+			if command == "theme"
+				live = "developing"
+			if command == "scheme"
+				live = "plotting"
 			num_live_streams = Object.keys(twitch_streams).length + Object.keys(youtube_streams).length
 			if num_live_streams is 0
 				msg.send "No #{command}s are #{live} right now. :("
