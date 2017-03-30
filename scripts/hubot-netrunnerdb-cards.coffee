@@ -270,7 +270,8 @@ ABBREVIATIONS = {
 	'hat': 'Hellion Alpha Test',
 	'hbt': 'Hellion Beta Test',
 	'csm': 'Clone Suffrage Movement',
-	'mogo': 'Mother Goddess'
+	'mogo': 'Mother Goddess',
+	'uwc': 'Underworld Contacts'
 }
 
 DISPLAY_CYCLES = [ 2, 4, 6, 8, 10, 11, 12 ]
