@@ -79,7 +79,7 @@ imageMe = (msg, query, animated, faces, cb) ->
           msg.send "Encountered an error :( #{err}"
           return
         if res.statusCode is 403
-          msg.send "Daily image quota exceeded, using Bing search."
+          msg.send "Google Image API quota exceeded, using Bing search."
           bingImageSearch(msg, query, animated, faces, cb)
           return
         if res.statusCode isnt 200
@@ -148,10 +148,14 @@ bingImageSearch = (msg, query, animated, faces, cb) ->
     .header("Authorization", "Basic #{encoded_key}")
     .get() (err, res, body) ->
       if err
-        if res.statusCode is 403
-          msg.send "Monthly Bing image quota exceeded. Please wait until tomorrow to search for more images."
-        else
-          msg.send "Encountered an error :( #{err}"
+        msg.send "Encountered an error :( #{err}"
+        return
+      if res.statusCode is 403
+        msg.send "Bing Image API quota exceeded, too. That's actually impressive. Your reward is waiting another hour or so before you can search for more images."
+        bingImageSearch(msg, query, animated, faces, cb)
+        return
+      if res.statusCode isnt 200
+        msg.send "Bad HTTP response :( #{res.statusCode}"
         return
       response = JSON.parse(body)
       if response?.d && response.d.results
