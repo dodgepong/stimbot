@@ -152,7 +152,6 @@ bingImageSearch = (msg, query, animated, faces, cb) ->
         return
       if res.statusCode is 403
         msg.send "Bing Image API quota exceeded, too. That's actually impressive. Your reward is waiting another hour or so before you can search for more images."
-        bingImageSearch(msg, query, animated, faces, cb)
         return
       if res.statusCode isnt 200
         msg.send "Bad HTTP response :( #{res.statusCode}"
