@@ -582,6 +582,8 @@ module.exports = (robot) ->
 	robot.hear /^!jank\s?(runner|corp)?$/i, (res) ->
 		side = res.match[1]
 		cards = robot.brain.get('cards')
+		packs = robot.brain.get('packs')
+		cycles = robot.brain.get('cycles')
 
 		if !side?
 			randomside = Math.floor(Math.random() * 2)
@@ -596,10 +598,10 @@ module.exports = (robot) ->
 			return card.side_code == side
 		)
 		identities = sidecards.filter((card) ->
-			return card.type_code == "identity" && card.cyclenumber != 0
+			return card.type_code == "identity" && cycles[packs[card.pack_code].cycle_code].position != 0
 		)
 		sideNonIDCards = sidecards.filter((card) ->
-			return card.type_code != "identity" && card.cyclenumber != 0
+			return card.type_code != "identity" && cycles[packs[card.pack_code].cycle_code].position != 0
 		)
 
 		randomIdentity = Math.floor(Math.random() * identities.length)
@@ -613,7 +615,7 @@ module.exports = (robot) ->
 				randomCard = {}
 				while true
 					randomCard = sideNonIDCards[Math.floor(Math.random() * sideNonIDCards.length)]
-					break if randomCard.type_code != "agenda" || (randomCard.type_code == "agenda" && (randomCard.faction_code == identityCard.faction_code || randomCard.faction_code == "neutral"))
+					break if (randomCard.type_code != "agenda" || (randomCard.type_code == "agenda" && (randomCard.faction_code == identityCard.faction_code || randomCard.faction_code == "neutral"))) && (identityCard.code != "03002" || (identityCard.code == "03002" && randomCard.faction_code != "jinteki"))
 				cardString += " + " + randomCard.title
 
 		res.send cardString
