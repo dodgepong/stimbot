@@ -51,10 +51,16 @@ module.exports = (robot) ->
 imageMe = (msg, query, animated, faces, cb) ->
   cb = animated if typeof animated == 'function'
   cb = faces if typeof faces == 'function'
+  if not googleImageSearch(msg, query, animated, faces, cb, process.env.HUBOT_GOOGLE_CSE_KEY)
+    # super hack to get 100 extra searches per day shhhh
+    if not googleImageSearch(msg, query, animated, faces, cb, process.env.HUBOT_GOOGLE_CSE_KEY_BACKUP)
+      msg.send "Daily Google API usage exceeded. Sorry :("
+
+googleImageSearch = (msg, query, animated, faces, cb, apiKey) ->
   googleCseId = process.env.HUBOT_GOOGLE_CSE_ID
   if googleCseId
     # Using Google Custom Search API
-    googleApiKey = process.env.HUBOT_GOOGLE_CSE_KEY
+    googleApiKey = apiKey
     if !googleApiKey
       msg.robot.logger.error "Missing environment variable HUBOT_GOOGLE_CSE_KEY"
       msg.send "Missing server environment variable HUBOT_GOOGLE_CSE_KEY."
@@ -77,18 +83,17 @@ imageMe = (msg, query, animated, faces, cb) ->
       .get() (err, res, body) ->
         if err
           msg.send "Encountered an error :( #{err}"
-          return
+          return false
         if res.statusCode is 403
-          msg.send "Google Image API quota exceeded, using Bing search."
-          bingImageSearch(msg, query, animated, faces, cb)
-          return
+          return false
         if res.statusCode isnt 200
           msg.send "Bad HTTP response :( #{res.statusCode}"
-          return
+          return false
         response = JSON.parse(body)
         if response?.items
           image = msg.random response.items
           cb ensureResult(image.link, animated)
+          return true
         else
           msg.send "Oops. I had trouble searching '#{query}'. Try later."
           ((error) ->
@@ -96,8 +101,9 @@ imageMe = (msg, query, animated, faces, cb) ->
             msg.robot.logger
               .error "(see #{error.extendedHelp})" if error.extendedHelp
           ) error for error in response.error.errors if response.error?.errors
+          return false
   else
-    bingImageSearch(msg, query, animated, faces,cb)
+    return false
 
 deprecatedImage = (msg, query, animated, faces, cb) ->
   # Using deprecated Google image search API
