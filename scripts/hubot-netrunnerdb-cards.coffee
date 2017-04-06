@@ -271,7 +271,13 @@ ABBREVIATIONS = {
 	'hbt': 'Hellion Beta Test',
 	'csm': 'Clone Suffrage Movement',
 	'mogo': 'Mother Goddess',
-	'uwc': 'Underworld Contacts'
+	'uwc': 'Underworld Contacts',
+	':dien:': 'Memstrips',
+	'o2': 'O₂ Shortage',
+	':damon:': 'O₂ Shortage',
+	':lukas:': 'Astroscript Pilot Program',
+	':mtgdan:': 'Deuces Wild',
+	':spags:': 'Troll'
 }
 
 DISPLAY_CYCLES = [ 2, 4, 6, 8, 10, 11, 12 ]
