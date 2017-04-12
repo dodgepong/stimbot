@@ -16,6 +16,22 @@ sort_products = (product1, product2) ->
 		return 1
 	return 0
 
+select_emoji = (order_index) ->
+	if order_index == 10
+		return ":aththeprinter:"
+	if order_index == 20
+		return ":ontheboat:"
+	if order_index == 30
+		return ":shippingnow:"
+	if order_index == 5
+		return ":awaitingreprint:"
+	if order_index == 0
+		return ":indevelopment:"
+	if order_index == 40
+		return ":instoresnow:"
+	return ""
+	
+
 date_options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' }
 
 module.exports = (robot) ->
@@ -91,7 +107,7 @@ module.exports = (robot) ->
 				)
 				items.sort(sort_products)
 				for product in items
-					message += "\n• #{product.product} (#{product.collection}) - #{product.name}"
+					message += "\n• #{select_emoji(product.order_index)} #{product.product} (#{product.collection}) - #{product.name}"
 					if product.expected_by != "" and product.expected_by != null
 						message += " - Expected by #{(new Date(product.expected_by)).toLocaleDateString('en-US', date_options)}"
 				msg.send message
