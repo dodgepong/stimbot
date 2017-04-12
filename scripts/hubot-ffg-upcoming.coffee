@@ -18,7 +18,7 @@ sort_products = (product1, product2) ->
 
 select_emoji = (order_index) ->
 	if order_index == 10
-		return ":athetheprinter:"
+		return ":attheprinter:"
 	if order_index == 20
 		return ":ontheboat:"
 	if order_index == 30
