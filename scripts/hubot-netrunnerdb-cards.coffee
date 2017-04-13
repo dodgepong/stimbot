@@ -277,7 +277,8 @@ ABBREVIATIONS = {
 	':damon:': 'O₂ Shortage',
 	':lukas:': 'Astroscript Pilot Program',
 	':mtgdan:': 'Deuces Wild',
-	':spags:': 'Troll'
+	':spags:': 'Troll',
+	'deuces mild': 'Build Script'
 }
 
 DISPLAY_CYCLES = [ 2, 4, 6, 8, 10, 11, 12 ]
