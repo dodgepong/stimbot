@@ -18,10 +18,10 @@
     "hubot-rules": "^0.1.1",
     "hubot-scripts": "^2.16.2",
     "hubot-shipit": "^0.2.0",
-    "hubot-slack": "^4.3.3",
+    "hubot-slack": "^4.3.4",
     "time": "^0.11.4"
   },
   "engines": {
-    "node": "0.10.x"
+    "node": "6.10.2"
   }
 }
