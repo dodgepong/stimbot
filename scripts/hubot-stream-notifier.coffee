@@ -17,6 +17,25 @@ YOUTUBE_LIVE_CHANNELS = [
 	"UCk3Ylq2jwldNGynR7HLoFbA"  # VTTV
 ]
 
+EXCLUDED_TERMS = [
+	"Destiny",
+	"Conquest",
+	"L5R",
+	"Legend of the Five Rings",
+	"Legend of the 5 Rings",
+	"Imperial Assault",
+	"X-wing",
+	"Xwing",
+	"X wing",
+	"Armada",
+	"Star Wars",
+	"Magic",
+	"MTG",
+	"Arkham",
+	"LOTR",
+	"Lord of the Rings"
+]
+
 module.exports = (robot) ->
 	if process.env.ENABLE_TWITCH_NOTIFIER is 'true'
 		robot.logger.info "Enabling Twitch Notifier"
@@ -44,7 +63,8 @@ module.exports = (robot) ->
 							# include game sanity check, sometimes the Twitch API is dumb and returns all streams regardless of game
 							if stream.channel.name not of known_streams and stream.channel.game is 'Android: Netrunner'
 								robot.logger.info "Notifying of new live channel #{stream.channel.name}"
-								robot.messageRoom process.env.STREAM_NOTIFIER_ROOM, "#{stream.channel.name} just went live playing Android: Netrunner on Twitch with the title \"#{stream.channel.status}\" - https://twitch.tv/#{stream.channel.name}"
+								for room in process.env.STREAM_NOTIFIER_ROOMS.split(',')
+									robot.messageRoom room, "#{stream.channel.name} just went live playing Android: Netrunner on Twitch with the title \"#{stream.channel.status}\" - https://twitch.tv/#{stream.channel.name}"
 
 							# add stream to new brain data
 							new_streams[stream.channel.name] = stream.channel.status
@@ -59,6 +79,7 @@ module.exports = (robot) ->
 		robot.logger.info "Enabling YouTube Notifier"
 		setInterval () ->
 			for youtube_channel in YOUTUBE_LIVE_CHANNELS
+				# use do() to keep youtube_channel local
 				do (youtube_channel) ->
 					url = "https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=" + youtube_channel + "&eventType=live&type=video&key=" + process.env.YOUTUBE_API_KEY
 					robot.http(url)
@@ -79,13 +100,23 @@ module.exports = (robot) ->
 								if response.items.length > 1
 									robot.logger.info 'Stream listing for YouTube channel ' + youtube_channel + ' had more than 1 search result. Using first...'
 
-								# if the channel isn't in our known list of live streams, notify the channel of it
-								if youtube_channel not of known_streams
-									robot.logger.info "Notifying of new live channel #{stream.snippet.channelTitle}"
-									robot.messageRoom process.env.STREAM_NOTIFIER_ROOM, "#{stream.snippet.channelTitle} just went live on YouTube with the title \"#{stream.snippet.title}\" - https://gaming.youtube.com/watch?v=#{stream.id.videoId}"
+								let contains_excluded_term = false
+								for term in EXCLUDED_TERMS
+									termRegex = new RegExp(term, "i")
+									if stream.snippet.title.match termRegex
+										contains_excluded_term = true
 
-								# add stream to new brain data
-								known_streams[youtube_channel] = { channelTitle: stream.snippet.channelTitle, streamTitle: stream.snippet.title, videoId: stream.id.videoId }
+								# if the channel isn't in our known list of live streams, notify the channel of it
+								if youtube_channel not of known_streams and not contains_excluded_term
+									robot.logger.info "Notifying of new live channel #{stream.snippet.channelTitle}"
+									for room in process.env.STREAM_NOTIFIER_ROOMS.split(',')
+										robot.messageRoom room, "#{stream.snippet.channelTitle} just went live on YouTube with the title \"#{stream.snippet.title}\" - https://gaming.youtube.com/watch?v=#{stream.id.videoId}"
+
+									# add stream to new brain data
+									known_streams[youtube_channel] = { channelTitle: stream.snippet.channelTitle, streamTitle: stream.snippet.title, videoId: stream.id.videoId }
+								else if youtube_channel of known_streams and contains_excluded_term
+									robot.logger.info 'YouTube channel ' + youtube_channel + ' no longer broadcasting relevant content, deleting...'
+									delete known_streams[youtube_channel]
 							else if known_streams[youtube_channel]?
 								robot.logger.info 'YouTube channel ' + youtube_channel + ' no longer live, deleting...'
 								delete known_streams[youtube_channel]
