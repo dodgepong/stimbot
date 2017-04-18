@@ -100,7 +100,7 @@ module.exports = (robot) ->
 								if response.items.length > 1
 									robot.logger.info 'Stream listing for YouTube channel ' + youtube_channel + ' had more than 1 search result. Using first...'
 
-								let contains_excluded_term = false
+								contains_excluded_term = false
 								for term in EXCLUDED_TERMS
 									termRegex = new RegExp(term, "i")
 									if stream.snippet.title.match termRegex
