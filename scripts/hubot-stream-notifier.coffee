@@ -4,7 +4,7 @@
 # Commands:
 #	!streams - Displays a list of all currently-live Netrunner streams.
 
-TWITCH_REFRESH_FREQUENCY = 60000 # 1 min
+TWITCH_REFRESH_FREQUENCY = 120000 # 2 min (1 min would cause false positives when going offline due to caching)
 YOUTUBE_REFRESH_FREQUENCY = 300000 # 5 min
 
 YOUTUBE_LIVE_CHANNELS = [
