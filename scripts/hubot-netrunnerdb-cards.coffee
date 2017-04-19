@@ -357,7 +357,7 @@ preloadData = (robot) ->
 
 formatCard = (card, packs, cycles, types, factions, mwl, locale) ->
 	title = card.title
-	if locale is not 'en' and card._locale
+	if locale != 'en' and card._locale
 		title = card._locale[locale].title
 	if card.uniqueness
 		title = "◆ " + title
@@ -371,7 +371,7 @@ formatCard = (card, packs, cycles, types, factions, mwl, locale) ->
 
 	attachment['text'] = ''
 
-	if locale is not 'en' and card._locale
+	if locale != 'en' and card._locale
 		typeline = "*#{types[card.type_code]._locale[locale].name}*"
 		if card.keywords? and card.keywords != ''
 			typeline += ": #{card._locale[locale].keywords}"
@@ -418,7 +418,7 @@ formatCard = (card, packs, cycles, types, factions, mwl, locale) ->
 
 	attachment['text'] += typeline + "\n\n"
 	if card.text?
-		attachment['text'] += emojifyNRDBText card.text
+		attachment['text'] += emojifyNRDBText(card.text, locale)
 	else
 		attachment['text'] += ''
 
@@ -426,10 +426,10 @@ formatCard = (card, packs, cycles, types, factions, mwl, locale) ->
 
 	if faction?
 		authorname = "#{packs[card.pack_code].name}"
-		if locale is not 'en' and packs[card.pack_code]._locale
+		if locale != 'en' and packs[card.pack_code]._locale
 			authorname = "#{packs[card.pack_code]._locale[locale].name}"
 		if cycles[packs[card.pack_code].cycle_code].position in DISPLAY_CYCLES
-			if locale is not 'en' and cycles[packs[card.pack_code].cycle_code]._locale
+			if locale != 'en' and cycles[packs[card.pack_code].cycle_code]._locale
 				authorname = authorname + " / #{cycles[packs[card.pack_code].cycle_code]._locale[locale].name} #{LOCALIZATION[locale]['cycle']}"
 			else
 				authorname = authorname + " / #{cycles[packs[card.pack_code].cycle_code].name} #{LOCALIZATION[locale]['cycle']}"
@@ -583,7 +583,7 @@ lookupCard = (query, cards, locale) ->
 		return false
 	else
 		keys = ['title']
-		if locale is not 'en'
+		if locale != 'en'
 			keys.push('_locale["' + locale + '"].title')
 
 		fuseOptions =
