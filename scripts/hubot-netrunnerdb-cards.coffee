@@ -436,7 +436,10 @@ formatCard = (card, packs, cycles, types, factions, mwl, locale) ->
 			else
 				authorname = authorname + " / #{cycles[packs[card.pack_code].cycle_code].name} #{LOCALIZATION[locale]['cycle']}"
 
-		authorname = authorname + " ##{card.position} / #{faction.name}"
+		if locale != 'en' and faction._locale
+			authorname = authorname + " ##{card.position} / #{faction._locale[locale].name}"
+		else
+			authorname = authorname + " ##{card.position} / #{faction.name}"
 		influencepips = ""
 		if card.faction_cost?
 			i = card.faction_cost
@@ -510,7 +513,7 @@ emojifyNRDBText = (text) ->
 	text = text.replace /\<errata>/ig, "_"
 	text = text.replace /\<\/errata>/ig, "_"
 	trace_words = Object.keys(LOCALIZATION).map((language) -> LOCALIZATION[language]['trace']).join('|')
-	trace_regex = new RegExp("<trace>(" + trace_words + ") (\d+|X)<\/trace>", "ig")
+	trace_regex = new RegExp("<trace>(" + trace_words + ") (\\d+|X)<\/trace>", "ig")
 	text = text.replace trace_regex, (match, traceText, strength, offset, string) ->
 		traceStrength = superscriptify strength
 		return "*" + traceText + traceStrength + "*—"
