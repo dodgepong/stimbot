@@ -22,6 +22,25 @@ FACTION_ICONS = {
 	'weyland-consortium': 'https://emoji.slack-edge.com/T0AV68M8C/weyland/4b6d1be376b3cd52.png'
 }
 
+LOCALIZATION = {
+	'en': {
+		'influence': 'influence',
+		'infinite': 'Infinite',
+		'decksize': 'min deck size',
+		'strength': 'strength',
+		'cycle': 'Cycle',
+		'trace': 'trace'
+	},
+	'kr': {
+		'influence': '영향력',
+		'infinite': '무한한',
+		'decksize': '최소 덱 크기',
+		'strength': '힘',
+		'cycle': '사이클',
+		'trace': '추적'
+	}
+}
+
 # FACTIONS = {
 # 	'adam': { "name": 'Adam', "color": '#b9b23a', "icon": "Adam" },
 # 	'anarch': { "name": 'Anarch', "color": '#ff4500', "icon": "Anarch" },
@@ -283,25 +302,83 @@ ABBREVIATIONS = {
 
 DISPLAY_CYCLES = [ 2, 4, 6, 8, 10, 11, 12 ]
 
-formatCard = (card, packs, cycles, types, factions, mwl) ->
+preloadData = (robot) ->
+	locales = [ "en", "kr" ]
+	for locale in locales
+		do (locale) ->
+			robot.http("https://netrunnerdb.com/api/2.0/public/cards?_locale=" + locale)
+				.get() (err, res, body) ->
+					cardData = JSON.parse body
+					robot.brain.set 'cards-' + locale, cardData.data.sort(compareCards)
+					robot.brain.set 'imageUrlTemplate-' + locale, cardData.imageUrlTemplate
+
+			robot.http("https://netrunnerdb.com/api/2.0/public/packs?_locale=" + locale)
+				.get() (err, res, body) ->
+					packData = JSON.parse body
+					mappedPackData = {}
+					for pack in packData.data
+						mappedPackData[pack.code] = pack
+					robot.brain.set 'packs-' + locale, mappedPackData
+
+			robot.http("https://netrunnerdb.com/api/2.0/public/cycles?_locale=" + locale)
+				.get() (err, res, body) ->
+					cycleData = JSON.parse body
+					mappedCycleData = {}
+					for cycle in cycleData.data
+						mappedCycleData[cycle.code] = cycle
+					robot.brain.set 'cycles-' + locale, mappedCycleData
+
+			robot.http("https://netrunnerdb.com/api/2.0/public/types?_locale=" + locale)
+				.get() (err, res, body) ->
+					typeData = JSON.parse body
+					mappedTypeData = {}
+					for type in typeData.data
+						mappedTypeData[type.code] = type
+					robot.brain.set 'types-' + locale, mappedTypeData
+
+			robot.http("https://netrunnerdb.com/api/2.0/public/factions?_locale=" + locale)
+				.get() (err, res, body) ->
+					factionData = JSON.parse body
+					mappedFactionData = {}
+					for faction in factionData.data
+						mappedFactionData[faction.code] = faction
+					robot.brain.set 'factions-' + locale, mappedFactionData
+
+	robot.http("https://netrunnerdb.com/api/2.0/public/mwl")
+			.get() (err, res, body) ->
+				mwlData = JSON.parse body
+				currentMwl = {}
+				for mwl in mwlData.data
+					if mwl.active
+						currentMwl = mwl
+						break
+				robot.brain.set 'mwl', currentMwl
+
+
+formatCard = (card, packs, cycles, types, factions, mwl, locale) ->
 	title = card.title
+	if locale is not 'en' and card._locale
+		title = card._locale[locale].title
 	if card.uniqueness
 		title = "◆ " + title
 
 	attachment = {
 		'fallback': title,
 		'title': title,
-		'title_link': 'https://netrunnerdb.com/en/card/' + card.code,
+		'title_link': 'https://netrunnerdb.com/' + locale + '/card/' + card.code,
 		'mrkdwn_in': [ 'text', 'author_name' ]
 	}
 
 	attachment['text'] = ''
 
-	typeline = ''
-	if card.keywords? and card.keywords != ''
-		typeline += "*#{types[card.type_code].name}*: #{card.keywords}"
+	if locale is not 'en' and card._locale
+		typeline = "*#{types[card.type_code]._locale[locale].name}*"
+		if card.keywords? and card.keywords != ''
+			typeline += ": #{card._locale[locale].keywords}"
 	else
-		typeline += "*#{types[card.type_code].name}*"
+		typeline = "*#{types[card.type_code].name}*"
+		if card.keywords? and card.keywords != ''
+			typeline += ": #{card.keywords}"
 
 	cardCost = card.cost
 	if card.cost == null
@@ -321,21 +398,21 @@ formatCard = (card, packs, cycles, types, factions, mwl) ->
 			cardStrength = card.strength
 			if card.strength == null
 				cardStrength = 'X'
-			typeline += " _(#{cardCost}:credit:, #{cardStrength} strength"
+			typeline += " _(#{cardCost}:credit:, #{cardStrength} #{LOCALIZATION[locale]['strength']}"
 			if card.trash_cost?
 				typeline += ", #{card.trash_cost}:trash:"
 			typeline += ")_"
 		when 'identity'
 			if card.side_code == 'runner'
-				typeline += " _(#{card.base_link}:baselink:, #{card.minimum_deck_size} min deck size, #{card.influence_limit || 'Infinite'} influence)_"
+				typeline += " _(#{card.base_link}:baselink:, #{card.minimum_deck_size} #{LOCALIZATION[locale]['decksize']}, #{card.influence_limit || LOCALIZATION[locale]['infinite']} #{LOCALIZATION[locale]['influence']})_"
 			else if card.side_code == 'corp'
-				typeline += " _(#{card.minimum_deck_size} min deck size, #{card.influence_limit || 'Infinite'} influence)_"
+				typeline += " _(#{card.minimum_deck_size} #{LOCALIZATION[locale]['decksize']}, #{card.influence_limit || LOCALIZATION[locale]['infinite']} #{LOCALIZATION[locale]['influence']})_"
 		when 'program'
 			if /Icebreaker/.test(card.keywords)
 				cardStrength = card.strength
 				if card.strength == null
 					cardStrength = 'X'
-				typeline += " _(#{cardCost}:credit:, #{card.memory_cost}:mu:, #{cardStrength} strength)_"
+				typeline += " _(#{cardCost}:credit:, #{card.memory_cost}:mu:, #{cardStrength} #{LOCALIZATION[locale]['strength']})_"
 			else
 				typeline += " _(#{cardCost}:credit:, #{card.memory_cost}:mu:)_"
 
@@ -349,8 +426,14 @@ formatCard = (card, packs, cycles, types, factions, mwl) ->
 
 	if faction?
 		authorname = "#{packs[card.pack_code].name}"
+		if locale is not 'en' and packs[card.pack_code]._locale
+			authorname = "#{packs[card.pack_code]._locale[locale].name}"
 		if cycles[packs[card.pack_code].cycle_code].position in DISPLAY_CYCLES
-			authorname = authorname + " / #{cycles[packs[card.pack_code].cycle_code].name} Cycle"
+			if locale is not 'en' and cycles[packs[card.pack_code].cycle_code]._locale
+				authorname = authorname + " / #{cycles[packs[card.pack_code].cycle_code]._locale[locale].name} #{LOCALIZATION[locale]['cycle']}"
+			else
+				authorname = authorname + " / #{cycles[packs[card.pack_code].cycle_code].name} #{LOCALIZATION[locale]['cycle']}"
+
 		authorname = authorname + " ##{card.position} / #{faction.name}"
 		influencepips = ""
 		if card.faction_cost?
@@ -395,7 +478,7 @@ superscriptify = (num) ->
 		sup = sup + superscripts[num[digit]]
 	return sup
 
-emojifyNRDBText = (text) ->
+emojifyNRDBText = (text, locale) ->
 	text = text.replace /\[Credits?\]/ig, ":credit:"
 	text = text.replace /\[Click\]/ig, ":click:"
 	text = text.replace /\[Trash\]/ig, ":trash:"
@@ -424,7 +507,9 @@ emojifyNRDBText = (text) ->
 	text = text.replace /\<\/li>/ig, "\n"
 	text = text.replace /\<errata>/ig, "_"
 	text = text.replace /\<\/errata>/ig, "_"
-	text = text.replace /<trace>(trace) (\d+|X)<\/trace>/ig, (match, traceText, strength, offset, string) ->
+	trace_words = Object.keys(LOCALIZATION).map((locale) -> LOCALIZATION[locale]['trace']).join('|')
+	trace_regex = new RegExp("<trace>(" + trace_words + ") (\d+|X)<\/trace>", "ig")
+	text = text.replace trace_regex, (match, traceText, strength, offset, string) ->
 		traceStrength = superscriptify strength
 		return "*" + traceText + traceStrength + "*—"
 
@@ -478,11 +563,15 @@ cardMatches = (card, cond, packs, cycles) ->
 		when "!" then	return !cardMatches(card, { key: cond.key, op: ":", value: cond.value }, packs, cycles)
 	true
 
-lookupCard = (query, cards) ->
+lookupCard = (query, cards, locale) ->
 	query = query.toLowerCase()
 
 	if query of ABBREVIATIONS
 		query = ABBREVIATIONS[query]
+
+	keys = ['title']
+	if locale is not 'en'
+		keys.push('_locale["' + locale + '"].title')
 
 	fuseOptions =
 		caseSensitive: false
@@ -492,14 +581,28 @@ lookupCard = (query, cards) ->
 		location: 0
 		distance: 100
 		maxPatternLength: 32
-		keys: ['title']
+		keys: keys
 
 	fuse = new Fuse cards, fuseOptions
 	results = fuse.search(query)
 
 	if results? and results.length > 0
-		filteredResults = results.filter((c) -> c.score == results[0].score).sort((c1, c2) -> c1.item.title.length - c2.item.title.length)
-		return filteredResults[0].item
+		filteredResults = results.filter((c) -> c.score == results[0].score)
+		sortedResults = []
+		if locale is 'en'
+			sortedResults = filteredResults.sort((c1, c2) -> c1.item.title.length - c2.item.title.length)
+		else
+			# favor localized results over non-localized results when showing matches
+			sortedResults = filteredResults.sort((c1, c2) ->
+				if c1.item._locale and c2.item._locale
+					return c1.item._locale[locale].title.length - c2.item._locale[locale].title.length
+				if c1.item._locale and not c2.item._locale
+					return -1
+				if c2.item._locale and not c1.item._locale
+					return 1
+				return c1.item.title.length - c2.item.title.length
+			)
+		return sortedResults[0].item
 	else
 		return false
 
@@ -513,61 +616,21 @@ createNRDBSearchLink = (conditions) ->
 
 
 module.exports = (robot) ->
-	robot.http("https://netrunnerdb.com/api/2.0/public/cards")
-		.get() (err, res, body) ->
-			cardData = JSON.parse body
-			robot.brain.set 'cards', cardData.data.sort(compareCards)
-			robot.brain.set 'imageUrlTemplate', cardData.imageUrlTemplate
-
-	robot.http("https://netrunnerdb.com/api/2.0/public/packs")
-		.get() (err, res, body) ->
-			packData = JSON.parse body
-			mappedPackData = {}
-			for pack in packData.data
-				mappedPackData[pack.code] = pack
-			robot.brain.set 'packs', mappedPackData
-
-	robot.http("https://netrunnerdb.com/api/2.0/public/cycles")
-		.get() (err, res, body) ->
-			cycleData = JSON.parse body
-			mappedCycleData = {}
-			for cycle in cycleData.data
-				mappedCycleData[cycle.code] = cycle
-			robot.brain.set 'cycles', mappedCycleData
-
-	robot.http("https://netrunnerdb.com/api/2.0/public/types")
-		.get() (err, res, body) ->
-			typeData = JSON.parse body
-			mappedTypeData = {}
-			for type in typeData.data
-				mappedTypeData[type.code] = type
-			robot.brain.set 'types', mappedTypeData
-
-	robot.http("https://netrunnerdb.com/api/2.0/public/factions")
-		.get() (err, res, body) ->
-			factionData = JSON.parse body
-			mappedFactionData = {}
-			for faction in factionData.data
-				mappedFactionData[faction.code] = faction
-			robot.brain.set 'factions', mappedFactionData
-
-	robot.http("https://netrunnerdb.com/api/2.0/public/mwl")
-		.get() (err, res, body) ->
-			mwlData = JSON.parse body
-			currentMwl = {}
-			for mwl in mwlData.data
-				if mwl.active
-					currentMwl = mwl
-					break
-			robot.brain.set 'mwl', currentMwl
+	preloadData(robot)
 
 	robot.hear /\[\[([^\]]+)\]\]/, (res) ->
 		query = res.match[1].replace /^\s+|\s+$/g, ""
-		card = lookupCard(query, robot.brain.get('cards'))
+
+		locale = "en"
+		hangul = new RegExp("[\u1100-\u11FF|\u3130-\u318F|\uA960-\uA97F|\uAC00-\uD7AF|\uD7B0-\uD7FF]");
+		if hangul.test(query)
+			locale = "kr"
+
+		card = lookupCard(query, robot.brain.get('cards-' + locale), locale)
 		robot.logger.info "Searching NRDB for card #{query} (from #{res.message.user.name} in #{res.message.room})"
 
 		if card
-			formattedCard = formatCard(card, robot.brain.get('packs'), robot.brain.get('cycles'), robot.brain.get('types'), robot.brain.get('factions'), robot.brain.get('mwl'))
+			formattedCard = formatCard(card, robot.brain.get('packs-' + locale), robot.brain.get('cycles-' + locale), robot.brain.get('types-' + locale), robot.brain.get('factions-' + locale), robot.brain.get('mwl'), locale)
 			# robot.logger.info formattedCard
 			res.send
 				as_user: true
@@ -578,11 +641,17 @@ module.exports = (robot) ->
 
 	robot.hear /{{([^}]+)}}/, (res) ->
 		query = res.match[1].replace /^\s+|\s+$/g, ""
-		card = lookupCard(query, robot.brain.get('cards'))
+
+		locale = "en"
+		hangul = new RegExp("[\u1100-\u11FF|\u3130-\u318F|\uA960-\uA97F|\uAC00-\uD7AF|\uD7B0-\uD7FF]");
+		if hangul.test(query)
+			locale = "kr"
+
+		card = lookupCard(query, robot.brain.get('cards'), locale)
 		robot.logger.info "Searching NRDB for card image #{query} (from #{res.message.user.name} in #{res.message.room})"
 
 		if card
-			res.send robot.brain.get('imageUrlTemplate').replace /\{code\}/, card.code
+			res.send robot.brain.get('imageUrlTemplate-' + locale).replace /\{code\}/, card.code
 		else
 			res.send "No card result found for \"" + res.match[1] + "\"."
 
