@@ -569,42 +569,55 @@ lookupCard = (query, cards, locale) ->
 	if query of ABBREVIATIONS
 		query = ABBREVIATIONS[query]
 
-	keys = ['title']
-	if locale is not 'en'
-		keys.push('_locale["' + locale + '"].title')
+	if locale in ["kr"]
+		# fuzzy search won't work, do naive string-matching
+		results_exact = cards.data.filter((card) -> card._locale[locale].title == query)
+		results_includes = cards.data.filter((card) -> card._locale[locale].title.includes(query))
 
-	fuseOptions =
-		caseSensitive: false
-		include: ['score']
-		shouldSort: true
-		threshold: 0.6
-		location: 0
-		distance: 100
-		maxPatternLength: 32
-		keys: keys
+		if results_exact.length > 0
+			return results_exact[0]
 
-	fuse = new Fuse cards, fuseOptions
-	results = fuse.search(query)
-
-	if results? and results.length > 0
-		filteredResults = results.filter((c) -> c.score == results[0].score)
-		sortedResults = []
-		if locale is 'en'
-			sortedResults = filteredResults.sort((c1, c2) -> c1.item.title.length - c2.item.title.length)
-		else
-			# favor localized results over non-localized results when showing matches
-			sortedResults = filteredResults.sort((c1, c2) ->
-				if c1.item._locale and c2.item._locale
-					return c1.item._locale[locale].title.length - c2.item._locale[locale].title.length
-				if c1.item._locale and not c2.item._locale
-					return -1
-				if c2.item._locale and not c1.item._locale
-					return 1
-				return c1.item.title.length - c2.item.title.length
-			)
-		return sortedResults[0].item
-	else
+		if results_includes.length > 0
+			sortedResults = results_includes.sort((c1, c2) -> c1._locale[locale].title.length - c2._locale[locale].title.length)
+			return sortedResults[0]
 		return false
+	else
+		keys = ['title']
+		if locale is not 'en'
+			keys.push('_locale["' + locale + '"].title')
+
+		fuseOptions =
+			caseSensitive: false
+			include: ['score']
+			shouldSort: true
+			threshold: 0.6
+			location: 0
+			distance: 100
+			maxPatternLength: 32
+			keys: keys
+
+		fuse = new Fuse cards, fuseOptions
+		results = fuse.search(query)
+
+		if results? and results.length > 0
+			filteredResults = results.filter((c) -> c.score == results[0].score)
+			sortedResults = []
+			if locale is 'en'
+				sortedResults = filteredResults.sort((c1, c2) -> c1.item.title.length - c2.item.title.length)
+			else
+				# favor localized results over non-localized results when showing matches
+				sortedResults = filteredResults.sort((c1, c2) ->
+					if c1.item._locale and c2.item._locale
+						return c1.item._locale[locale].title.length - c2.item._locale[locale].title.length
+					if c1.item._locale and not c2.item._locale
+						return -1
+					if c2.item._locale and not c1.item._locale
+						return 1
+					return c1.item.title.length - c2.item.title.length
+				)
+			return sortedResults[0].item
+		else
+			return false
 
 createNRDBSearchLink = (conditions) ->
 	start = "https://netrunnerdb.com/find/?q="
