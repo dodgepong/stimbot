@@ -417,8 +417,10 @@ formatCard = (card, packs, cycles, types, factions, mwl, locale) ->
 				typeline += " _(#{cardCost}:credit:, #{card.memory_cost}:mu:)_"
 
 	attachment['text'] += typeline + "\n\n"
-	if card.text?
-		attachment['text'] += emojifyNRDBText(card.text, locale)
+	if locale != 'en' && card._locale && card._locale[locale].text
+		attachment['text'] += emojifyNRDBText(card._locale[locale].text)
+	else if card.text
+		attachment['text'] += emojifyNRDBText(card.text)
 	else
 		attachment['text'] += ''
 
@@ -478,7 +480,7 @@ superscriptify = (num) ->
 		sup = sup + superscripts[num[digit]]
 	return sup
 
-emojifyNRDBText = (text, locale) ->
+emojifyNRDBText = (text) ->
 	text = text.replace /\[Credits?\]/ig, ":credit:"
 	text = text.replace /\[Click\]/ig, ":click:"
 	text = text.replace /\[Trash\]/ig, ":trash:"
