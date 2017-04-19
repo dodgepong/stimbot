@@ -379,8 +379,10 @@ formatCard = (card, packs, cycles, types, factions, mwl, locale) ->
 
 	if locale != 'en' and card._locale
 		typeline = "*#{types[card.type_code]._locale[locale].name}*"
-		if card.keywords? and card.keywords != ''
+		if card._locale[locale].keywords? and card._locale[locale].keywords != ''
 			typeline += ": #{card._locale[locale].keywords}"
+		else if card.keywords? and card.keywords != ''
+			typeline += ": #{card.keywords}"
 	else
 		typeline = "*#{types[card.type_code].name}*"
 		if card.keywords? and card.keywords != ''
