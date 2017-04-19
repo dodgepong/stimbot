@@ -628,6 +628,7 @@ module.exports = (robot) ->
 
 		card = lookupCard(query, robot.brain.get('cards-' + locale), locale)
 		robot.logger.info "Searching NRDB for card #{query} (from #{res.message.user.name} in #{res.message.room})"
+		robot.logger.info "Locale: " + locale
 
 		if card
 			formattedCard = formatCard(card, robot.brain.get('packs-' + locale), robot.brain.get('cycles-' + locale), robot.brain.get('types-' + locale), robot.brain.get('factions-' + locale), robot.brain.get('mwl'), locale)

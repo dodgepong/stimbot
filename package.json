@@ -6,7 +6,7 @@
   "description": "A helpful android for the Stimhack Slack channel",
   "dependencies": {
     "cron": "^1.1.0",
-    "fuse.js": "^1.2.2",
+    "fuse.js": "^2.6.2",
     "hubot": "^2.16.0",
     "hubot-diagnostics": "0.0.1",
     "hubot-google-translate": "^0.2.0",
