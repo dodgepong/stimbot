@@ -666,8 +666,9 @@ module.exports = (robot) ->
 		if hangul.test(query)
 			locale = "kr"
 
-		card = lookupCard(query, robot.brain.get('cards'), locale)
+		card = lookupCard(query, robot.brain.get('cards-' + locale), locale)
 		robot.logger.info "Searching NRDB for card image #{query} (from #{res.message.user.name} in #{res.message.room})"
+		robot.logger.info "Locale: " + locale
 
 		if card
 			res.send robot.brain.get('imageUrlTemplate-' + locale).replace /\{code\}/, card.code
