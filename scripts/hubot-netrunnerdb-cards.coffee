@@ -571,8 +571,8 @@ lookupCard = (query, cards, locale) ->
 
 	if locale in ["kr"]
 		# fuzzy search won't work, do naive string-matching
-		results_exact = cards.data.filter((card) -> card._locale[locale].title == query)
-		results_includes = cards.data.filter((card) -> card._locale[locale].title.includes(query))
+		results_exact = cards.filter((card) -> card._locale[locale].title == query)
+		results_includes = cards.filter((card) -> card._locale[locale].title.includes(query))
 
 		if results_exact.length > 0
 			return results_exact[0]
