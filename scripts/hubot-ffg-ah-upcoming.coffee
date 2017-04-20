@@ -59,6 +59,8 @@ module.exports = (robot) ->
 						updated_products = {}
 						update_message = ":alarm: Detected new changes to FFG Upcoming page for Arkham Horror LCG:"
 						for new_product in response.results
+							if new_product.is_reprint == false
+								continue
 							updated_products[new_product.product] = new_product
 							if new_product.product not of upcoming_products
 								update_message += "\n• New product added! \"#{new_product.product}\" (#{new_product.name})"
