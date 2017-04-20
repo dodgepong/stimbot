@@ -59,7 +59,7 @@ module.exports = (robot) ->
 						updated_products = {}
 						update_message = ":alarm: Detected new changes to FFG Upcoming page for Android: Netrunner:"
 						for new_product in response.results
-							if new_product.is_reprint == false
+							if new_product.is_reprint == true
 								continue
 							updated_products[new_product.product] = new_product
 							if new_product.product not of upcoming_products
