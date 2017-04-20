@@ -85,7 +85,7 @@ module.exports = (robot) ->
 								robot.messageRoom room, update_message
 
 						# overwrite previous data with new data of all products
-						robot.brain.set 'upcoming_products', updated_products
+						robot.brain.set 'upcoming_products_ah', updated_products
 		, REFRESH_FREQUENCY
 	else
 		robot.logger.info "Disabling FFG Arkham Horror Upcoming Checker"
