@@ -90,7 +90,7 @@ module.exports = (robot) ->
 	else
 		robot.logger.info "Disabling FFG L5R Upcoming Checker"
 
-	robot.hear /!(l5rupcoming|upcomingl5r)?/i, (msg) ->
+	robot.hear /!(l5rupcoming|upcomingl5r)/i, (msg) ->
 		command = msg.match[1]
 		if process.env.ENABLE_L5R_UPCOMING_CHECKER isnt 'true'
 			msg.send "The FFG Upcoming bot is offline right now. You can see all upcoing FFG products here: https://www.fantasyflightgames.com/en/upcoming/"

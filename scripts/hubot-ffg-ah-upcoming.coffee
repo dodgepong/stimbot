@@ -90,7 +90,7 @@ module.exports = (robot) ->
 	else
 		robot.logger.info "Disabling FFG Arkham Horror Upcoming Checker"
 
-	robot.hear /!(arkhamupcoming|upcomingarkham)?/i, (msg) ->
+	robot.hear /!(arkhamupcoming|upcomingarkham)/i, (msg) ->
 		command = msg.match[1]
 		if process.env.ENABLE_AH_UPCOMING_CHECKER isnt 'true'
 			msg.send "The FFG Upcoming bot is offline right now. You can see all upcoing FFG products here: https://www.fantasyflightgames.com/en/upcoming/"
