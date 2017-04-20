@@ -2,7 +2,7 @@
 #   Tool for notifying a chat room of changes to the FFG Upcoming page.
 #
 # Commands:
-#	!upcoming - Displays a list of all upcoming Netrunner products.
+#	!l5rupcoming or !upcomingl5r - Displays a list of all upcoming L5R products.
 
 REFRESH_FREQUENCY = 300000 # 5 min
 
@@ -35,11 +35,11 @@ select_emoji = (order_index) ->
 date_options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' }
 
 module.exports = (robot) ->
-	if process.env.ENABLE_UPCOMING_CHECKER is 'true'
-		robot.logger.info "Enabling FFG Netrunner Upcoming Checker"
+	if process.env.ENABLE_L5R_UPCOMING_CHECKER is 'true'
+		robot.logger.info "Enabling FFG L5R Upcoming Checker"
 		setInterval () ->
-			url = 'https://ffgupcomingapi.herokuapp.com/?root_collection=Android:%20Netrunner%20The%20Card%20Game'
-			upcoming_products = robot.brain.get('upcoming_products')
+			url = 'https://ffgupcomingapi.herokuapp.com/?root_collection=Legend%20of%20the%20Five%20Rings%3A%20The%20Card%20Game'
+			upcoming_products = robot.brain.get('upcoming_products_l5r')
 			if !upcoming_products?
 				upcoming_products = {}
 			robot.http(url)
@@ -57,7 +57,7 @@ module.exports = (robot) ->
 							robot.logger.info "ZERO products found in API!"
 						update_channel = false
 						updated_products = {}
-						update_message = ":alarm: Detected new changes to FFG Upcoming page for Android: Netrunner:"
+						update_message = ":alarm: Detected new changes to FFG Upcoming page for L5R:"
 						for new_product in response.results
 							updated_products[new_product.product] = new_product
 							if new_product.product not of upcoming_products
@@ -80,29 +80,29 @@ module.exports = (robot) ->
 
 						# Notify channel of any changes
 						if update_channel
-							robot.logger.info "Notifying of new FFG Netrunner product updates"
-							for room in process.env.FFG_UPCOMING_CHECKER_ROOMS.split(',')
+							robot.logger.info "Notifying of new FFG L5R product updates"
+							for room in process.env.FFG_L5R_UPCOMING_CHECKER_ROOMS.split(',')
 								robot.messageRoom room, update_message
 
 						# overwrite previous data with new data of all products
 						robot.brain.set 'upcoming_products', updated_products
 		, REFRESH_FREQUENCY
 	else
-		robot.logger.info "Disabling FFG Netrunner Upcoming Checker"
+		robot.logger.info "Disabling FFG L5R Upcoming Checker"
 
-	robot.hear /!(upcoming|netrunnerupcoming|upcomingnetrunner|anrupcoming|upcominganr|adnupcoming|upcomingadn)?/i, (msg) ->
+	robot.hear /!(l5rupcoming|upcomingl5r)?/i, (msg) ->
 		command = msg.match[1]
-		if process.env.ENABLE_UPCOMING_CHECKER isnt 'true'
+		if process.env.ENABLE_L5R_UPCOMING_CHECKER isnt 'true'
 			msg.send "The FFG Upcoming bot is offline right now. You can see all upcoing FFG products here: https://www.fantasyflightgames.com/en/upcoming/"
 		else
-			products = robot.brain.get('upcoming_products')
+			products = robot.brain.get('upcoming_products_l5r')
 			if !products?
 				products = {}
 			num_products = Object.keys(products).length
 			if num_products is 0
-				msg.send "There are no known upcoming products for Android: Netrunner (or the notifier is not working). :("
+				msg.send "There are no known upcoming products for L5R (or the notifier is not working). :("
 			else
-				message = "Upcoming Android: Netrunner products:"
+				message = "Upcoming L5R products:"
 				items = Object.keys(products).map((key) ->
 					return products[key]
 				)

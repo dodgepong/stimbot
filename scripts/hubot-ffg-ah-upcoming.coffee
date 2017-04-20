@@ -2,7 +2,7 @@
 #   Tool for notifying a chat room of changes to the FFG Upcoming page.
 #
 # Commands:
-#	!upcoming - Displays a list of all upcoming Netrunner products.
+#	!upcomingarkham or !arkhamupcoming - Displays a list of all upcoming Arkham Horror LCG products.
 
 REFRESH_FREQUENCY = 300000 # 5 min
 
@@ -35,11 +35,11 @@ select_emoji = (order_index) ->
 date_options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' }
 
 module.exports = (robot) ->
-	if process.env.ENABLE_UPCOMING_CHECKER is 'true'
-		robot.logger.info "Enabling FFG Netrunner Upcoming Checker"
+	if process.env.ENABLE_AH_UPCOMING_CHECKER is 'true'
+		robot.logger.info "Enabling FFG Arkham Horror Upcoming Checker"
 		setInterval () ->
-			url = 'https://ffgupcomingapi.herokuapp.com/?root_collection=Android:%20Netrunner%20The%20Card%20Game'
-			upcoming_products = robot.brain.get('upcoming_products')
+			url = 'https://ffgupcomingapi.herokuapp.com/?root_collection=Arkham%20Horror%3A%20The%20Card%20Game'
+			upcoming_products = robot.brain.get('upcoming_products_ah')
 			if !upcoming_products?
 				upcoming_products = {}
 			robot.http(url)
@@ -57,7 +57,7 @@ module.exports = (robot) ->
 							robot.logger.info "ZERO products found in API!"
 						update_channel = false
 						updated_products = {}
-						update_message = ":alarm: Detected new changes to FFG Upcoming page for Android: Netrunner:"
+						update_message = ":alarm: Detected new changes to FFG Upcoming page for Arkham Horror LCG:"
 						for new_product in response.results
 							updated_products[new_product.product] = new_product
 							if new_product.product not of upcoming_products
@@ -80,29 +80,29 @@ module.exports = (robot) ->
 
 						# Notify channel of any changes
 						if update_channel
-							robot.logger.info "Notifying of new FFG Netrunner product updates"
-							for room in process.env.FFG_UPCOMING_CHECKER_ROOMS.split(',')
+							robot.logger.info "Notifying of new FFG AH product updates"
+							for room in process.env.FFG_AH_UPCOMING_CHECKER_ROOMS.split(',')
 								robot.messageRoom room, update_message
 
 						# overwrite previous data with new data of all products
 						robot.brain.set 'upcoming_products', updated_products
 		, REFRESH_FREQUENCY
 	else
-		robot.logger.info "Disabling FFG Netrunner Upcoming Checker"
+		robot.logger.info "Disabling FFG Arkham Horror Upcoming Checker"
 
-	robot.hear /!(upcoming|netrunnerupcoming|upcomingnetrunner|anrupcoming|upcominganr|adnupcoming|upcomingadn)?/i, (msg) ->
+	robot.hear /!(arkhamupcoming|upcomingarkham)?/i, (msg) ->
 		command = msg.match[1]
-		if process.env.ENABLE_UPCOMING_CHECKER isnt 'true'
+		if process.env.ENABLE_AH_UPCOMING_CHECKER isnt 'true'
 			msg.send "The FFG Upcoming bot is offline right now. You can see all upcoing FFG products here: https://www.fantasyflightgames.com/en/upcoming/"
 		else
-			products = robot.brain.get('upcoming_products')
+			products = robot.brain.get('upcoming_products_ah')
 			if !products?
 				products = {}
 			num_products = Object.keys(products).length
 			if num_products is 0
-				msg.send "There are no known upcoming products for Android: Netrunner (or the notifier is not working). :("
+				msg.send "There are no known upcoming products for Arkham Horror LCG (or the notifier is not working). :("
 			else
-				message = "Upcoming Android: Netrunner products:"
+				message = "Upcoming Arkham Horror LCG products:"
 				items = Object.keys(products).map((key) ->
 					return products[key]
 				)
