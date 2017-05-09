@@ -14,7 +14,8 @@ YOUTUBE_LIVE_CHANNELS = [
 	"UCQ7hPuO4R15t0qAKnjFi-Iw", # Metropole Grid
 	"UCvPgKhNkF-axufSCv8KpxGA", # Bad Publicity
 	"UCqTSZqzsRJsXzeXWDc1YTFA", # PeachHack
-	"UCk3Ylq2jwldNGynR7HLoFbA"  # VTTV
+	"UCk3Ylq2jwldNGynR7HLoFbA", # VTTV
+	"UCjwH6sQzmrlsc43YTTTQTOA"  # Zeromus
 ]
 
 EXCLUDED_TERMS = [
@@ -33,7 +34,8 @@ EXCLUDED_TERMS = [
 	"MTG",
 	"Arkham",
 	"LOTR",
-	"Lord of the Rings"
+	"Lord of the Rings",
+	"TumbleSeed"
 ]
 
 module.exports = (robot) ->
