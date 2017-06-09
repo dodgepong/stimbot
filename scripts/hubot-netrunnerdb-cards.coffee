@@ -298,7 +298,11 @@ ABBREVIATIONS = {
 		':lukas:': 'Astroscript Pilot Program',
 		':mtgdan:': 'Deuces Wild',
 		':spags:': 'Troll',
-		'deuces mild': 'Build Script'
+		'deuces mild': 'Build Script',
+		'sau': 'Sensie Actors Union',
+		'sft': 'Successful Field Test',
+		'moon': 'Estelle Moon',
+		'uvc': 'Ultraviolet Clearance'
 	},
 	'kr': {
 		'미드시즌': '중간 개편',
