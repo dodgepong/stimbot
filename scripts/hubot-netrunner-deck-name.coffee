@@ -7,7 +7,7 @@
 
 module.exports = (robot) ->
     robot.hear /!deck\s?name/i, (msg) ->
-        robot.http("http://www.emergencyshutdown.net/api.php")
+        robot.http("http://www.emergencyshutdown.net/api/deckname")
             .get() (err, res, body) ->
                 if body
                     msg.send body
