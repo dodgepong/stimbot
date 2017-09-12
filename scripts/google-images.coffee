@@ -12,8 +12,6 @@
 # Commands:
 #   hubot image me <query> - The Original. Queries Google Images for <query> and returns a random top result.
 #   hubot animate me <query> - The same thing as `image me`, except adds a few parameters to try to return an animated GIF instead.
-#   hubot mustache me <url> - Adds a mustache to the specified URL.
-#   hubot mustache me <query> - Searches Google Images for the specified query and mustaches it.
 
 module.exports = (robot) ->
 
@@ -35,28 +33,34 @@ module.exports = (robot) ->
       imageMe msg, msg.match[1], true, (url) ->
         msg.send url
 
-  robot.respond /(?:mo?u)?sta(?:s|c)h(?:e|ify)?(?: me)? (.+)/i, (msg) ->
-    mustacheBaseUrl =
-      process.env.HUBOT_MUSTACHIFY_URL?.replace(/\/$/, '') or
-      "http://mustachify.me"
-    mustachify = "#{mustacheBaseUrl}/rand?src="
-    imagery = msg.match[1]
-
-    if imagery.match /^https?:\/\//i
-      encodedUrl = encodeURIComponent imagery
-      msg.send "#{mustachify}#{encodedUrl}"
-    else
-      imageMe msg, imagery, false, true, (url) ->
-        encodedUrl = encodeURIComponent url
-        msg.send "#{mustachify}#{encodedUrl}"
+  # robot.respond /(?:mo?u)?sta(?:s|c)h(?:e|ify)?(?: me)? (.+)/i, (msg) ->
+  #   mustacheBaseUrl =
+  #     process.env.HUBOT_MUSTACHIFY_URL?.replace(/\/$/, '') or
+  #     "http://mustachify.me"
+  #   mustachify = "#{mustacheBaseUrl}/rand?src="
+  #   imagery = msg.match[1]
+  #
+  #   if imagery.match /^https?:\/\//i
+  #     encodedUrl = encodeURIComponent imagery
+  #     msg.send "#{mustachify}#{encodedUrl}"
+  #   else
+  #     imageMe msg, imagery, false, true, (url) ->
+  #       encodedUrl = encodeURIComponent url
+  #       msg.send "#{mustachify}#{encodedUrl}"
 
 imageMe = (msg, query, animated, faces, cb) ->
   cb = animated if typeof animated == 'function'
   cb = faces if typeof faces == 'function'
+  if not googleImageSearch(msg, query, animated, faces, cb, process.env.HUBOT_GOOGLE_CSE_KEY)
+    # super hack to get 100 extra searches per day shhhh
+    if not googleImageSearch(msg, query, animated, faces, cb, process.env.HUBOT_GOOGLE_CSE_KEY_BACKUP)
+      msg.send "Daily Google API usage exceeded. Sorry :("
+
+googleImageSearch = (msg, query, animated, faces, cb, apiKey) ->
   googleCseId = process.env.HUBOT_GOOGLE_CSE_ID
   if googleCseId
     # Using Google Custom Search API
-    googleApiKey = process.env.HUBOT_GOOGLE_CSE_KEY
+    googleApiKey = apiKey
     if !googleApiKey
       msg.robot.logger.error "Missing environment variable HUBOT_GOOGLE_CSE_KEY"
       msg.send "Missing server environment variable HUBOT_GOOGLE_CSE_KEY."
@@ -65,7 +69,6 @@ imageMe = (msg, query, animated, faces, cb) ->
       q: query,
       searchType:'image',
       safe: process.env.HUBOT_GOOGLE_SAFE_SEARCH || 'high',
-      fields:'items(link)',
       cx: googleCseId,
       key: googleApiKey
     if animated is true
@@ -79,19 +82,18 @@ imageMe = (msg, query, animated, faces, cb) ->
       .query(q)
       .get() (err, res, body) ->
         if err
-          if res.statusCode is 403
-            msg.send "Daily image quota exceeded, using Bing search."
-            bingImageSearch(msg, query, animated, faces, cb)
-          else
-            msg.send "Encountered an error :( #{err}"
-          return
+          msg.send "Encountered an error :( #{err}"
+          return false
+        if res.statusCode is 403
+          return false
         if res.statusCode isnt 200
           msg.send "Bad HTTP response :( #{res.statusCode}"
-          return
+          return false
         response = JSON.parse(body)
         if response?.items
           image = msg.random response.items
           cb ensureResult(image.link, animated)
+          return true
         else
           msg.send "Oops. I had trouble searching '#{query}'. Try later."
           ((error) ->
@@ -99,8 +101,9 @@ imageMe = (msg, query, animated, faces, cb) ->
             msg.robot.logger
               .error "(see #{error.extendedHelp})" if error.extendedHelp
           ) error for error in response.error.errors if response.error?.errors
+          return false
   else
-    bingImageSearch(msg, query, animated, faces,cb)
+    return false
 
 deprecatedImage = (msg, query, animated, faces, cb) ->
   # Using deprecated Google image search API
@@ -151,10 +154,13 @@ bingImageSearch = (msg, query, animated, faces, cb) ->
     .header("Authorization", "Basic #{encoded_key}")
     .get() (err, res, body) ->
       if err
-        if res.statusCode is 403
-          msg.send "Monthly Bing image quota exceeded. Please wait until tomorrow to search for more images."
-        else
-          msg.send "Encountered an error :( #{err}"
+        msg.send "Encountered an error :( #{err}"
+        return
+      if res.statusCode is 403
+        msg.send "Bing Image API quota exceeded, too. That's actually impressive. Your reward is waiting another hour or so before you can search for more images."
+        return
+      if res.statusCode isnt 200
+        msg.send "Bad HTTP response :( #{res.statusCode}"
         return
       response = JSON.parse(body)
       if response?.d && response.d.results
