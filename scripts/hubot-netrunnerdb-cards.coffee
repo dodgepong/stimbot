@@ -694,6 +694,30 @@ module.exports = (robot) ->
 		else
 			res.send "No card result found for \"" + res.match[1] + "\"."
 
+	robot.hear /^!(rotato|:rotato:) (.+)/, (res) ->
+		query = res.match[2].replace /^\s+|\s+$/g, ""
+
+		locale = "en"
+		hangul = new RegExp("[\u1100-\u11FF|\u3130-\u318F|\uA960-\uA97F|\uAC00-\uD7AF|\uD7B0-\uD7FF]");
+		if hangul.test(query)
+			locale = "kr"
+
+		card = lookupCard(query, robot.brain.get('cards-' + locale), locale)
+		robot.logger.info "Searching NRDB for card #{query} (from #{res.message.user.name} in #{res.message.room})"
+		robot.logger.info "Locale: " + locale
+
+		if card
+			if card.code in "04041 02101 04101 02002 02102 02062 02003 04082 02004 02022 02063 02082 02043 02064 02085 02104 02006 02086 04106 02105 02046 02106 02026 02047 02048 02067 02028 02069 02010 04010 02051 04051 02070 02013 04091 02014 02112 04013 04033 02094 04093 04012 02033 02095 02115 04075 02117 02056 04096 02097 02018 04036 02118 04037 04099 02019 04117 04079 02080".split(" ")
+				res.send "\"" + card.title + "\" gets rescued by revised core set! :tada:"
+			else if card.code in "01001 01002 01006 01007 01009 01010 01012 01013 01014 01016 01018 01023 01024 01027 01031 01032 01033 01038 01041 01045 01052 01054 01055 01065 01066 01071 01073 01074 01075 01076 01079 01081 01082 01089 01092 01095 01096 01097 01099 01105".split(" ")
+				res.send "\"" + card.title + "\" is rotating from revised core set! :rip:"
+			else if card.pack_code in "wla ta ce asis hs fp om st mt tc fal dt".split(" ")
+				res.send "\"" + card.title + "\" is rotating :rip:"
+			else
+				res.send "\"" + card.title + "\" is alive and well"
+		else
+			res.send "No card result found for \"" + res.match[2] + "\"."
+
 	robot.hear /^!jank\s?(runner|corp)?$/i, (res) ->
 		side = res.match[1]
 		cards = robot.brain.get('cards')
