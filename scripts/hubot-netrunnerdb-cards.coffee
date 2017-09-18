@@ -300,9 +300,17 @@ ABBREVIATIONS = {
 		':spags:': 'Troll',
 		'deuces mild': 'Build Script',
 		'sau': 'Sensie Actors Union',
-		'sft': 'Successful Field Test',
+		'sft': 'Shipment from Tennin',
 		'moon': 'Estelle Moon',
-		'uvc': 'Ultraviolet Clearance'
+		'uvc': 'Ultraviolet Clearance',
+		'sva': 'Salvaged Vanadis Armory',
+		'bob': 'Bug Out Bag',
+		'turtle': 'Aumakua',
+		'tla': 'Threat Level Alpha',
+		'mca': 'MCA Austerity Policy',
+		'map': 'MCA Austerity Policy',
+		'nanotech': "Na'Not'K",
+		'nanotek': "Na'Not'K"
 	},
 	'kr': {
 		'미드시즌': '중간 개편',
