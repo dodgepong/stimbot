@@ -378,6 +378,19 @@ preloadData = (robot) ->
 						currentMwl = mwl
 						break
 				robot.brain.set 'mwl', currentMwl
+				restrictedCards = []
+				bannedCards = []
+				for card_code, card_mwl_info of currentMwl.cards
+					robot.http("https://netrunnerdb.com/api/2.0/public/card/" + card_code)
+						.get() (err, res, body) ->
+							card_data = JSON.parse body
+							if currentMwl.cards[card_data.data[0].code].is_restricted == 1
+								restrictedCards.push(card_data.data[0].title)
+								robot.brain.set 'restrictedCards', restrictedCards
+							if currentMwl.cards[card_data.data[0].code].deck_limit == 0
+								bannedCards.push(card_data.data[0].title)
+								robot.brain.set 'bannedCards', bannedCards
+
 
 
 formatCard = (card, packs, cycles, types, factions, mwl, locale) ->
@@ -472,10 +485,6 @@ formatCard = (card, packs, cycles, types, factions, mwl, locale) ->
 			i = card.faction_cost
 			while i--
 				influencepips += '●'
-		if card.code of mwl.cards
-			i = mwl.cards[card.code]
-			while i--
-				influencepips += '★'
 		if influencepips != ""
 			authorname = authorname + " #{influencepips}"
 
@@ -486,6 +495,10 @@ formatCard = (card, packs, cycles, types, factions, mwl, locale) ->
 
 	if card.code of mwl.cards
 		attachment['footer'] = mwl.name
+		if mwl.cards[card.code].is_restricted == 1
+			attachment['footer'] += ' Restricted'
+		if mwl.cards[card.code].deck_limit == 0
+			attachment['footer'] += ' Banned'
 
 	return attachment
 
@@ -704,9 +717,10 @@ module.exports = (robot) ->
 
 	robot.hear /^!jank\s?(runner|corp)?$/i, (res) ->
 		side = res.match[1]
-		cards = robot.brain.get('cards')
-		packs = robot.brain.get('packs')
-		cycles = robot.brain.get('cycles')
+		cards = robot.brain.get('cards-en')
+		packs = robot.brain.get('packs-en')
+		cycles = robot.brain.get('cycles-en')
+		bannedCards = robot.brain.get('bannedCards')
 
 		if !side?
 			randomside = Math.floor(Math.random() * 2)
@@ -718,13 +732,13 @@ module.exports = (robot) ->
 			side = side.toLowerCase()
 
 		sidecards = cards.filter((card) ->
-			return card.side_code == side
+			return card.side_code == side && cycles[packs[card.pack_code].cycle_code].position != 0 && !cycles[packs[card.pack_code].cycle_code].rotated && card.title not in bannedCards && packs[card.pack_code].date_release != null
 		)
 		identities = sidecards.filter((card) ->
-			return card.type_code == "identity" && cycles[packs[card.pack_code].cycle_code].position != 0
+			return card.type_code == "identity"
 		)
 		sideNonIDCards = sidecards.filter((card) ->
-			return card.type_code != "identity" && cycles[packs[card.pack_code].cycle_code].position != 0
+			return card.type_code != "identity"
 		)
 
 		randomIdentity = Math.floor(Math.random() * identities.length)
@@ -743,6 +757,20 @@ module.exports = (robot) ->
 
 		res.send cardString
 
+	robot.hear /^!mwl$/i, (res) ->
+		mwl = robot.brain.get('mwl')
+		restrictedCards = robot.brain.get('restrictedCards')
+		bannedCards = robot.brain.get('bannedCards')
+
+		message = "Current MWL: " + mwl.name + "\n"
+		message += "Restricted Cards:\n"
+		for card in restrictedCards
+			message += "● " + card + "\n"
+		message += "Banned Cards:\n"
+		for card in bannedCards
+			message += "● " + card + "\n"
+		res.send message
+
 	robot.hear /^!find (.*)/, (res) ->
 		conditions = []
 		for part in res.match[1].toLowerCase().match(/(([etsfxpondaiuygvc])([:=<>!])([-\w]+|\".+?\"))+/g)
@@ -753,9 +781,9 @@ module.exports = (robot) ->
 		return res.send("Sorry, I didn't understand :(") if !conditions || conditions.length < 1
 
 		results = []
-		packs = robot.brain.get('packs')
-		cycles = robot.brain.get('cycles')
-		for card in robot.brain.get('cards')
+		packs = robot.brain.get('packs-en')
+		cycles = robot.brain.get('cycles-en')
+		for card in robot.brain.get('cards-en')
 			valid = true
 			for cond in conditions
 				valid = valid && cardMatches(card, cond, packs, cycles)
