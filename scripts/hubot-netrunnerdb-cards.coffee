@@ -704,9 +704,9 @@ module.exports = (robot) ->
 
 	robot.hear /^!jank\s?(runner|corp)?$/i, (res) ->
 		side = res.match[1]
-		cards = robot.brain.get('cards')
-		packs = robot.brain.get('packs')
-		cycles = robot.brain.get('cycles')
+		cards = robot.brain.get('cards-en')
+		packs = robot.brain.get('packs-en')
+		cycles = robot.brain.get('cycles-en')
 
 		if !side?
 			randomside = Math.floor(Math.random() * 2)
@@ -753,9 +753,9 @@ module.exports = (robot) ->
 		return res.send("Sorry, I didn't understand :(") if !conditions || conditions.length < 1
 
 		results = []
-		packs = robot.brain.get('packs')
-		cycles = robot.brain.get('cycles')
-		for card in robot.brain.get('cards')
+		packs = robot.brain.get('packs-en')
+		cycles = robot.brain.get('cycles-en')
+		for card in robot.brain.get('cards-en')
 			valid = true
 			for cond in conditions
 				valid = valid && cardMatches(card, cond, packs, cycles)
