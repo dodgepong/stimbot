@@ -105,6 +105,7 @@ preloadData = (robot) ->
             robot.http("https://api.fiveringsdb.com/cards?_locale=" + locale)
                 .get() (err, res, body) ->
                     cardData = JSON.parse body
+                    robot.logger.info "Loaded " + cardData.records.length + " FRDB cards"
                     robot.brain.set 'cards-' + locale, cardData.records.sort(compareCards)
 
             robot.http("https://api.fiveringsdb.com/packs?_locale=" + locale)
@@ -113,6 +114,7 @@ preloadData = (robot) ->
                     mappedPackData = {}
                     for pack in packData.records
                         mappedPackData[pack.id] = pack
+                    robot.logger.info "Loaded " + packData.records.length + " FRDB packs"
                     robot.brain.set 'packs-' + locale, mappedPackData
 
             robot.http("https://api.fiveringsdb.com/cycles?_locale=" + locale)
@@ -121,12 +123,14 @@ preloadData = (robot) ->
                     mappedCycleData = {}
                     for cycle in cycleData.records
                         mappedCycleData[cycle.id] = cycle
+                    robot.logger.info "Loaded " + cycleData.records.length + " FRDB cycles"
                     robot.brain.set 'cycles-' + locale, mappedCycleData
 
             # lol i can't believe i have to do this
             robot.http("https://raw.githubusercontent.com/Alsciende/fiveringsdb-ui/master/src/i18n/translation." + locale + ".yml")
                 .get() (err, res, body) ->
                     localizations = yaml.safeLoad body
+                    robot.logger.info "Loaded FRDB localizations"
                     robot.brain.set 'localizations-' + locale, localizations
 
 
