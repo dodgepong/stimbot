@@ -129,9 +129,9 @@ preloadData = (robot) ->
             # lol i can't believe i have to do this
             robot.http("https://raw.githubusercontent.com/Alsciende/fiveringsdb-ui/master/src/i18n/translation." + locale + ".yml")
                 .get() (err, res, body) ->
-                    localizations = yaml.safeLoad body
+                    yamlLocalizations = yaml.safeLoad body
+                    robot.brain.set 'l5rlocale-' + locale, yamlLocalizations
                     robot.logger.info "Loaded FRDB localizations"
-                    robot.brain.set 'l5rlocale-' + locale, localizations
 
 
 formatCard = (card, packs, cycles, localizations, locale) ->
