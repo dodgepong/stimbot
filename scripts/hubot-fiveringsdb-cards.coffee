@@ -378,7 +378,10 @@ lookupCard = (query, cards, locale) ->
 
 
 module.exports = (robot) ->
-    preloadData(robot)
+    # delay preload to give the app time to connect to redis
+    setTimeout ( ->
+        preloadData(robot)
+    ), 1000
 
     robot.hear /\[\[l5r\|([^\]]+)\]\]|\[\[([^\]]+)\|l5r\]\]/, (res) ->
         match = ''
