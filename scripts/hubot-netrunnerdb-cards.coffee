@@ -335,6 +335,7 @@ preloadData = (robot) ->
 				.get() (err, res, body) ->
 					cardData = JSON.parse body
 					cards = cardData.data.sort(compareCards)
+					robot.logger.info "Loaded " + cardData.data.length + " NRDB cards"
 					robot.brain.set 'cards-' + locale, cards
 					robot.brain.set 'imageUrlTemplate-' + locale, cardData.imageUrlTemplate
 
@@ -357,6 +358,7 @@ preloadData = (robot) ->
 									restrictedCards.push(card.title)
 								if currentMwl.cards[card.code].deck_limit == 0
 									bannedCards.push(card.title)
+							robot.logger.info "Loaded " + mwlCards.length + " NRDB MWL cards"
 							robot.brain.set 'restrictedCards-' + locale, restrictedCards
 							robot.brain.set 'bannedCards-' + locale, bannedCards
 
@@ -366,6 +368,7 @@ preloadData = (robot) ->
 					mappedPackData = {}
 					for pack in packData.data
 						mappedPackData[pack.code] = pack
+					robot.logger.info "Loaded " + packData.data.length + " NRDB packs"
 					robot.brain.set 'packs-' + locale, mappedPackData
 
 			robot.http("https://netrunnerdb.com/api/2.0/public/cycles?_locale=" + locale)
@@ -374,6 +377,7 @@ preloadData = (robot) ->
 					mappedCycleData = {}
 					for cycle in cycleData.data
 						mappedCycleData[cycle.code] = cycle
+					robot.logger.info "Loaded " + cycleData.data.length + " NRDB cycles"
 					robot.brain.set 'cycles-' + locale, mappedCycleData
 
 			robot.http("https://netrunnerdb.com/api/2.0/public/types?_locale=" + locale)
@@ -382,6 +386,7 @@ preloadData = (robot) ->
 					mappedTypeData = {}
 					for type in typeData.data
 						mappedTypeData[type.code] = type
+					robot.logger.info "Loaded " + typeData.data.length + " NRDB types"
 					robot.brain.set 'types-' + locale, mappedTypeData
 
 			robot.http("https://netrunnerdb.com/api/2.0/public/factions?_locale=" + locale)
@@ -390,6 +395,7 @@ preloadData = (robot) ->
 					mappedFactionData = {}
 					for faction in factionData.data
 						mappedFactionData[faction.code] = faction
+					robot.logger.info "Loaded " + factionData.data.length + " NRDB factions"
 					robot.brain.set 'factions-' + locale, mappedFactionData
 
 
