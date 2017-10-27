@@ -226,11 +226,9 @@ formatCard = (card, packs, cycles, localizations, locale) ->
         authorname = authorname + " ##{card.pack_cards[0].position} / #{clan.name}"
         influencepips = ""
         if card.influence_cost?
-            influencepips += "*"
             i = card.influence_cost
             while i--
                 influencepips += '●'
-            influencepips += "*"
         if influencepips != ""
             authorname = authorname + " #{influencepips}"
 
@@ -395,7 +393,7 @@ module.exports = (robot) ->
         preloadData(robot)
     ), 1000
 
-    robot.hear /\[\[l5r\|([^\]]+)\]\]|\[\[([^\]]+)\|l5r\]\]|^!l5rcard (.+)$/, (res) ->
+    robot.hear /\[\[l5r\|([^\]]+)\]\]|\[\[([^\]]+)\|l5r\]\]|^!l5rcard (.+)$|^!l5r (.+)$/, (res) ->
         match = ''
         if res.match[1]
             match = res.match[1]
@@ -403,6 +401,8 @@ module.exports = (robot) ->
             match = res.match[2]
         else if res.match[3]
             match = res.match[3]
+        else if res.match[4]
+            match = res.match[4]
         query = match.replace /^\s+|\s+$/g, ""
 
         locale = "en"
