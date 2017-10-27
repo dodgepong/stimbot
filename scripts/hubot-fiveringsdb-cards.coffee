@@ -131,6 +131,9 @@ preloadData = (robot) ->
                 .get() (err, res, body) ->
                     localizations = yaml.safeLoad body
                     robot.logger.info "Loaded FRDB localizations"
+                    robot.logger.info err
+                    robot.logger.info res
+                    robot.logger.info body
                     robot.brain.set 'l5rlocalizations-' + locale, localizations
 
 
