@@ -106,7 +106,7 @@ preloadData = (robot) ->
                 .get() (err, res, body) ->
                     cardData = JSON.parse body
                     robot.logger.info "Loaded " + cardData.records.length + " FRDB cards"
-                    robot.brain.set 'cards-' + locale, cardData.records.sort(compareCards)
+                    robot.brain.set 'l5rcards-' + locale, cardData.records.sort(compareCards)
 
             robot.http("https://api.fiveringsdb.com/packs?_locale=" + locale)
                 .get() (err, res, body) ->
@@ -115,7 +115,7 @@ preloadData = (robot) ->
                     for pack in packData.records
                         mappedPackData[pack.id] = pack
                     robot.logger.info "Loaded " + packData.records.length + " FRDB packs"
-                    robot.brain.set 'packs-' + locale, mappedPackData
+                    robot.brain.set 'l5rpacks-' + locale, mappedPackData
 
             robot.http("https://api.fiveringsdb.com/cycles?_locale=" + locale)
                 .get() (err, res, body) ->
@@ -124,14 +124,14 @@ preloadData = (robot) ->
                     for cycle in cycleData.records
                         mappedCycleData[cycle.id] = cycle
                     robot.logger.info "Loaded " + cycleData.records.length + " FRDB cycles"
-                    robot.brain.set 'cycles-' + locale, mappedCycleData
+                    robot.brain.set 'l5rcycles-' + locale, mappedCycleData
 
             # lol i can't believe i have to do this
             robot.http("https://raw.githubusercontent.com/Alsciende/fiveringsdb-ui/master/src/i18n/translation." + locale + ".yml")
                 .get() (err, res, body) ->
                     localizations = yaml.safeLoad body
                     robot.logger.info "Loaded FRDB localizations"
-                    robot.brain.set 'localizations-' + locale, localizations
+                    robot.brain.set 'l5rlocalizations-' + locale, localizations
 
 
 formatCard = (card, packs, cycles, localizations, locale) ->
@@ -393,12 +393,12 @@ module.exports = (robot) ->
         if hangul.test(query)
             locale = "kr"
 
-        card = lookupCard(query, robot.brain.get('cards-' + locale), locale)
+        card = lookupCard(query, robot.brain.get('l5rcards-' + locale), locale)
         robot.logger.info "Searching FRDB for card #{query} (from #{res.message.user.name} in #{res.message.room})"
         robot.logger.info "Locale: " + locale
 
         if card
-            formattedCard = formatCard(card, robot.brain.get('packs-' + locale), robot.brain.get('cycles-' + locale), robot.brain.get('localizations-' + locale), locale)
+            formattedCard = formatCard(card, robot.brain.get('l5rpacks-' + locale), robot.brain.get('l5rcycles-' + locale), robot.brain.get('l5rlocalizations-' + locale), locale)
             # robot.logger.info formattedCard
             res.send
                 as_user: true
@@ -420,7 +420,7 @@ module.exports = (robot) ->
         if hangul.test(query)
             locale = "kr"
 
-        card = lookupCard(query, robot.brain.get('cards-' + locale), locale)
+        card = lookupCard(query, robot.brain.get('l5rcards-' + locale), locale)
         robot.logger.info "Searching FRDB for card image #{query} (from #{res.message.user.name} in #{res.message.room})"
         robot.logger.info "Locale: " + locale
 
@@ -431,9 +431,9 @@ module.exports = (robot) ->
 
     # robot.hear /^!jank\s?(runner|corp)?$/i, (res) ->
     #     side = res.match[1]
-    #     cards = robot.brain.get('cards')
-    #     packs = robot.brain.get('packs')
-    #     cycles = robot.brain.get('cycles')
+    #     cards = robot.brain.get('l5rcards')
+    #     packs = robot.brain.get('l5rpacks')
+    #     cycles = robot.brain.get('l5rcycles')
 
     #     if !side?
     #         randomside = Math.floor(Math.random() * 2)
@@ -480,9 +480,9 @@ module.exports = (robot) ->
     #     return res.send("Sorry, I didn't understand :(") if !conditions || conditions.length < 1
 
     #     results = []
-    #     packs = robot.brain.get('packs')
-    #     cycles = robot.brain.get('cycles')
-    #     for card in robot.brain.get('cards')
+    #     packs = robot.brain.get('l5rpacks')
+    #     cycles = robot.brain.get('l5rcycles')
+    #     for card in robot.brain.get('l5rcards')
     #         valid = true
     #         for cond in conditions
     #             valid = valid && cardMatches(card, cond, packs, cycles)
