@@ -18,7 +18,8 @@
     "hubot-scripts": "^2.16.2",
     "hubot-shipit": "^0.2.0",
     "hubot-slack": "^4.3.4",
-    "time": "^0.11.4"
+    "time": "^0.11.4",
+    "js-yaml":"^3.10.0"
   },
   "engines": {
     "node": "6.11.1"

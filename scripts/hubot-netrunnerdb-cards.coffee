@@ -677,7 +677,7 @@ createNRDBSearchLink = (conditions) ->
 module.exports = (robot) ->
 	preloadData(robot)
 
-	robot.hear /\[\[([^\]]+)\]\]/, (res) ->
+	robot.hear /\[\[([^\]\|]+)\]\]/, (res) ->
 		query = res.match[1].replace /^\s+|\s+$/g, ""
 
 		locale = "en"
@@ -697,9 +697,9 @@ module.exports = (robot) ->
 				attachments: [formattedCard]
 				username: res.robot.name
 		else
-			res.send "No card result found for \"" + res.match[1] + "\"."
+			res.send "No Netrunner card result found for \"" + res.match[1] + "\"."
 
-	robot.hear /{{([^}]+)}}/, (res) ->
+	robot.hear /{{([^}\|]+)}}/, (res) ->
 		query = res.match[1].replace /^\s+|\s+$/g, ""
 
 		locale = "en"
@@ -714,7 +714,7 @@ module.exports = (robot) ->
 		if card
 			res.send robot.brain.get('imageUrlTemplate-' + locale).replace /\{code\}/, card.code
 		else
-			res.send "No card result found for \"" + res.match[1] + "\"."
+			res.send "No Netrunner card result found for \"" + res.match[1] + "\"."
 
 	robot.hear /^!jank\s?(runner|corp)?$/i, (res) ->
 		side = res.match[1]
