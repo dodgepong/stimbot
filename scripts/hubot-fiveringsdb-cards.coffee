@@ -85,6 +85,18 @@ ABBREVIATIONS = {
         'fs': 'For Shame!',
         'rfb': 'Ready for Battle',
         'ctm': 'Cloud the Mind',
+        'gota': 'Guidance of the Ancestors',
+        ':bonzi_buddy:': 'Banzai!',
+        'utz': 'Banzai!',
+        ':utz:': 'Banzai!',
+        'fs': 'For Shame!',
+        'mf': 'Mirumoto\'s Fury',
+        'cr': 'Cavalry Reserves',
+        'sok': 'Seeker of Knowledge',
+        'dop': 'Display of Power',
+        'lg': 'Let Go',
+        'sin': 'Strength in Numbers',
+        'lpb': 'Lion\'s Pride Brawler'
     }
 }
 
@@ -184,7 +196,7 @@ formatCard = (card, packs, cycles, localizations, locale) ->
         when 'province'
             typeline += " _(#{RINGS[card.element]}, #{card.strength} #{SPECIAL_LOCALIZATION[locale]['strength']})_"
         when 'stronghold'
-            typeline += " _(#{card.fate} #{SPECIAL_LOCALIZATION[locale]['fate-income']}, #{card.honor} #{SPECIAL_LOCALIZATION[locale]['starting-honor']}, #{card.strength_bonus} #{SPECIAL_LOCALIZATION[locale]['strength-bonus']}, #{card.influence_pool} #{LOCALIZATION[locale]['influence']})_"
+            typeline += " _(#{card.fate} #{SPECIAL_LOCALIZATION[locale]['fate-income']}, #{card.honor} #{SPECIAL_LOCALIZATION[locale]['starting-honor']}, #{card.strength_bonus} #{SPECIAL_LOCALIZATION[locale]['strength-bonus']}, #{card.influence_pool} #{SPECIAL_LOCALIZATION[locale]['influence']})_"
         when 'attachment'
             typeline += " _(#{cardCost} #{SPECIAL_LOCALIZATION[locale]['fate']})_\n#{card.military_bonus} :military:, #{card.political_bonus} :political:"
 
@@ -217,7 +229,7 @@ formatCard = (card, packs, cycles, localizations, locale) ->
             influencepips += "*"
             i = card.influence_cost
             while i--
-                influencepips += '/'
+                influencepips += '●'
             influencepips += "*"
         if influencepips != ""
             authorname = authorname + " #{influencepips}"
@@ -383,12 +395,14 @@ module.exports = (robot) ->
         preloadData(robot)
     ), 1000
 
-    robot.hear /\[\[l5r\|([^\]]+)\]\]|\[\[([^\]]+)\|l5r\]\]/, (res) ->
+    robot.hear /\[\[l5r\|([^\]]+)\]\]|\[\[([^\]]+)\|l5r\]\]|^!l5rcard (.+)$/, (res) ->
         match = ''
         if res.match[1]
             match = res.match[1]
         else if res.match[2]
             match = res.match[2]
+        else if res.match[3]
+            match = res.match[3]
         query = match.replace /^\s+|\s+$/g, ""
 
         locale = "en"
