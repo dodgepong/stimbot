@@ -87,6 +87,7 @@ ABBREVIATIONS = {
         'ctm': 'Cloud the Mind',
         'gota': 'Guidance of the Ancestors',
         ':bonzi_buddy:': 'Banzai!',
+        ':banzai_buddy:': 'Banzai!',
         'utz': 'Banzai!',
         ':utz:': 'Banzai!',
         'fs': 'For Shame!',
@@ -96,7 +97,28 @@ ABBREVIATIONS = {
         'dop': 'Display of Power',
         'lg': 'Let Go',
         'sin': 'Strength in Numbers',
-        'lpb': 'Lion\'s Pride Brawler'
+        'lpb': 'Lion\'s Pride Brawler',
+        'ics': 'I Can Swim',
+        'wotc': 'Way of the Crab',
+        'wotcr': 'Way of the Crane',
+        'wotd': 'Way of the Dragon',
+        'wotl': 'Way of the Lion',
+        'wotp': 'Way of the Pheonix',
+        'wots': 'Way of the Scorpion',
+        'wotu': 'Way of the Unicorn',
+        'syg': 'Stand Your Ground',
+        'aos': 'Adept of Shadows',
+        'atw': 'Against the Waves',
+        'ktw': 'Know the World',
+        'aotw': 'Adept of the Waves',
+        'biw': 'Born in War',
+        'cif': 'Calling In Favors',
+        'goh': 'Guest of Honor',
+        'edict': 'Forged Edict',
+        'voh': 'Voice of Honor',
+        'mots': 'Master of the Spear',
+        'mdnf': 'The Mountain Does Not Fall',
+        'tmdnf': 'The Mountain Does Not Fall'
     }
 }
 
