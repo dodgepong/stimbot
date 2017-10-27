@@ -131,11 +131,11 @@ preloadData = (robot) ->
                 .get() (err, res, body) ->
                     localizations = yaml.safeLoad body
                     robot.logger.info "Loaded FRDB localizations"
-                    robot.logger.info localizations
                     robot.brain.set 'l5rlocalizations-' + locale, localizations
 
 
-formatCard = (card, packs, cycles, localizations, locale) ->
+formatCard = (card, packs, cycles, localizations, locale, robot) ->
+    robot.logger.info localizations
     title = card.name
     if locale != 'en' and card._locale
         title = card._locale[locale].title
@@ -399,7 +399,7 @@ module.exports = (robot) ->
         robot.logger.info "Locale: " + locale
 
         if card
-            formattedCard = formatCard(card, robot.brain.get('l5rpacks-' + locale), robot.brain.get('l5rcycles-' + locale), robot.brain.get('l5rlocalizations-' + locale), locale)
+            formattedCard = formatCard(card, robot.brain.get('l5rpacks-' + locale), robot.brain.get('l5rcycles-' + locale), robot.brain.get('l5rlocalizations-' + locale), locale, robot)
             # robot.logger.info formattedCard
             res.send
                 as_user: true
