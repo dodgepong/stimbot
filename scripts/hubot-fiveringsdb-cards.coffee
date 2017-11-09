@@ -65,7 +65,7 @@ SPECIAL_LOCALIZATION = {
     'en': {
         'fate': 'Fate',
         'infinite': 'Infinite',
-        'decksize': 'min deck size',
+        'deck': 'min deck size',
         'strength': 'strength',
         'strength-bonus': 'strength bonus',
         'conflict-deck': 'Conflict Deck',
@@ -233,19 +233,22 @@ formatCard = (card, packs, cycles, localizations, locale) ->
     clan = CLANS[card.clan]
 
     if clan?
-        pack_id = card.pack_cards[0].pack.id
-        cycle_id = packs[pack_id].cycle.id
-        authorname = "#{packs[pack_id].name}"
-        if locale != 'en' and packs[pack_id]._locale
-            authorname = "#{packs[pack_id]._locale[locale].name}"
-        if cycles[cycle_id].position in DISPLAY_CYCLES
-            if locale != 'en' and cycles[cycle_id]._locale
-                authorname = authorname + " / #{cycles[cycle_id]._locale[locale].name} #{SPECIAL_LOCALIZATION[locale]['cycle']}"
-            else
-                authorname = authorname + " / #{cycles[cycle_id].name} #{SPECIAL_LOCALIZATION[locale]['cycle']}"
+        if card.pack_cards.length == 0
+            authorname = "Unknown Pack"
+        else
+            pack_id = card.pack_cards[0].pack.id
+            cycle_id = packs[pack_id].cycle.id
+            authorname = "#{packs[pack_id].name}"
+            if locale != 'en' and packs[pack_id]._locale
+                authorname = "#{packs[pack_id]._locale[locale].name}"
+            if cycles[cycle_id].position in DISPLAY_CYCLES
+                if locale != 'en' and cycles[cycle_id]._locale
+                    authorname = authorname + " / #{cycles[cycle_id]._locale[locale].name} #{SPECIAL_LOCALIZATION[locale]['cycle']}"
+                else
+                    authorname = authorname + " / #{cycles[cycle_id].name} #{SPECIAL_LOCALIZATION[locale]['cycle']}"
+            authorname = authorname + " ##{card.pack_cards[0].position}"
 
-
-        authorname = authorname + " ##{card.pack_cards[0].position} / #{clan.name}"
+        authorname = authorname + " / #{clan.name}"
         influencepips = ""
         if card.influence_cost?
             i = card.influence_cost
