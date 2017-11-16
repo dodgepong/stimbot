@@ -1,11 +1,9 @@
 # Description:
-#   Tools for interacting with the NetrunnerDB API.
+#   Tools for interacting with the FiveRingsDB API.
 #
 # Commands:
-#   [[card name]] - search for a card with that name in the NetrunnerDB API
-#   {{card name}} - fetch the card image for a card
-#   !jank (corp|runner) - Choose an identity and three random cards. Break the meta!
-#   !find (e|t|s|f|x|p|o|n|d|c|a|i|u|y|g|v)(:|=|>|<|!)<query> - find cards searching by attributes
+#   !l5r card name - search for a card with that name in the FiveRingsDB API
+#   {{l5r|card name}} or {{card name|l5r}} - fetch the card image for a L5R card
 
 Fuse = require 'fuse.js'
 yaml = require 'js-yaml'
