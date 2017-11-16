@@ -767,19 +767,19 @@ module.exports = (robot) ->
 
         res.send cardString
 
-    robot.hear /^!mwl$/i, (res) ->
-        mwl = robot.brain.get('mwl-en')
-        restrictedCards = robot.brain.get('restrictedCards-en')
-        bannedCards = robot.brain.get('bannedCards-en')
+    # robot.hear /^!mwl$/i, (res) ->
+    #     mwl = robot.brain.get('mwl-en')
+    #     restrictedCards = robot.brain.get('restrictedCards-en')
+    #     bannedCards = robot.brain.get('bannedCards-en')
 
-        message = "Current MWL: " + mwl.name + "\n"
-        message += "Restricted Cards:\n"
-        for card in restrictedCards
-            message += "● " + card + "\n"
-        message += "Banned Cards:\n"
-        for card in bannedCards
-            message += "● " + card + "\n"
-        res.send message
+    #     message = "Current MWL: " + mwl.name + "\n"
+    #     message += "Restricted Cards:\n"
+    #     for card in restrictedCards
+    #         message += "● " + card + "\n"
+    #     message += "Banned Cards:\n"
+    #     for card in bannedCards
+    #         message += "● " + card + "\n"
+    #     res.send message
 
     robot.hear /^!find (.*)/, (res) ->
         conditions = []
