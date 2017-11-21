@@ -70,7 +70,9 @@ googleImageSearch = (msg, query, animated, faces, cb, apiKey) ->
       searchType:'image',
       safe: process.env.HUBOT_GOOGLE_SAFE_SEARCH || 'high',
       cx: googleCseId,
-      key: googleApiKey
+      key: googleApiKey,
+      siteSearchFilter:'e',
+      siteSearch:'deviantart.com'
     if animated is true
       q.fileType = 'gif'
       q.hq = 'animated'
