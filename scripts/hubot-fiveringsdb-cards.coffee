@@ -158,13 +158,17 @@ preloadData = (robot) ->
                     robot.logger.info "Loaded " + cycleData.records.length + " FRDB cycles"
                     robot.brain.set 'l5rcycles-' + locale, mappedCycleData
 
-            # lol i can't believe i have to do this
-            robot.http("https://raw.githubusercontent.com/Alsciende/fiveringsdb-ui/master/src/i18n/translation." + locale + ".yml")
+            robot.http("https://api.fiveringsdb.com/labels?_locale=" + locale)
                 .get() (err, res, body) ->
-                    yamlLocalizations = yaml.safeLoad body
-                    robot.brain.set 'l5rlocale-' + locale, yamlLocalizations
+                    localizationRecords = JSON.parse body
+                    mappedLocalizations = {}
+                    for record in localizationRecords.records
+                        splitId = record.id.split "."
+                        if !mappedLocalizations[splitId[0]]?
+                            mappedLocalizations[splitId[0]] = {}
+                        mappedLocalizations[splitId[0]][splitId[1]] = record.value
+                    robot.brain.set 'l5rlocale-' + locale, mappedLocalizations
                     robot.logger.info "Loaded FRDB localizations"
-
 
 formatCard = (card, packs, cycles, localizations, locale) ->
     title = card.name
@@ -191,7 +195,7 @@ formatCard = (card, packs, cycles, localizations, locale) ->
     if card.traits? and card.traits.length > 0
         typeline += ":"
         for trait in card.traits
-            typeline += " #{localizations.keyword[trait]}."
+            typeline += " #{localizations.trait[trait]}."
 
     cardCost = card.cost
     if card.cost == null
