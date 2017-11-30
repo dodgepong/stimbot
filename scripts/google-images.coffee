@@ -72,7 +72,7 @@ googleImageSearch = (msg, query, animated, faces, cb, apiKey) ->
       cx: googleCseId,
       key: googleApiKey,
       siteSearchFilter:'e',
-      siteSearch:'deviantart.com'
+      siteSearch:'deviantart.net'
     if animated is true
       q.fileType = 'gif'
       q.hq = 'animated'
