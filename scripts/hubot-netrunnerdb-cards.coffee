@@ -325,7 +325,7 @@ ABBREVIATIONS = {
     }
 }
 
-DISPLAY_CYCLES = [ 2, 4, 6, 8, 10, 11, 12 ]
+DISPLAY_CYCLES = [ 2, 4, 6, 8, 10, 11, 12, 21 ]
 
 preloadData = (robot) ->
     locales = [ "en", "kr" ]
