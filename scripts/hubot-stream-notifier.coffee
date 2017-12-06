@@ -15,7 +15,8 @@ YOUTUBE_LIVE_CHANNELS = [
 	"UCvPgKhNkF-axufSCv8KpxGA", # Bad Publicity
 	"UCqTSZqzsRJsXzeXWDc1YTFA", # PeachHack
 	"UCk3Ylq2jwldNGynR7HLoFbA", # VTTV
-	"UCjwH6sQzmrlsc43YTTTQTOA"  # Zeromus
+	"UCjwH6sQzmrlsc43YTTTQTOA", # Zeromus
+	"UCeJXRdVkWl_5Id7UwPvbvpg"  # The Hacktivist
 ]
 
 EXCLUDED_TERMS = [
