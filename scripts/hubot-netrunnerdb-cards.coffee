@@ -721,7 +721,10 @@ module.exports = (robot) ->
         robot.logger.info "Locale: " + locale
 
         if card
-            res.send robot.brain.get('imageUrlTemplate-' + locale).replace /\{code\}/, card.code
+            if card.image_url
+                res.send card.image_url
+            else
+                res.send robot.brain.get('imageUrlTemplate-' + locale).replace /\{code\}/, card.code
         else
             res.send "No Netrunner card result found for \"" + res.match[1] + "\"."
 
