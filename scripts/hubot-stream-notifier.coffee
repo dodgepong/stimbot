@@ -17,7 +17,8 @@ YOUTUBE_LIVE_CHANNELS = [
 	"UCk3Ylq2jwldNGynR7HLoFbA", # VTTV
 	"UCjwH6sQzmrlsc43YTTTQTOA", # Zeromus
 	"UCeJXRdVkWl_5Id7UwPvbvpg", # The Hacktivist
-	"UCdtsV_b5GRZUDKVjc1KgmOA"  # System Outage
+	"UCdtsV_b5GRZUDKVjc1KgmOA", # System Outage
+	"UCNh1ufhc1xCa26M0nYurpNQ"  # Trace 5
 ]
 
 EXCLUDED_TERMS = [
