@@ -788,15 +788,17 @@ module.exports = (robot) ->
       #determine the result
       if access.type_code == "agenda"
         cost = access.advancement_cost
+        emoji = ":rez:"
       else if access.type_code in ["asset", "operation", "ice", "upgrade"]
         cost = access.cost
+        emoji = ":credit:"
 
       if cost == guess
         result = "you win!"
       else
         result = "you lose!"
 
-      res.send "You guessed: " + guess + ":credit:. You accessed " + access.title + "! That's " + cost + ":credit:, " + result
+      res.send "You guessed: " + guess + ". You accessed " + access.title + "! That's " + cost + emoji + ", " + result
 
     # robot.hear /^!mwl$/i, (res) ->
     #     mwl = robot.brain.get('mwl-en')
