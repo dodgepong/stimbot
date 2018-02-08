@@ -770,6 +770,34 @@ module.exports = (robot) ->
 
         res.send cardString
 
+    robot.hear /^!rngkey (\d+)$/i, (res) ->
+      # get the guess
+      guess = parseInt(res.match[1])
+
+      # get legal accesses from a corp
+      packs = robot.brain.get('packs-en')
+      cycles = robot.brain.get('cycles-en')
+      bannedCards = robot.brain.get('bannedCards-en')
+      cards = robot.brain.get('cards-en').filter((card) ->
+        return card.side_code == "corp" && cycles[packs[card.pack_code].cycle_code].position != 0 && !cycles[packs[card.pack_code].cycle_code].rotated && card.title not in bannedCards && packs[card.pack_code].date_release != null && card.type_code != "identity"
+      )
+
+      # pick the random access
+      access = cards[Math.floor(Math.random() * cards.length)]
+
+      #determine the result
+      if access.type_code == "agenda"
+        cost = access.advancement_cost
+      else if access.type_code in ["asset", "operation", "ice", "upgrade"]
+        cost = access.cost
+
+      if cost == guess
+        result = "you win!"
+      else
+        result = "you lose!"
+
+      res.send "You guessed: " + guess + ":credit:. You accessed " + access.title + "! That's " + cost + ":credit:, " + result
+
     # robot.hear /^!mwl$/i, (res) ->
     #     mwl = robot.brain.get('mwl-en')
     #     restrictedCards = robot.brain.get('restrictedCards-en')
