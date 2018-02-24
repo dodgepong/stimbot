@@ -18,7 +18,8 @@ YOUTUBE_LIVE_CHANNELS = [
 	"UCjwH6sQzmrlsc43YTTTQTOA", # Zeromus
 	"UCeJXRdVkWl_5Id7UwPvbvpg", # The Hacktivist
 	"UCdtsV_b5GRZUDKVjc1KgmOA", # System Outage
-	"UCNh1ufhc1xCa26M0nYurpNQ"  # Trace 5
+	"UCNh1ufhc1xCa26M0nYurpNQ", # Trace 5
+	"UCvFq-jHrBul6S56kGkT5OxQ"  # Hidden Assets
 ]
 
 EXCLUDED_TERMS = [
