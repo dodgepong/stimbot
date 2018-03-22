@@ -310,7 +310,11 @@ ABBREVIATIONS = {
         'mca': 'MCA Austerity Policy',
         'map': 'MCA Austerity Policy',
         'nanotech': "Na'Not'K",
-        'nanotek': "Na'Not'K"
+        'nanotek': "Na'Not'K",
+        'bitey boi': 'Gbahali',
+        'bitey boy': 'Gbahali',
+        'one bitey boi': 'Gbahali',
+        'one bitey boy': 'Gbahali'
     },
     'kr': {
         '미드시즌': '중간 개편',
