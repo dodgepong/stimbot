@@ -314,7 +314,11 @@ ABBREVIATIONS = {
         'bitey boi': 'Gbahali',
         'bitey boy': 'Gbahali',
         'one bitey boi': 'Gbahali',
-        'one bitey boy': 'Gbahali'
+        'one bitey boy': 'Gbahali',
+        'crocodile': 'Gbahali',
+        'alligator': 'Gbahali',
+        'gator': 'Gbahali',
+        ':crocodile:': 'Gbahali'
     },
     'kr': {
         '미드시즌': '중간 개편',
