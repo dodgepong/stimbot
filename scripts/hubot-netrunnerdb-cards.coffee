@@ -318,7 +318,10 @@ ABBREVIATIONS = {
         'crocodile': 'Gbahali',
         'alligator': 'Gbahali',
         'gator': 'Gbahali',
-        ':crocodile:': 'Gbahali'
+        ':crocodile:': 'Gbahali',
+        'estrike': 'Employee strike',
+        'strike': 'Employee Strike',
+        'e-strike': 'Employee Strike'
     },
     'kr': {
         '미드시즌': '중간 개편',
