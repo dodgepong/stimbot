@@ -185,7 +185,10 @@ formatCard = (card, packs, cycles, localizations, locale) ->
     }
 
     if card.pack_cards.length > 0
-        attachment['thumb_url'] = card.pack_cards[0].image_url
+        for pack_card in card.pack_cards
+            if pack_card.image_url
+                attachment['thumb_url'] = pack_card.image_url
+                break
 
     attachment['text'] = ''
 
