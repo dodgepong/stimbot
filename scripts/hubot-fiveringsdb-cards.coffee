@@ -457,7 +457,7 @@ module.exports = (robot) ->
         else
             res.send "No L5R card result found for \"" + match + "\"."
 
-    robot.hear /{{l5r\|([^}]+)}}|{{([^}]+\|l5r)}}/, (res) ->
+    robot.hear /{{l5r\|([^}]+)}}|{{([^}]+\|l5r)}}|!l5rima?ge? (.+)/, (res) ->
         match = ''
         if res.match[1]
             match = res.match[1]
@@ -474,10 +474,13 @@ module.exports = (robot) ->
         robot.logger.info "Searching FRDB for card image #{query} (from #{res.message.user.name} in #{res.message.room})"
         robot.logger.info "Locale: " + locale
 
-        if card
-            res.send card.pack_cards[0].image_url
+        if card and card.pack_cards.length > 0
+            for pack_card in card.pack_cards
+                if pack_card.image_url
+                    res.send pack_card.image_url
+                    break
         else
-            res.send "No L5R card result found for \"" + match + "\"."
+            res.send "No L5R card image result found for \"" + match + "\"."
 
     # robot.hear /^!jank\s?(runner|corp)?$/i, (res) ->
     #     side = res.match[1]
