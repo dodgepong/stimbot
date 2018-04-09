@@ -463,6 +463,8 @@ module.exports = (robot) ->
             match = res.match[1]
         else if res.match[2]
             match = res.match[2]
+        else if res.match[3]
+            match = res.match[3]
         query = match.replace /^\s+|\s+$/g, ""
 
         locale = "en"
