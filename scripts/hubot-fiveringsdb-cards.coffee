@@ -175,7 +175,7 @@ formatCard = (card, packs, cycles, localizations, locale) ->
     if locale != 'en' and card._locale
         title = card._locale[locale].title
     if card.unicity
-        title = "⬤ " + title
+        title = "• " + title
 
     attachment = {
         'fallback': title,
@@ -183,6 +183,9 @@ formatCard = (card, packs, cycles, localizations, locale) ->
         'title_link': 'https://fiveringsdb.com/card/' + card.id,
         'mrkdwn_in': [ 'text', 'author_name' ]
     }
+
+    if card.pack_cards.length > 0
+        attachment['thumb_url'] = card.pack_cards[0].image_url
 
     attachment['text'] = ''
 
