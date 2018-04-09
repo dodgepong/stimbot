@@ -422,7 +422,8 @@ formatCard = (card, packs, cycles, types, factions, mwl, locale) ->
         'fallback': title,
         'title': title,
         'title_link': 'https://netrunnerdb.com/' + locale + '/card/' + card.code,
-        'mrkdwn_in': [ 'text', 'author_name' ]
+        'mrkdwn_in': [ 'text', 'author_name' ],
+        'thumb_url': card.image_url
     }
 
     attachment['text'] = ''
