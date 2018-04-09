@@ -421,19 +421,24 @@ preloadData = (robot) ->
 
 
 
-formatCard = (card, packs, cycles, types, factions, mwl, locale) ->
+formatCard = (card, packs, cycles, types, factions, mwl, imageUrlTemplate, locale) ->
     title = card.title
     if locale != 'en' and card._locale
         title = card._locale[locale].title
     if card.uniqueness
         title = "◆ " + title
+        
+    
+    card_image_url = card.image_url
+    if not card_image_url
+        card_image_url = imageUrlTemplate.replace /\{code\}/, card.code
 
     attachment = {
         'fallback': title,
         'title': title,
         'title_link': 'https://netrunnerdb.com/' + locale + '/card/' + card.code,
         'mrkdwn_in': [ 'text', 'author_name' ],
-        'thumb_url': card.image_url
+        'thumb_url': card_image_url
     }
 
     attachment['text'] = ''
@@ -721,7 +726,7 @@ module.exports = (robot) ->
         robot.logger.info "Locale: " + locale
 
         if card
-            formattedCard = formatCard(card, robot.brain.get('packs-' + locale), robot.brain.get('cycles-' + locale), robot.brain.get('types-' + locale), robot.brain.get('factions-' + locale), robot.brain.get('mwl-' + locale), locale)
+            formattedCard = formatCard(card, robot.brain.get('packs-' + locale), robot.brain.get('cycles-' + locale), robot.brain.get('types-' + locale), robot.brain.get('factions-' + locale), robot.brain.get('mwl-' + locale), robot.brain.get('imageUrlTemplate-' + locale), locale)
             # robot.logger.info formattedCard
             res.send
                 as_user: true
