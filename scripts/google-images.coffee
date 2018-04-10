@@ -83,6 +83,9 @@ googleImageSearch = (msg, query, animated, faces, cb, apiKey) ->
     msg.http(url)
       .query(q)
       .get() (err, res, body) ->
+        msg.robot.logger.info err
+        msg.robot.logger.info res
+        msg.robot.logger.info body
         if err
           msg.send "Encountered an error :( #{err}"
           return false
