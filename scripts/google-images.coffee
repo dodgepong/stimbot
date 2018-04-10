@@ -51,10 +51,7 @@ module.exports = (robot) ->
 imageMe = (msg, query, animated, faces, cb) ->
   cb = animated if typeof animated == 'function'
   cb = faces if typeof faces == 'function'
-  if not googleImageSearch(msg, query, animated, faces, cb, process.env.HUBOT_GOOGLE_CSE_KEY)
-    # super hack to get 100 extra searches per day shhhh
-    if not googleImageSearch(msg, query, animated, faces, cb, process.env.HUBOT_GOOGLE_CSE_KEY_BACKUP)
-      msg.send "Daily Google API usage exceeded. Sorry :("
+  googleImageSearch(msg, query, animated, faces, cb, process.env.HUBOT_GOOGLE_CSE_KEY)
 
 googleImageSearch = (msg, query, animated, faces, cb, apiKey) ->
   googleCseId = process.env.HUBOT_GOOGLE_CSE_ID
@@ -87,7 +84,58 @@ googleImageSearch = (msg, query, animated, faces, cb, apiKey) ->
           msg.send "Encountered an error :( #{err}"
           return false
         if res.statusCode is 403
+          return backupGoogleImageSearch(msg, query, animated, faces, cb, process.env.HUBOT_GOOGLE_CSE_KEY_BACKUP)
+        if res.statusCode isnt 200
+          msg.send "Bad HTTP response :( #{res.statusCode}"
           return false
+        response = JSON.parse(body)
+        if response?.items
+          image = msg.random response.items
+          cb ensureResult(image.link, animated)
+          return true
+        else
+          msg.send "Oops. I had trouble searching '#{query}'. Try later."
+          ((error) ->
+            msg.robot.logger.error error.message
+            msg.robot.logger
+              .error "(see #{error.extendedHelp})" if error.extendedHelp
+          ) error for error in response.error.errors if response.error?.errors
+          return false
+  else
+    return false
+  
+backupGoogleImageSearch = (msg, query, animated, faces, cb, apiKey) ->
+  googleCseId = process.env.HUBOT_GOOGLE_CSE_ID
+  if googleCseId
+    # Using Google Custom Search API
+    googleApiKey = apiKey
+    if !googleApiKey
+      msg.robot.logger.error "Missing environment variable HUBOT_GOOGLE_CSE_KEY"
+      msg.send "Missing server environment variable HUBOT_GOOGLE_CSE_KEY."
+      return
+    q =
+      q: query,
+      searchType:'image',
+      safe: process.env.HUBOT_GOOGLE_SAFE_SEARCH || 'high',
+      cx: googleCseId,
+      key: googleApiKey,
+      siteSearchFilter:'e',
+      siteSearch:'deviantart.net'
+    if animated is true
+      q.fileType = 'gif'
+      q.hq = 'animated'
+      q.tbs = 'itp:animated'
+    if faces is true
+      q.imgType = 'face'
+    url = 'https://www.googleapis.com/customsearch/v1'
+    msg.http(url)
+      .query(q)
+      .get() (err, res, body) ->
+        if err
+          msg.send "Encountered an error :( #{err}"
+          return false
+        if res.statusCode is 403
+          msg.send "Daily Google API usage exceeded. Sorry :("
         if res.statusCode isnt 200
           msg.send "Bad HTTP response :( #{res.statusCode}"
           return false
