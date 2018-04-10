@@ -80,7 +80,7 @@ googleImageSearch = (msg, query, animated, faces, cb, apiKey) ->
     if faces is true
       q.imgType = 'face'
     url = 'https://www.googleapis.com/customsearch/v1'
-    returnVal = msg.http(url)
+    msg.http(url)
       .query(q)
       .get() (err, res, body) ->
         if err
@@ -104,7 +104,6 @@ googleImageSearch = (msg, query, animated, faces, cb, apiKey) ->
               .error "(see #{error.extendedHelp})" if error.extendedHelp
           ) error for error in response.error.errors if response.error?.errors
           return false
-    return returnVal
   else
     return false
 
