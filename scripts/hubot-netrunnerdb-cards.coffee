@@ -329,6 +329,8 @@ ABBREVIATIONS = {
         'alligator': 'Gbahali',
         'gator': 'Gbahali',
         ':crocodile:': 'Gbahali',
+        ':bitey:': 'Gbahali',
+        ':biteyboi:': 'Gbahali',
         'estrike': 'Employee strike',
         'strike': 'Employee Strike',
         'e-strike': 'Employee Strike'
