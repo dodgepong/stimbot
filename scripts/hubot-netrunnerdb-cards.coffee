@@ -335,7 +335,8 @@ ABBREVIATIONS = {
         'strike': 'Employee Strike',
         'e-strike': 'Employee Strike',
         'doof': 'Diversion of Funds',
-        'dof': 'Diversion of Funds'
+        'dof': 'Diversion of Funds',
+        'divvy': 'Diversion of Funds'
     },
     'kr': {
         '미드시즌': '중간 개편',
