@@ -338,7 +338,8 @@ ABBREVIATIONS = {
         'dof': 'Diversion of Funds',
         'divvy': 'Diversion of Funds',
         'gabe': 'Gabriel Santiago',
-        'daddy gabe': 'Gabriel Santiago'
+        'daddy gabe': 'Gabriel Santiago',
+        'ucf': 'Universal Connectivity Fee'
     },
     'kr': {
         '미드시즌': '중간 개편',
