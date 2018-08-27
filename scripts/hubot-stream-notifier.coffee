@@ -40,7 +40,11 @@ EXCLUDED_TERMS = [
 	"Arkham",
 	"LOTR",
 	"Lord of the Rings",
-	"TumbleSeed"
+	"TumbleSeed",
+	"Warhammer",
+	"KeyForge",
+	"Lightseekers",
+	"Transformers"
 ]
 
 module.exports = (robot) ->
