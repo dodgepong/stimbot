@@ -761,7 +761,7 @@ module.exports = (robot) ->
 
         if card
             if card.image_url
-                res.send card.image_url
+                res.send card.image_url.replace('https', 'http')
             else
                 res.send robot.brain.get('imageUrlTemplate-' + locale).replace /\{code\}/, card.code
         else
