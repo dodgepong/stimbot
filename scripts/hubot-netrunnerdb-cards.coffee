@@ -340,7 +340,8 @@ ABBREVIATIONS = {
         'gabe': 'Gabriel Santiago',
         'daddy gabe': 'Gabriel Santiago',
         'ucf': 'Universal Connectivity Fee',
-        'mache': 'Mâché'
+        'mache': 'Mâché',
+        'aal': 'Advanced Assembly Lines'
     },
     'kr': {
         '미드시즌': '중간 개편',
