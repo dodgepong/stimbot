@@ -442,6 +442,8 @@ formatCard = (card, packs, cycles, types, factions, mwl, imageUrlTemplate, local
     card_image_url = card.image_url
     if not card_image_url
         card_image_url = imageUrlTemplate.replace /\{code\}/, card.code
+    else
+        card_image_url = card_image_url.replace('https', 'http')
 
     attachment = {
         'fallback': title,
