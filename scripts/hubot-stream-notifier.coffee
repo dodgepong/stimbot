@@ -44,7 +44,8 @@ EXCLUDED_TERMS = [
 	"Warhammer",
 	"KeyForge",
 	"Lightseekers",
-	"Transformers"
+	"Transformers",
+	"Darkest Dungeon"
 ]
 
 module.exports = (robot) ->
