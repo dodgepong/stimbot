@@ -615,6 +615,8 @@ compareCards = (card1, card2) ->
         return 0
 
 cardMatches = (card, cond, packs, cycles) ->
+    conditionValue = cond.value.replace(/\"/g, "")
+    
     return false if cond.key == 'p' && typeof(card.strength) == 'undefined'
     return false if cond.key == 'o' && typeof(card.cost) == 'undefined'
     return false if cond.key == 'n' && typeof(card.faction_cost) == 'undefined'
@@ -625,33 +627,33 @@ cardMatches = (card, cond, packs, cycles) ->
     switch cond.op
         when ":", "="
             switch cond.key
-                when "e" then return card.pack_code == cond.value
-                when "t" then return card.type_code == cond.value
-                when "s" then return card.keywords && cond.value in card.keywords.toLowerCase().split(" - ")
-                when "f" then return card.faction_code.substr(0, cond.value.length) == cond.value
-                when "x" then return card.text && ~(card.text.toLowerCase().indexOf(cond.value))
-                when "d" then return cond.value == card.side_code.substr(0, cond.value.length)
-                when "a" then return card.flavor && ~(card.flavor.toLowerCase().indexOf(cond.value))
-                when "i" then return card.illustrator && ~(card.illustrator.toLowerCase().indexOf(cond.value))
-                when "u" then return !card.uniqueness == !parseInt(cond.value)
-                when "p" then return card.strength == parseInt(cond.value)
-                when "o" then return card.cost == parseInt(cond.value)
-                when "n" then return card.faction_cost == parseInt(cond.value)
-                when "y" then return card.quantity == parseInt(cond.value)
-                when "g" then return card.advancement_cost == parseInt(cond.value)
-                when "v" then return card.agenda_points == parseInt(cond.value)
-                when "c" then return cycles[packs[card.pack_code].cycle_code].position == parseInt(cond.value)
+                when "e" then return card.pack_code == conditionValue
+                when "t" then return card.type_code == conditionValue
+                when "s" then return card.keywords && conditionValue in card.keywords.toLowerCase().split(" - ")
+                when "f" then return card.faction_code.substr(0, conditionValue.length) == conditionValue
+                when "x" then return card.text && ~(card.text.toLowerCase().indexOf(conditionValue))
+                when "d" then return conditionValue == card.side_code.substr(0, conditionValue.length)
+                when "a" then return card.flavor && ~(card.flavor.toLowerCase().indexOf(conditionValue))
+                when "i" then return card.illustrator && ~(card.illustrator.toLowerCase().indexOf(conditionValue))
+                when "u" then return !card.uniqueness == !parseInt(conditionValue)
+                when "p" then return card.strength == parseInt(conditionValue)
+                when "o" then return card.cost == parseInt(conditionValue)
+                when "n" then return card.faction_cost == parseInt(conditionValue)
+                when "y" then return card.quantity == parseInt(conditionValue)
+                when "g" then return card.advancement_cost == parseInt(conditionValue)
+                when "v" then return card.agenda_points == parseInt(conditionValue)
+                when "c" then return cycles[packs[card.pack_code].cycle_code].position == parseInt(conditionValue)
         when "<"
             switch cond.key
-                when "p" then return card.strength < parseInt(cond.value)
-                when "o" then return card.cost < parseInt(cond.value)
-                when "n" then return card.faction_cost < parseInt(cond.value)
-                when "y" then return card.quantity < parseInt(cond.value)
-                when "g" then return card.advancement_cost < parseInt(cond.value)
-                when "v" then return card.agenda_points < parseInt(cond.value)
-                when "c" then return cycles[packs[card.pack_code].cycle_code].position < parseInt(cond.value)
-        when ">" then return !cardMatches(card, { key: cond.key, op: "<", value: parseInt(cond.value) + 1 }, packs, cycles)
-        when "!" then	return !cardMatches(card, { key: cond.key, op: ":", value: cond.value }, packs, cycles)
+                when "p" then return card.strength < parseInt(conditionValue)
+                when "o" then return card.cost < parseInt(conditionValue)
+                when "n" then return card.faction_cost < parseInt(conditionValue)
+                when "y" then return card.quantity < parseInt(conditionValue)
+                when "g" then return card.advancement_cost < parseInt(conditionValue)
+                when "v" then return card.agenda_points < parseInt(conditionValue)
+                when "c" then return cycles[packs[card.pack_code].cycle_code].position < parseInt(conditionValue)
+        when ">" then return !cardMatches(card, { key: cond.key, op: "<", value: parseInt(conditionValue) + 1 }, packs, cycles)
+        when "!" then	return !cardMatches(card, { key: cond.key, op: ":", value: conditionValue }, packs, cycles)
     true
 
 lookupCard = (query, cards, locale) ->
@@ -858,7 +860,7 @@ module.exports = (robot) ->
         for part in res.match[1].toLowerCase().match(/(([etsfxpondaiuygvc])([:=<>!])([-\w]+|\".+?\"))+/g)
             if out = part.match(/([etsfxpondaiuygvc])([:=<>!])(.+)/)
                 if out[2] in ":=!".split("") || out[1] in "ponygvc".split("")
-                    conditions.push({ key: out[1], op: out[2], value: out[3].replace(/\"/g, "") })
+                    conditions.push({ key: out[1], op: out[2], value: out[3] })
 
         return res.send("Sorry, I didn't understand :(") if !conditions || conditions.length < 1
 
