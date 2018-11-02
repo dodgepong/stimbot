@@ -717,7 +717,7 @@ createNRDBSearchLink = (conditions) ->
     cond_array = []
     for cond in conditions
         cond.op = ":" if cond.op == "="
-        cond_array.push (cond.key + cond.op + cond.value)
+        cond_array.push encodeURIComponent(cond.key + cond.op + cond.value)
     return start + cond_array.join "+"
 
 
