@@ -29,12 +29,7 @@ formatCard = (card, expansionAbbr, expansionFull, number, image) ->
 
     attachment['text'] = ''
 
-    typeline = ""
-
-    for house in card.houses
-        typeline += ":kf-" + house + ":"
-
-    typeline += " *#{card.type}*"
+    typeline = "*#{card.type}*"
     if card.traits? and card.traits.length > 0
         typeline += ": " + card.traits.join(" • ")
 
@@ -65,7 +60,12 @@ formatCard = (card, expansionAbbr, expansionFull, number, image) ->
     else
         attachment['text'] += ''
 
-    attachment['author_name'] = expansionFull + " #" + number + " / " + card.rarity
+    attachment['text'] += "\n"
+
+    for house in card.houses
+        attachment['text'] += ":kf-" + house + ":"
+
+    attachment['author_name'] = expansionFull + " #" + number + " / " + card.houses.join(", ") + " / " + card.rarity
 
     return attachment
 
@@ -73,8 +73,8 @@ emojifyLAText = (text) ->
     text = text.replace /\[D\]/g, ":boom:"
     text = text.replace /\[AE\]/g, ":aember:"
     text = text.replace /Action:/g, "*Action:*"
-    text = text.replace /Leaves Play:/g, "*Leaves Play:*"
     text = text.replace /Play:/g, "*Play:*"
+    text = text.replace /Leaves \*Play:\*/g, "*Leaves Play:*"
     text = text.replace /Reap:/g, "*Reap:*"
     text = text.replace /Omni:/g, "*Omni:*"
     text = text.replace /Fight:/g, "*Fight:*"
