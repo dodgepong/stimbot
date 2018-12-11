@@ -50,7 +50,7 @@ formatCard = (card, expansionAbbr, expansionFull, number, image) ->
     if card.aember?
         typeline += "\n"
         aember = parseInt(card.aember)
-        for num in [0..aember]
+        for num in [1..aember]
             typeline += ":aember:"
 
     attachment['text'] += typeline + "\n\n"
@@ -73,6 +73,7 @@ emojifyLAText = (text) ->
     text = text.replace /\[D\]/g, ":boom:"
     text = text.replace /\[AE\]/g, ":aember:"
     text = text.replace /Action:/g, "*Action:*"
+    text = text.replace /Leaves Play:/g, "*Leaves Play:*"
     text = text.replace /Play:/g, "*Play:*"
     text = text.replace /Reap:/g, "*Reap:*"
     text = text.replace /Omni:/g, "*Omni:*"
