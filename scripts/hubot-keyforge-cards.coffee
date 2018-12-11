@@ -65,7 +65,7 @@ formatCard = (card, expansionAbbr, expansionFull, number, image) ->
     else
         attachment['text'] += ''
 
-    attachment['author_name'] = expansionFull + " #" + number + " / " + card.rarity + " / " + card.artist
+    attachment['author_name'] = expansionFull + " #" + number + " / " + card.rarity
 
     return attachment
 
