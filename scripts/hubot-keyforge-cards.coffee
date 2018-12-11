@@ -1,9 +1,6 @@
 # Description:
-#   Tools for interacting with the FiveRingsDB API.
+#   Tools for interacting with the KeyForge LibraryAccess.net API.
 #
-# Commands:
-#   !l5r card name - search for a card with that name in the FiveRingsDB API
-#   {{l5r|card name}} or {{card name|l5r}} - fetch the card image for a L5R card
 
 Fuse = require 'fuse.js'
 yaml = require 'js-yaml'
@@ -166,6 +163,8 @@ module.exports = (robot) ->
                     if err
                         if image != '':
                             res.send image
+                        else
+                            res.send "No KeyForge card result found for \"" + match + "\"."
                     else
                         cardData = JSON.parse body
                         formattedCard = formatCard(cardData, expansionAbbr, expansionFull, number, image)
@@ -177,29 +176,29 @@ module.exports = (robot) ->
         else
             res.send "No KeyForge card result found for \"" + match + "\"."
 
-    robot.hear /{{l5r\|([^}]+)}}|{{([^}]+\|l5r)}}|!l5rima?ge? (.+)/, (res) ->
-        match = ''
-        if res.match[1]
-            match = res.match[1]
-        else if res.match[2]
-            match = res.match[2]
-        else if res.match[3]
-            match = res.match[3]
-        query = match.replace /^\s+|\s+$/g, ""
+    # robot.hear /{{l5r\|([^}]+)}}|{{([^}]+\|l5r)}}|!l5rima?ge? (.+)/, (res) ->
+    #     match = ''
+    #     if res.match[1]
+    #         match = res.match[1]
+    #     else if res.match[2]
+    #         match = res.match[2]
+    #     else if res.match[3]
+    #         match = res.match[3]
+    #     query = match.replace /^\s+|\s+$/g, ""
 
-        locale = "en"
-        hangul = new RegExp("[\u1100-\u11FF|\u3130-\u318F|\uA960-\uA97F|\uAC00-\uD7AF|\uD7B0-\uD7FF]");
-        if hangul.test(query)
-            locale = "kr"
+    #     locale = "en"
+    #     hangul = new RegExp("[\u1100-\u11FF|\u3130-\u318F|\uA960-\uA97F|\uAC00-\uD7AF|\uD7B0-\uD7FF]");
+    #     if hangul.test(query)
+    #         locale = "kr"
 
-        card = lookupCard(query, robot.brain.get('l5rcards-' + locale), locale)
-        robot.logger.info "Searching FRDB for card image #{query} (from #{res.message.user.name} in #{res.message.room})"
-        robot.logger.info "Locale: " + locale
+    #     card = lookupCard(query, robot.brain.get('l5rcards-' + locale), locale)
+    #     robot.logger.info "Searching FRDB for card image #{query} (from #{res.message.user.name} in #{res.message.room})"
+    #     robot.logger.info "Locale: " + locale
 
-        if card and card.pack_cards.length > 0
-            for pack_card in card.pack_cards
-                if pack_card.image_url
-                    res.send pack_card.image_url
-                    break
-        else
-            res.send "No Keyforge card image result found for \"" + match + "\"."
+    #     if card and card.pack_cards.length > 0
+    #         for pack_card in card.pack_cards
+    #             if pack_card.image_url
+    #                 res.send pack_card.image_url
+    #                 break
+    #     else
+    #         res.send "No Keyforge card image result found for \"" + match + "\"."
