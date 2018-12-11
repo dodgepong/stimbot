@@ -33,6 +33,10 @@ formatCard = (card, expansionAbbr, expansionFull, number, image) ->
     if card.traits? and card.traits.length > 0
         typeline += ": " + card.traits.join(" • ")
 
+    typeline += " "
+    for house in card.houses
+        typeline += ":kf-" + house + ":"
+
     if card.type == 'Creature'
         power = "~"
         if card.power?
@@ -59,11 +63,6 @@ formatCard = (card, expansionAbbr, expansionFull, number, image) ->
         attachment['text'] += emojifyLAText(card.text)
     else
         attachment['text'] += ''
-
-    attachment['text'] += "\n"
-
-    for house in card.houses
-        attachment['text'] += ":kf-" + house + ":"
 
     attachment['author_name'] = expansionFull + " #" + number + " / " + card.houses.join(", ") + " / " + card.rarity
 
@@ -137,8 +136,7 @@ module.exports = (robot) ->
 
     robot.hear /\[\[([^\]\|]+)\]\]/, (res) ->
         # only respond in #keyforge room
-        #if res.message.room != 'CC0S7SXGQ'
-        if res.message.room != 'C0CSRP3RC'
+        if res.message.room != 'CC0S7SXGQ'
             return
 
         query = res.match[1].replace /^\s+|\s+$/g, ""
@@ -177,8 +175,7 @@ module.exports = (robot) ->
 
     robot.hear /{{([^}\|]+)}}/, (res) ->
         # ignore card searches in #keyforge
-        #if res.message.room == 'CC0S7SXGQ'
-        if res.message.room != 'C0CSRP3RC'
+        if res.message.room != 'CC0S7SXGQ'
             return
 
         query = res.match[1].replace /^\s+|\s+$/g, ""

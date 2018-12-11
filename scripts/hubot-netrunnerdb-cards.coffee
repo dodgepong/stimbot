@@ -729,8 +729,7 @@ module.exports = (robot) ->
 
     robot.hear /\[\[([^\]\|]+)\]\]/, (res) ->
         # ignore card searches in #keyforge
-        #if res.message.room == 'CC0S7SXGQ'
-        if res.message.room == 'C0CSRP3RC'
+        if res.message.room == 'CC0S7SXGQ'
             return
 
         query = res.match[1].replace /^\s+|\s+$/g, ""
@@ -756,8 +755,7 @@ module.exports = (robot) ->
 
     robot.hear /{{([^}\|]+)}}/, (res) ->
         # ignore card searches in #keyforge
-        #if res.message.room == 'CC0S7SXGQ'
-        if res.message.room == 'C0CSRP3RC'
+        if res.message.room == 'CC0S7SXGQ'
             return
         query = res.match[1].replace /^\s+|\s+$/g, ""
 
