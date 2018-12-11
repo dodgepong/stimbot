@@ -437,8 +437,8 @@ formatCard = (card, packs, cycles, types, factions, mwl, imageUrlTemplate, local
         title = card._locale[locale].title
     if card.uniqueness
         title = "◆ " + title
-        
-    
+
+
     card_image_url = card.image_url
     if not card_image_url
         card_image_url = imageUrlTemplate.replace /\{code\}/, card.code
@@ -616,7 +616,7 @@ compareCards = (card1, card2) ->
 
 cardMatches = (card, cond, packs, cycles) ->
     conditionValue = cond.value.replace(/\"/g, "")
-    
+
     return false if cond.key == 'p' && typeof(card.strength) == 'undefined'
     return false if cond.key == 'o' && typeof(card.cost) == 'undefined'
     return false if cond.key == 'n' && typeof(card.faction_cost) == 'undefined'
@@ -728,6 +728,11 @@ module.exports = (robot) ->
     ), 1000
 
     robot.hear /\[\[([^\]\|]+)\]\]/, (res) ->
+        # ignore card searches in #keyforge
+        #if res.message.room === 'CC0S7SXGQ'
+        if res.message.room === 'C0CSRP3RC'
+            return
+
         query = res.match[1].replace /^\s+|\s+$/g, ""
 
         locale = "en"
