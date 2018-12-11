@@ -1,5 +1,5 @@
 # Description:
-#   Tools for interacting with the KeyForge LibraryAccess.net API.
+#   Tools for interacting with the KeyForge LibraryAccess.net API. Only works in #keyforge room on Stimslack.
 #
 
 Fuse = require 'fuse.js'
@@ -72,9 +72,9 @@ emojifyLAText = (text) ->
     text = text.replace /\[D\]/g, ":boom:"
     text = text.replace /\[AE\]/g, ":aember:"
     text = text.replace /Action:/g, "*Action:*"
-    text = text.replace /Reap:/g, "*Reap:*"
-    text = text.replace /Fight:/g, "*Fight:*"
     text = text.replace /Play:/g, "*Play:*"
+    text = text.replace /Fight:/g, "*Fight:*"
+    text = text.replace /Reap:/g, "*Reap:*"
     text = text.replace /Fight\/\*Reap:\*/g, "*Fight/Reap:*"
     text = text.replace /Play\/\*Reap:\*/g, "*Play/Reap:*"
     text = text.replace /Play\/\*Fight:\*/g, "*Play/Fight:*"
@@ -82,8 +82,8 @@ emojifyLAText = (text) ->
     text = text.replace /Leaves \*Play:\*/g, "*Leaves Play:*"
     text = text.replace /Omni:/g, "*Omni:*"
     text = text.replace /Destroyed:/g, "*Destroyed:*"
-    text = text.replace /Before Fight:/g, "*Before Fight:*"
-    text = text.replace /Before Reap:/g, "*Before Reap:*"
+    text = text.replace /Before \*Fight:\*/g, "*Before Fight:*"
+    text = text.replace /Before \*Reap:\*/g, "*Before Reap:*"
 
     return text
 
