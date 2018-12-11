@@ -175,29 +175,21 @@ module.exports = (robot) ->
         else
             res.send "No KeyForge card result found for \"" + match + "\"."
 
-    # robot.hear /{{l5r\|([^}]+)}}|{{([^}]+\|l5r)}}|!l5rima?ge? (.+)/, (res) ->
-    #     match = ''
-    #     if res.match[1]
-    #         match = res.match[1]
-    #     else if res.match[2]
-    #         match = res.match[2]
-    #     else if res.match[3]
-    #         match = res.match[3]
-    #     query = match.replace /^\s+|\s+$/g, ""
+    robot.hear /{{([^}\|]+)}}/, (res) ->
+        # ignore card searches in #keyforge
+        #if res.message.room == 'CC0S7SXGQ'
+        if res.message.room == 'C0CSRP3RC'
+            return
 
-    #     locale = "en"
-    #     hangul = new RegExp("[\u1100-\u11FF|\u3130-\u318F|\uA960-\uA97F|\uAC00-\uD7AF|\uD7B0-\uD7FF]");
-    #     if hangul.test(query)
-    #         locale = "kr"
+        query = res.match[1].replace /^\s+|\s+$/g, ""
 
-    #     card = lookupCard(query, robot.brain.get('l5rcards-' + locale), locale)
-    #     robot.logger.info "Searching FRDB for card image #{query} (from #{res.message.user.name} in #{res.message.room})"
-    #     robot.logger.info "Locale: " + locale
+        card = lookupCard(query, robot.brain.get('kfcards'))
+        robot.logger.info "Searching LibraryAccess for card image #{query} (from #{res.message.user.name})"
 
-    #     if card and card.pack_cards.length > 0
-    #         for pack_card in card.pack_cards
-    #             if pack_card.image_url
-    #                 res.send pack_card.image_url
-    #                 break
-    #     else
-    #         res.send "No Keyforge card image result found for \"" + match + "\"."
+        if card
+            if card['imageNames'].length > 0
+                res.send "http://libraryaccess.net/images/cards/" + card['imageNames'][0] + ".jpg"
+            else
+                res.send "No Keyforge card image result found for \"" + match + "\"."
+        else
+            res.send "No Keyforge card image result found for \"" + match + "\"."

@@ -755,6 +755,10 @@ module.exports = (robot) ->
             res.send "No Netrunner card result found for \"" + res.match[1] + "\"."
 
     robot.hear /{{([^}\|]+)}}/, (res) ->
+        # ignore card searches in #keyforge
+        #if res.message.room == 'CC0S7SXGQ'
+        if res.message.room == 'C0CSRP3RC'
+            return
         query = res.match[1].replace /^\s+|\s+$/g, ""
 
         locale = "en"
