@@ -27,7 +27,7 @@ formatCard = (card, expansionAbbr, expansionFull, number, image) ->
         'mrkdwn_in': [ 'text', 'author_name' ]
     }
 
-    if image !== ''
+    if image != ''
         attachment['thumb_url'] = image
 
     attachment['text'] = ''
@@ -41,7 +41,7 @@ formatCard = (card, expansionAbbr, expansionFull, number, image) ->
     if card.traits? and card.traits.length > 0
         typeline += ": " + card.traits.join(" • ")
 
-    if card.type === 'Creature'
+    if card.type == 'Creature'
         power = "~"
         if card.power?
             power = card.power
@@ -139,8 +139,8 @@ module.exports = (robot) ->
 
     robot.hear /\[\[([^\]\|]+)\]\]/, (res) ->
         # only respond in #keyforge room
-        #if res.message.room !== 'CC0S7SXGQ'
-        if res.message.room !== 'C0CSRP3RC'
+        #if res.message.room != 'CC0S7SXGQ'
+        if res.message.room != 'C0CSRP3RC'
             return
 
         query = res.match[1].replace /^\s+|\s+$/g, ""
@@ -164,7 +164,7 @@ module.exports = (robot) ->
             robot.http("http://api.libraryaccess.net:7001/cards/" + expansionAbbr + "/" + number)
                 .get() (err, res, body) ->
                     if err
-                        if image !== '':
+                        if image != '':
                             res.send image
                     else
                         cardData = JSON.parse body
