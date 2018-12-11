@@ -159,7 +159,7 @@ module.exports = (robot) ->
                 image = "http://libraryaccess.net/images/cards/" + card['imageNames'][0] + ".jpg"
 
             robot.http("http://api.libraryaccess.net:7001/cards/" + expansionAbbr + "/" + number)
-                .get() (err, res, body) ->
+                .get() (err, response, body) ->
                     if err
                         if image != ''
                             res.send image
