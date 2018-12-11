@@ -161,10 +161,8 @@ module.exports = (robot) ->
             robot.http("http://api.libraryaccess.net:7001/cards/" + expansionAbbr + "/" + number)
                 .get() (err, res, body) ->
                     if err
-                        if image != '':
+                        if image != ''
                             res.send image
-                        else
-                            res.send "No KeyForge card result found for \"" + match + "\"."
                     else
                         cardData = JSON.parse body
                         formattedCard = formatCard(cardData, expansionAbbr, expansionFull, number, image)
