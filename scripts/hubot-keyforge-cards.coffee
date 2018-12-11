@@ -11,8 +11,8 @@ preloadData = (robot) ->
     robot.http("http://api.libraryaccess.net:7001/cards")
         .get() (err, res, body) ->
             cardData = JSON.parse body
-            robot.logger.info "Loaded " + cardData.records.length + " KeyForge cards (from LibraryAccess.net)"
-            robot.brain.set 'kfcards', cardData.records.sort(compareCards)
+            robot.logger.info "Loaded " + cardData.length + " KeyForge cards (from LibraryAccess.net)"
+            robot.brain.set 'kfcards', cardData.sort(compareCards)
 
 formatCard = (card, expansionAbbr, expansionFull, number, image) ->
     title = card.name
@@ -55,7 +55,7 @@ formatCard = (card, expansionAbbr, expansionFull, number, image) ->
 
     attachment['text'] += typeline + "\n\n"
 
-    if card.keywords? && len(card.keywords > 0)
+    if card.keywords? && card.keywords.length > 0
         for keyword in card.keywords
             attachment['text'] += keyword + ". "
         attachment['text'] += "\n\n"
@@ -148,14 +148,14 @@ module.exports = (robot) ->
         if card
             expansionAbbr = ''
             expansionFull = ''
-            if len(card['expansions']) > 0
+            if card['expansions'].length > 0
                 expansionAbbr = card['expansion'][0]['abbreviation']
                 expansionFull = card['expansion'][0]['name']
             number = ''
-            if len(card['expansions']) > 0
+            if card['expansions'].length > 0
                 number = card['expansion'][0]['number']
             image = ''
-            if len(card['imageNames']) > 0
+            if card['imageNames'].length > 0
                 image = "http://libraryaccess.net/images/cards/" + card['imageNames'][0] + ".jpg"
 
             robot.http("http://api.libraryaccess.net:7001/cards/" + expansionAbbr + "/" + number)
