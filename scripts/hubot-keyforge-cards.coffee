@@ -149,11 +149,11 @@ module.exports = (robot) ->
             expansionAbbr = ''
             expansionFull = ''
             if card['expansions'].length > 0
-                expansionAbbr = card['expansion'][0]['abbreviation']
-                expansionFull = card['expansion'][0]['name']
+                expansionAbbr = card['expansions'][0]['abbreviation']
+                expansionFull = card['expansions'][0]['name']
             number = ''
             if card['expansions'].length > 0
-                number = card['expansion'][0]['number']
+                number = card['expansions'][0]['number']
             image = ''
             if card['imageNames'].length > 0
                 image = "http://libraryaccess.net/images/cards/" + card['imageNames'][0] + ".jpg"
