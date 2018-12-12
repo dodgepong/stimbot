@@ -112,33 +112,34 @@ formatDeck = (deckData, cards, deckLink) ->
             when "Rare" then deckStats.rarityCounts.rare += 1
             else deckStats.rarityCounts.special += 1
 
+
     attachment['text'] = ""
-    attachment['text'] += "Power: " + deckData.power_level + ", "
-    attachment['text'] += "Chains: " + deckData.chains + ", "
-    attachment['text'] += "Wins: " + deckData.wins + ", "
-    attachment['text'] += "Losses: " + deckData.losses
+    attachment['text'] += deckStats.rarityCounts.common + " Commons, "
+    attachment['text'] += deckStats.rarityCounts.uncommon + " Uncommons, "
+    attachment['text'] += deckStats.rarityCounts.rare + " Rares, "
+    attachment['text'] += deckStats.rarityCounts.special + " Special "
 
     typeField = ""
-    typeField += "Actions: " + deckStats.typeCounts.action + ", "
-    typeField += "Artifacts: " + deckStats.typeCounts.artifact + ", "
-    typeField += "Creatures: " + deckStats.typeCounts.creature + ", "
-    typeField += "Upgrades: " + deckStats.typeCounts.upgrade + "\n\n"
+    typeField += "Actions: " + deckStats.typeCounts.action + "\n"
+    typeField += "Artifacts: " + deckStats.typeCounts.artifact + "\n"
+    typeField += "Creatures: " + deckStats.typeCounts.creature + "\n"
+    typeField += "Upgrades: " + deckStats.typeCounts.upgrade
 
-    rarityField = ""
-    rarityField += "Commons: " + deckStats.rarityCounts.common + ", "
-    rarityField += "Uncommons: " + deckStats.rarityCounts.uncommon + ", "
-    rarityField += "Rares: " + deckStats.rarityCounts.rare + ", "
-    rarityField += "Special: " + deckStats.rarityCounts.special + "\n\n"
+    powerField = ""
+    powerField += "Power: " + deckData.power_level + "\n"
+    powerField += "Chains: " + deckData.chains + "\n"
+    powerField += "Wins: " + deckData.wins + "\n"
+    powerField += "Losses: " + deckData.losses
 
     attachment['fields'] = [
         {
-            title: "Types",
+            title: "Composition",
             value: typeField,
             short: true
         },
         {
-            title: "Rarities",
-            value: rarityField,
+            title: "Power",
+            value: powerField,
             short: true
         }
     ]
