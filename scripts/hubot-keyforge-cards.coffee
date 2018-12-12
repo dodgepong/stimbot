@@ -97,7 +97,9 @@ formatDeck = (deckData, cards, deckLink) ->
         }
     }
 
-    for card in cards
+    for cardId in deckData._links.cards
+        card = (cards.filter ((c) -> c.id = cardId))[0]
+
         switch card.card_type
             when "Creature" then deckStats.typeCounts.creature += 1
             when "Action" then deckStats.typeCounts.action += 1
