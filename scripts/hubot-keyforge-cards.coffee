@@ -68,6 +68,57 @@ formatCard = (card, expansionAbbr, expansionFull, number, image) ->
 
     return attachment
 
+formatDeck = (deckData, cards, deckLink) ->
+    title = deckData.name
+
+    emojifiedHouses = deckData._links.houses.map ((house) -> ":kf-" + house + ": " + house)
+    pretext = "*" + title + "* - " + emojifiedHouses.join(" • ")
+
+    attachment = {
+        'fallback': title,
+        'title': "Click here for full deck info",
+        'title_link': deckLink,
+        'pretext': pretext,
+        'mrkdwn_in': [ 'text', 'author_name', 'pretext' ]
+    }
+
+    deckStats = {
+        typeCounts: {
+            artifact: 0,
+            creature: 0,
+            upgrade: 0,
+            action: 0
+        },
+        rarityCounts: {
+            common: 0
+            uncommon: 0
+            rare: 0
+            special: 0
+        }
+    }
+
+    for card in cards
+        switch card.card_type
+            when "Creature" then deckStats.typeCounts.creature += 1
+            when "Action" then deckStats.typeCounts.action += 1
+            when "Upgrade" then deckStats.typeCounts.upgrade += 1
+            when "Artifact" then deckStats.typeCounts.artifact += 1
+
+        switch card.rarity
+            when "Common" then deckStats.rarityCounts.common += 1
+            when "Uncommon" then deckStats.rarityCounts.uncommon += 1
+            when "Rare" then deckStats.rarityCounts.rare += 1
+            else deckStats.rarityCounts.special += 1
+
+    attachment['text'] += "*Actions:* " + deckStats.typeCounts.action + "\n"
+    attachment['text'] += "*Artifacts:* " + deckStats.typeCounts.artifact + "\n"
+    attachment['text'] += "*Creatures:* " + deckStats.typeCounts.creature + "\n"
+    attachment['text'] += "*Upgrades:* " + deckStats.typeCounts.upgrade + "\n\n"
+
+    attachment['text'] += deckStats.rarityCounts.common + " Commons, " + deckStats.rarityCounts.uncommon + " Uncommons, " + deckStats.rarityCounts.rare + " Rares, " + deckStats.rarityCounts.special + " Special"
+
+    return attachment
+
 emojifyLAText = (text) ->
     text = text.replace /\[D\]/g, ":boom:"
     text = text.replace /\[AE\]/g, ":aember:"
@@ -174,7 +225,7 @@ module.exports = (robot) ->
             res.send "No KeyForge card result found for \"" + match + "\"."
 
     robot.hear /{{([^}\|]+)}}/, (res) ->
-        # ignore card searches in #keyforge
+        # only respond in #keyforge room
         if res.message.room != 'CC0S7SXGQ'
             return
 
@@ -190,3 +241,26 @@ module.exports = (robot) ->
                 res.send "No Keyforge card image result found for \"" + match + "\"."
         else
             res.send "No Keyforge card image result found for \"" + match + "\"."
+
+    robot.hear /https?:\/\/(www\.)?keyforgegame\.com\/deck-details\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})/, (res) ->
+        # only respond in #keyforge room
+        #if res.message.room != 'CC0S7SXGQ'
+        if res.message.room != 'C0CSRP3RC'
+            return
+
+        deckLink = res.match[0]
+        deckId = res.match[2]
+
+        robot.http("https://www.keyforgegame.com/api/decks/" + deckId + "/?links=cards")
+            .get() (err, response, body) ->
+                if err
+                    res.send "There was an error loading data for that deck."
+                else
+                    responseData = JSON.parse body
+                    formattedDeck = formatDeck(responseData.data, responseData._linked.cards, deckLink)
+
+                    res.send
+                        as_user: true
+                        attachments: [formattedDeck]
+                        username: res.robot.name
+
