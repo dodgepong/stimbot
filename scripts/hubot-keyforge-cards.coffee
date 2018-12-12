@@ -132,6 +132,9 @@ formatDeck = (deckData, cards, deckLink) ->
     powerField += "Losses: " + deckData.losses
 
     gamesPlayed = deckData.wins + deckData.losses
+    gamesPlural = "games"
+    if gamesPlayed == 1
+        gamesPlural = "game"
 
     attachment['fields'] = [
         {
@@ -140,7 +143,7 @@ formatDeck = (deckData, cards, deckLink) ->
             short: true
         },
         {
-            title: "Performance (" + gamesPlayed + " games)",
+            title: "Performance (" + gamesPlayed + " " + gamesPlural + ")",
             value: powerField,
             short: true
         }
