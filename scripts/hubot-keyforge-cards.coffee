@@ -128,8 +128,6 @@ formatDeck = (deckData, cards, deckLink) ->
     attachment['text'] += "*Wins:* " + deckData.wins + ", "
     attachment['text'] += "*Losses:* " + deckData.losses
 
-    attachment['text'] +=
-
     return attachment
 
 emojifyLAText = (text) ->
