@@ -113,20 +113,35 @@ formatDeck = (deckData, cards, deckLink) ->
             else deckStats.rarityCounts.special += 1
 
     attachment['text'] = ""
-    attachment['text'] += "Actions: " + deckStats.typeCounts.action + ", "
-    attachment['text'] += "Artifacts: " + deckStats.typeCounts.artifact + ", "
-    attachment['text'] += "Creatures: " + deckStats.typeCounts.creature + ", "
-    attachment['text'] += "Upgrades: " + deckStats.typeCounts.upgrade + "\n\n"
-
-    attachment['text'] += "Commons: " + deckStats.rarityCounts.common + ", "
-    attachment['text'] += "Uncommons: " + deckStats.rarityCounts.uncommon + ", "
-    attachment['text'] += "Rares: " + deckStats.rarityCounts.rare + ", "
-    attachment['text'] += "Special: " + deckStats.rarityCounts.special + "\n\n"
-
     attachment['text'] += "Power: " + deckData.power_level + ", "
     attachment['text'] += "Chains: " + deckData.chains + ", "
     attachment['text'] += "Wins: " + deckData.wins + ", "
     attachment['text'] += "Losses: " + deckData.losses
+
+    typeField = ""
+    typeField += "Actions: " + deckStats.typeCounts.action + ", "
+    typeField += "Artifacts: " + deckStats.typeCounts.artifact + ", "
+    typeField += "Creatures: " + deckStats.typeCounts.creature + ", "
+    typeField += "Upgrades: " + deckStats.typeCounts.upgrade + "\n\n"
+
+    rarityField = ""
+    rarityField += "Commons: " + deckStats.rarityCounts.common + ", "
+    rarityField += "Uncommons: " + deckStats.rarityCounts.uncommon + ", "
+    rarityField += "Rares: " + deckStats.rarityCounts.rare + ", "
+    rarityField += "Special: " + deckStats.rarityCounts.special + "\n\n"
+
+    attachment['fields'] = [
+        {
+            title: "Types",
+            value: typeField,
+            short: true
+        },
+        {
+            title: "Rarities",
+            value: rarityField,
+            short: true
+        }
+    ]
 
     return attachment
 
@@ -255,7 +270,8 @@ module.exports = (robot) ->
 
     robot.hear /https?:\/\/(www\.)?keyforgegame\.com\/deck-details\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})/, (res) ->
         # only respond in #keyforge room
-        if res.message.room != 'CC0S7SXGQ'
+        #if res.message.room != 'CC0S7SXGQ'
+        if res.message.room != 'C0CSRP3RC'
             return
 
         deckLink = res.match[0]
