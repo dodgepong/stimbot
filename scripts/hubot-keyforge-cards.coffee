@@ -113,12 +113,22 @@ formatDeck = (deckData, cards, deckLink) ->
             else deckStats.rarityCounts.special += 1
 
     attachment['text'] = ""
-    attachment['text'] += "*Actions:* " + deckStats.typeCounts.action + "\n"
-    attachment['text'] += "*Artifacts:* " + deckStats.typeCounts.artifact + "\n"
-    attachment['text'] += "*Creatures:* " + deckStats.typeCounts.creature + "\n"
+    attachment['text'] += "*Actions:* " + deckStats.typeCounts.action + ", "
+    attachment['text'] += "*Artifacts:* " + deckStats.typeCounts.artifact + ", "
+    attachment['text'] += "*Creatures:* " + deckStats.typeCounts.creature + ", "
     attachment['text'] += "*Upgrades:* " + deckStats.typeCounts.upgrade + "\n\n"
 
-    attachment['text'] += deckStats.rarityCounts.common + " Commons, " + deckStats.rarityCounts.uncommon + " Uncommons, " + deckStats.rarityCounts.rare + " Rares, " + deckStats.rarityCounts.special + " Special"
+    attachment['text'] += "*Commons:* " + deckStats.rarityCounts.common + ", "
+    attachment['text'] += "*Uncommons:* " + deckStats.rarityCounts.uncommon + ", "
+    attachment['text'] += "*Rares:* " + deckStats.rarityCounts.rare + ", "
+    attachment['text'] += "*Special:* " + deckStats.rarityCounts.special + "\n\n"
+
+    attachment['text'] += "*Power:* " + deckData.power_level + ", "
+    attachment['text'] += "*Chains:* " + deckData.chains + ", "
+    attachment['text'] += "*Wins:* " + deckData.wins + ", "
+    attachment['text'] += "*Losses:* " + deckData.losses
+
+    attachment['text'] +=
 
     return attachment
 
