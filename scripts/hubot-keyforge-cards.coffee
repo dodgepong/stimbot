@@ -110,6 +110,7 @@ formatDeck = (deckData, cards, deckLink) ->
             when "Rare" then deckStats.rarityCounts.rare += 1
             else deckStats.rarityCounts.special += 1
 
+    attachment['text'] = ""
     attachment['text'] += "*Actions:* " + deckStats.typeCounts.action + "\n"
     attachment['text'] += "*Artifacts:* " + deckStats.typeCounts.artifact + "\n"
     attachment['text'] += "*Creatures:* " + deckStats.typeCounts.creature + "\n"
@@ -244,8 +245,7 @@ module.exports = (robot) ->
 
     robot.hear /https?:\/\/(www\.)?keyforgegame\.com\/deck-details\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})/, (res) ->
         # only respond in #keyforge room
-        #if res.message.room != 'CC0S7SXGQ'
-        if res.message.room != 'C0CSRP3RC'
+        if res.message.room != 'CC0S7SXGQ'
             return
 
         deckLink = res.match[0]
