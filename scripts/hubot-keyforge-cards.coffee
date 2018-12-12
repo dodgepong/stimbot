@@ -245,7 +245,8 @@ module.exports = (robot) ->
 
     robot.hear /https?:\/\/(www\.)?keyforgegame\.com\/deck-details\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})/, (res) ->
         # only respond in #keyforge room
-        if res.message.room != 'CC0S7SXGQ'
+        #if res.message.room != 'CC0S7SXGQ'
+        if res.message.room != 'C0CSRP3RC'
             return
 
         deckLink = res.match[0]
