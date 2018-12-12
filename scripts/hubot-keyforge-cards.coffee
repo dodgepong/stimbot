@@ -117,7 +117,7 @@ formatDeck = (deckData, cards, deckLink) ->
     attachment['text'] += deckStats.rarityCounts.common + " Commons, "
     attachment['text'] += deckStats.rarityCounts.uncommon + " Uncommons, "
     attachment['text'] += deckStats.rarityCounts.rare + " Rares, "
-    attachment['text'] += deckStats.rarityCounts.special + " Special "
+    attachment['text'] += deckStats.rarityCounts.special + " Special\n"
 
     typeField = ""
     typeField += "Actions: " + deckStats.typeCounts.action + "\n"
@@ -138,7 +138,7 @@ formatDeck = (deckData, cards, deckLink) ->
             short: true
         },
         {
-            title: "Power",
+            title: "Performance (" + deckData.wins + deckData.losses + " games)",
             value: powerField,
             short: true
         }
