@@ -9,6 +9,7 @@ YOUTUBE_REFRESH_FREQUENCY = 300000 # 5 min
 
 YOUTUBE_LIVE_CHANNELS = [
 	"UCrcjou2_8t7wFun9m68Ufyg", # ANRBlackHats
+	"UCT0_zqao2b2kJBe-bmF_0og", # Team Covenant
 	"UC1_GRSFQILc4KEOUj7G0SXw", # beyoken
 	"UCQ7hPuO4R15t0qAKnjFi-Iw", # Metropole Grid
 	"UCvPgKhNkF-axufSCv8KpxGA", # Bad Publicity
