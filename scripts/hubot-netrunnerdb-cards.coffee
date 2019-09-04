@@ -695,24 +695,27 @@ lookupCard = (query, cards, locale) ->
         fuse = new Fuse cards, fuseOptions
         results = fuse.search(query)
 
-        if results? and results.length > 0
-            filteredResults1 = results.filter((c) -> c.item.pack_code not in SKIP_PACKS)
-            filteredResults2 = results.filter((c) -> c.score == filteredResults1[0].score)
-            sortedResults = []
-            if locale is 'en'
-                sortedResults = filteredResults2.sort((c1, c2) -> c1.item.title.length - c2.item.title.length)
+        if results?
+            resultsWithoutExcludedPacks = results.filter((c) -> c.item.pack_code not in SKIP_PACKS)
+            if resultsWithoutExcludedPacks.length > 0
+                filteredResults = results.filter((c) -> c.score == resultsWithoutExcludedPacks[0].score)
+                sortedResults = []
+                if locale is 'en'
+                    sortedResults = filteredResults.sort((c1, c2) -> c1.item.title.length - c2.item.title.length)
+                else
+                    # favor localized results over non-localized results when showing matches
+                    sortedResults = filteredResults.sort((c1, c2) ->
+                        if c1.item._locale and c2.item._locale
+                            return c1.item._locale[locale].title.length - c2.item._locale[locale].title.length
+                        if c1.item._locale and not c2.item._locale
+                            return -1
+                        if c2.item._locale and not c1.item._locale
+                            return 1
+                        return c1.item.title.length - c2.item.title.length
+                    )
+                return sortedResults[0].item
             else
-                # favor localized results over non-localized results when showing matches
-                sortedResults = filteredResults2.sort((c1, c2) ->
-                    if c1.item._locale and c2.item._locale
-                        return c1.item._locale[locale].title.length - c2.item._locale[locale].title.length
-                    if c1.item._locale and not c2.item._locale
-                        return -1
-                    if c2.item._locale and not c1.item._locale
-                        return 1
-                    return c1.item.title.length - c2.item.title.length
-                )
-            return sortedResults[0].item
+                return false
         else
             return false
 
