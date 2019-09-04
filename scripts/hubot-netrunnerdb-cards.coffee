@@ -696,7 +696,7 @@ lookupCard = (query, cards, locale) ->
         results = fuse.search(query)
 
         if results? and results.length > 0
-            filteredResults1 = results.filter((c) -> c.pack_code not in SKIP_PACKS)
+            filteredResults1 = results.filter((c) -> c.item.pack_code not in SKIP_PACKS)
             filteredResults2 = results.filter((c) -> c.score == filteredResults1[0].score)
             sortedResults = []
             if locale is 'en'
