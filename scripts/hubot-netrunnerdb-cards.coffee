@@ -698,7 +698,7 @@ lookupCard = (query, cards, locale) ->
         if results?
             resultsWithoutExcludedPacks = results.filter((c) -> c.item.pack_code not in SKIP_PACKS)
             if resultsWithoutExcludedPacks.length > 0
-                filteredResults = results.filter((c) -> c.score == resultsWithoutExcludedPacks[0].score)
+                filteredResults = resultsWithoutExcludedPacks.filter((c) -> c.score == resultsWithoutExcludedPacks[0].score)
                 sortedResults = []
                 if locale is 'en'
                     sortedResults = filteredResults.sort((c1, c2) -> c1.item.title.length - c2.item.title.length)
