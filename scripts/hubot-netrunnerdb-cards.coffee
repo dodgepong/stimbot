@@ -358,6 +358,7 @@ ABBREVIATIONS = {
 }
 
 DISPLAY_CYCLES = [ 2, 4, 6, 8, 10, 11, 12, 21, 26 ]
+SKIP_PACKS = [ 'urbp' ]
 
 preloadData = (robot) ->
     locales = [ "en", "kr" ]
@@ -695,13 +696,14 @@ lookupCard = (query, cards, locale) ->
         results = fuse.search(query)
 
         if results? and results.length > 0
-            filteredResults = results.filter((c) -> c.score == results[0].score)
+            filteredResults1 = results.filter((c) -> c.pack_code not in SKIP_PACKS)
+            filteredResults2 = results.filter((c) -> c.score == filteredResults1[0].score)
             sortedResults = []
             if locale is 'en'
-                sortedResults = filteredResults.sort((c1, c2) -> c1.item.title.length - c2.item.title.length)
+                sortedResults = filteredResults2.sort((c1, c2) -> c1.item.title.length - c2.item.title.length)
             else
                 # favor localized results over non-localized results when showing matches
-                sortedResults = filteredResults.sort((c1, c2) ->
+                sortedResults = filteredResults2.sort((c1, c2) ->
                     if c1.item._locale and c2.item._locale
                         return c1.item._locale[locale].title.length - c2.item._locale[locale].title.length
                     if c1.item._locale and not c2.item._locale
@@ -742,8 +744,6 @@ module.exports = (robot) ->
             locale = "kr"
 
         card = lookupCard(query, robot.brain.get('cards-' + locale), locale)
-        robot.logger.info "Searching NRDB for card #{query} (from #{res.message.user.name} in #{res.message.room})"
-        robot.logger.info "Locale: " + locale
 
         if card
             formattedCard = formatCard(card, robot.brain.get('packs-' + locale), robot.brain.get('cycles-' + locale), robot.brain.get('types-' + locale), robot.brain.get('factions-' + locale), robot.brain.get('mwl-' + locale), robot.brain.get('imageUrlTemplate-' + locale), locale)
