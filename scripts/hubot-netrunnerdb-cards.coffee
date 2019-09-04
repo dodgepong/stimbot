@@ -604,8 +604,7 @@ emojifyNRDBText = (text) ->
     trace_words = Object.keys(LOCALIZATION).map((language) -> LOCALIZATION[language]['trace']).join('|')
     trace_regex = new RegExp("<trace>(" + trace_words + ") (\\d+|X)<\/trace>", "ig")
     text = text.replace trace_regex, (match, traceText, strength, offset, string) ->
-        traceStrength = "[" + strength + "]"
-        return "*" + traceText + traceStrength + "*—"
+        return "*" + traceText + " [" + strength + "]*—"
 
     return text
 
