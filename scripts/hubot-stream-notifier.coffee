@@ -5,16 +5,12 @@
 #	!streams - Displays a list of all currently-live Netrunner streams.
 
 TWITCH_REFRESH_FREQUENCY = 120000 # 2 min (1 min would cause false positives when going offline due to caching)
-YOUTUBE_REFRESH_FREQUENCY = 300000 # 5 min
+YOUTUBE_REFRESH_FREQUENCY = 360000 # 6 min
 
 YOUTUBE_LIVE_CHANNELS = [
-	"UCrcjou2_8t7wFun9m68Ufyg", # ANRBlackHats
 	"UC1_GRSFQILc4KEOUj7G0SXw", # beyoken
 	"UCQ7hPuO4R15t0qAKnjFi-Iw", # Metropole Grid
-	"UCvPgKhNkF-axufSCv8KpxGA", # Bad Publicity
-	"UCqTSZqzsRJsXzeXWDc1YTFA", # PeachHack
 	"UCk3Ylq2jwldNGynR7HLoFbA", # VTTV
-	"UCjwH6sQzmrlsc43YTTTQTOA", # Zeromus
 	"UCeJXRdVkWl_5Id7UwPvbvpg", # The Hacktivist
 	"UCdtsV_b5GRZUDKVjc1KgmOA", # System Outage
 	"UCNh1ufhc1xCa26M0nYurpNQ", # Trace 5
