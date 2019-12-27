@@ -342,7 +342,8 @@ ABBREVIATIONS = {
         'ucf': 'Universal Connectivity Fee',
         'mache': 'Mâché',
         'aal': 'Advanced Assembly Lines',
-        'lat': 'Lat: Ethical Freelancer'
+        'lat': 'Lat: Ethical Freelancer',
+        'tyr': 'Týr'
     },
     'kr': {
         '미드시즌': '중간 개편',
