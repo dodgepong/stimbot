@@ -49,7 +49,7 @@ module.exports = (robot) ->
 	if process.env.ENABLE_TWITCH_NOTIFIER is 'true'
 		robot.logger.info "Enabling Twitch Notifier"
 		setInterval () ->
-			url = 'https://api.twitch.tv/kraken/streams?game=Android%3A%20Netrunner'
+			url = 'https://api.twitch.tv/kraken/streams?game=Netrunner'
 			known_streams = robot.brain.get('twitch-streams')
 			if !known_streams?
 				known_streams = {}
@@ -73,7 +73,7 @@ module.exports = (robot) ->
 							if stream.channel.name not of known_streams and stream.channel.game is 'Android: Netrunner'
 								robot.logger.info "Notifying of new live channel #{stream.channel.name}"
 								for room in process.env.STREAM_NOTIFIER_ROOMS.split(',')
-									robot.messageRoom room, "#{stream.channel.name} just went live playing Android: Netrunner on Twitch with the title \"#{stream.channel.status}\" - https://twitch.tv/#{stream.channel.name}"
+									robot.messageRoom room, "#{stream.channel.name} just went live playing Netrunner on Twitch with the title \"#{stream.channel.status}\" - https://twitch.tv/#{stream.channel.name}"
 
 							# add stream to new brain data
 							new_streams[stream.channel.name] = stream.channel.status
