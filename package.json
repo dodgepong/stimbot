@@ -13,11 +13,11 @@
     "hubot-help": "^0.1.1",
     "hubot-maps": "0.0.2",
     "hubot-pugme": "^0.1.0",
-    "hubot-redis-brain": "0.0.3",
+    "hubot-redis-brain": "1.0.0",
     "hubot-rules": "^0.1.1",
     "hubot-scripts": "^2.16.2",
     "hubot-shipit": "^0.2.0",
-    "hubot-slack": "^4.7.1",
+    "hubot-slack": "^4.8.1",
     "time": "^0.11.4",
     "js-yaml":"^3.10.0"
   },
