@@ -4,7 +4,11 @@
 # Commands:
 #	!streams - Displays a list of all currently-live Netrunner streams.
 
-TWITCH_REFRESH_FREQUENCY = 120000 # 2 min (1 min would cause false positives when going offline due to caching)
+TWITCH_REFRESH_FREQUENCY = 60000 # 1 minute
+TWITCH_NETRUNNER_GAME_ID = 1289748982
+TWITCH_STREAMS_URL = 'https://api.twitch.tv/helix/streams?game_id=' + TWITCH_NETRUNNER_GAME_ID
+TWITCH_TOKEN_URL = 'https://id.twitch.tv/oauth2/token'
+
 YOUTUBE_REFRESH_FREQUENCY = 360000 # 6 min
 
 YOUTUBE_LIVE_CHANNELS = [
@@ -45,41 +49,56 @@ EXCLUDED_TERMS = [
 	"Marvel"
 ]
 
+
 module.exports = (robot) ->
 	if process.env.ENABLE_TWITCH_NOTIFIER is 'true'
 		robot.logger.info "Enabling Twitch Notifier"
 		setInterval () ->
-			url = 'https://api.twitch.tv/kraken/streams?game=Netrunner'
 			known_streams = robot.brain.get('twitch-streams')
 			if !known_streams?
 				known_streams = {}
 			new_streams = {}
-			robot.http(url)
-				.header('Accept', 'application/vnd.twitchtv.v5+json')
-				.header('Client-ID', process.env.TWITCH_CLIENT_ID)
-				.get() (err, res, body) ->
+
+			# I don't feel like maintaining an access token and dynamically refreshing it based on 401 responses
+			# So I'm going to be an asshole and request a new app token on every goddamn check
+			body = 'client_id=' + process.env.TWITCH_CLIENT_ID + '&client_secret=' + process.env.TWITCH_CLIENT_SECRET + '&grant_type=client_credentials'
+			robot.http(TWITCH_TOKEN_URL)
+				.header('Content-Type', 'application/x-www-form-urlencoded')
+				.post(body) (err, res, body) ->
 					if err
-						robot.logger.error 'Error retrieving stream list from Twitch'
+						if body
+							response = JSON.parse(body)
+							robot.logger.error 'Error retrieving stream list from Twitch: HTTP ' + res.statusCode + ' - ' + response.message
+						else
+							robot.logger.error 'Error retrieving stream list from Twitch: HTTP ' + res.statusCode
 						return
-					if res.statusCode isnt 200 and res.statusCode isnt 304
-						robot.logger.error "Received bad status code #{res.statusCode} while trying to retrieve stream list from Twitch"
-						return
-					response = JSON.parse(body)
-					if response?.streams
-						for stream in response.streams
+					robot.logger.info "Got Twitch app auth token"
+					token = JSON.parse(body)
 
-							# if the channel isn't in our known list of live streams, notify the channel of it
-							# include game sanity check, sometimes the Twitch API is dumb and returns all streams regardless of game
-							if stream.channel.name not of known_streams and stream.channel.game is 'Android: Netrunner'
-								robot.logger.info "Notifying of new live channel #{stream.channel.name}"
-								for room in process.env.STREAM_NOTIFIER_ROOMS.split(',')
-									robot.messageRoom room, "#{stream.channel.name} just went live playing Netrunner on Twitch with the title \"#{stream.channel.status}\" - https://twitch.tv/#{stream.channel.name}"
+					robot.http(TWITCH_STREAMS_URL)
+						.header('Authorization', 'Bearer ' + token.access_token)
+						.header('Client-Id', process.env.TWITCH_CLIENT_ID)
+						.get() (err, res, body) ->
+							if err
+								robot.logger.error 'Error retrieving stream list from Twitch'
+								return
+							if res.statusCode isnt 200 and res.statusCode isnt 304
+								robot.logger.error "Received bad status code #{res.statusCode} while trying to retrieve stream list from Twitch"
+								return
+							response = JSON.parse(body)
+							for stream in response.data
+								robot.logger.info "checking a stream"
+								# if the channel isn't in our known list of live streams, notify the channel of it
+								if stream.user_name not of known_streams
+									robot.logger.info "Notifying of new live channel #{stream.user_name}"
+									for room in process.env.STREAM_NOTIFIER_ROOMS.split(',')
+										robot.messageRoom room, "#{stream.user_name} just went live playing Netrunner on Twitch with the title \"#{stream.title}\" - https://twitch.tv/#{stream.user_login}"
 
-							# add stream to new brain data
-							new_streams[stream.channel.name] = stream.channel.status
+								# add stream to new brain data
+								new_streams[stream.user_name] = stream.title
 
-						# overwrite previous data with new data of all currently-live streams
-						robot.brain.set 'twitch-streams', new_streams
+							# overwrite previous data with new data of all currently-live streams
+							robot.brain.set 'twitch-streams', new_streams
 		, TWITCH_REFRESH_FREQUENCY
 	else
 		robot.logger.info "Disabling Twitch Notifier"
