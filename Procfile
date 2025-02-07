@@ -1,1 +1,1 @@
-web: bin/hubot -a slack
+web: bin/hubot -a @hubot-friends/hubot-slack
