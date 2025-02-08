@@ -25,4 +25,4 @@ COPY scripts ./scripts
 RUN npm install
 
 # Run the application
-CMD ["bin/hubot", "-a", "@hubot-friends/hubot-slack"]
+CMD ["bin/hubot", "-a", "@hubot-friends/hubot-slack", "-n", "stimbot"]

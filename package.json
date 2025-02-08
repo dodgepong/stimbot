@@ -1,6 +1,6 @@
 {
   "name": "stimbot",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
   "author": "Ben Torell <dodgepong@gmail.com>",
   "description": "A helpful android for the Stimhack Slack channel",
