@@ -4,7 +4,7 @@
 // Commands:
 //   !streams - Displays a list of all currently-live Netrunner streams.
 
-const TWITCH_REFRESH_FREQUENCY = 60000; // 1 minute
+const TWITCH_REFRESH_FREQUENCY = 120000; // 2 minutes
 const TWITCH_NETRUNNER_GAME_ID = 1289748982;
 const TWITCH_STREAMS_URL = `https://api.twitch.tv/helix/streams?game_id=${TWITCH_NETRUNNER_GAME_ID}`;
 const TWITCH_TOKEN_URL = 'https://id.twitch.tv/oauth2/token';
