@@ -57,7 +57,6 @@ module.exports = (robot) => {
       if (!known_streams) {
         known_streams = {};
       }
-      const new_streams = {};
 
       // I don't feel like maintaining an access token and dynamically refreshing it based on 401 responses
       // So I'm going to be an asshole and request a new app token on every goddamn check
@@ -81,6 +80,7 @@ module.exports = (robot) => {
             .header('Authorization', `Bearer ${token.access_token}`)
             .header('Client-Id', process.env.TWITCH_CLIENT_ID)
             .get()((err, res, body) => {
+              const new_streams = {};
               if (err) {
                 robot.logger.error('Error retrieving stream list from Twitch');
                 return;
@@ -90,8 +90,10 @@ module.exports = (robot) => {
                 return;
               }
               const response = JSON.parse(body);
+              robot.logger.info("known streams: " + JSON.stringify(known_streams));
+              robot.logger.info("response: " + JSON.stringify(response));
               for (const stream of response.data) {
-                robot.logger.info("checking a stream");
+                robot.logger.info("checking stream " + stream.user_name);
                 // if the channel isn't in our known list of live streams, notify the channel of it
                 if (!(stream.user_name in known_streams)) {
                   robot.logger.info(`Notifying of new live channel ${stream.user_name}`);
