@@ -8,7 +8,7 @@
     "@hubot-friends/hubot-slack": "^3.1.0",
     "cron": "^1.1.0",
     "fuse.js": "^2.6.2",
-    "hubot": "^11.3.3",
+    "hubot": "^13.1.4",
     "hubot-help": "^2.1.5",
     "hubot-redis-brain": "^3.0.1",
     "hubot-rules": "^2.1.1",
